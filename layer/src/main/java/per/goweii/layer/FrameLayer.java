@@ -76,8 +76,7 @@ public class FrameLayer extends Layer {
     @NonNull
     @Override
     protected ViewGroup onGetParent() {
-        installParent();
-        return super.onGetParent();
+        return installParent();
     }
 
     @CallSuper
@@ -121,6 +120,7 @@ public class FrameLayer extends Layer {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        getViewHolder().setParent(null);
     }
 
     protected void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -144,7 +144,8 @@ public class FrameLayer extends Layer {
         return this;
     }
 
-    private void installParent() {
+    @NonNull
+    private ViewGroup installParent() {
         LayerLayout layerLayout = findLayerLayoutFromRoot();
         if (layerLayout == null) layerLayout = tryGetLayerLayoutFormHolder();
         if (layerLayout == null) layerLayout = createLayerLayout();
@@ -164,11 +165,10 @@ public class FrameLayer extends Layer {
             ((ViewGroup) levelLayout.getParent()).removeView(levelLayout);
             layerLayout.addView(levelLayout);
         }
-        getViewHolder().setParent(levelLayout);
+        return levelLayout;
     }
 
     private void uninstallParent() {
-        getViewHolder().setParent(null);
         final LayerLayout layerLayout = findLayerLayoutFromRoot();
         if (layerLayout == null) return;
         layerLayout.unregisterOnConfigurationChangedListener(mOnConfigurationChangedListener);

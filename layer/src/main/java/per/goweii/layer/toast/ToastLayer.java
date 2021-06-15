@@ -92,8 +92,10 @@ public class ToastLayer extends DecorLayer {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
-        View content = onCreateContent(inflater, container);
-        getViewHolder().setContent(content);
+        if (getViewHolder().getContentNullable() == null) {
+            getViewHolder().setContent(onCreateContent(inflater, container));
+        }
+        View content = getViewHolder().getContent();
         container.addView(content);
         return container;
     }
@@ -101,10 +103,10 @@ public class ToastLayer extends DecorLayer {
     @NonNull
     protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         View view;
-        if (getViewHolder().getContentNullable() == null) {
-            view = inflater.inflate(getConfig().mContentViewId, parent, false);
+        if (getConfig().mContentView != null) {
+            view = getConfig().mContentView;
         } else {
-            view = getViewHolder().getContent();
+            view = inflater.inflate(getConfig().mContentViewId, parent, false);
         }
         Utils.removeViewParent(view);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
@@ -272,7 +274,7 @@ public class ToastLayer extends DecorLayer {
 
     @NonNull
     public ToastLayer setContentView(@NonNull View contentView) {
-        getViewHolder().setContent(contentView);
+        getConfig().mContentView = contentView;
         return this;
     }
 
@@ -434,7 +436,9 @@ public class ToastLayer extends DecorLayer {
     }
 
     protected static class Config extends DecorLayer.Config {
+        private View mContentView = null;
         private int mContentViewId = R.layout.layer_toast_content;
+
         private boolean mRemoveOthers = true;
         private long mDuration = 3000L;
         @NonNull

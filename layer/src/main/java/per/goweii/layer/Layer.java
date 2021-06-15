@@ -11,6 +11,7 @@ import android.view.ViewTreeObserver;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -67,26 +68,29 @@ public class Layer {
 
     @NonNull
     protected ViewGroup onGetParent() {
-        return mViewHolder.getParent();
+        return mConfig.mParent;
     }
 
     @NonNull
     protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        return inflater.inflate(mConfig.mChildId, parent, false);
+        if (getConfig().mChild != null) {
+            return getConfig().mChild;
+        }
+        return inflater.inflate(getConfig().mChildId, parent, false);
     }
 
     @Nullable
     protected Animator onCreateInAnimator(@NonNull View view) {
-        if (mConfig.mAnimatorCreator != null) {
-            return mConfig.mAnimatorCreator.createInAnimator(view);
+        if (getConfig().mAnimatorCreator != null) {
+            return getConfig().mAnimatorCreator.createInAnimator(view);
         }
         return null;
     }
 
     @Nullable
     protected Animator onCreateOutAnimator(@NonNull View view) {
-        if (mConfig.mAnimatorCreator != null) {
-            return mConfig.mAnimatorCreator.createOutAnimator(view);
+        if (getConfig().mAnimatorCreator != null) {
+            return getConfig().mAnimatorCreator.createOutAnimator(view);
         }
         return null;
     }
@@ -97,14 +101,14 @@ public class Layer {
             getViewHolder().setParent(onGetParent());
         }
         if (getViewHolder().getChildNullable() == null) {
-            getViewHolder().setChild(onCreateChild(getLayoutInflater(), mViewHolder.getParent()));
+            getViewHolder().setChild(onCreateChild(getLayoutInflater(), getViewHolder().getParent()));
         }
-        mViewManager.setParent(mViewHolder.getParent());
-        mViewManager.setChild(mViewHolder.getChild());
-        mViewManager.setOnKeyListener(mConfig.mInterceptKeyEvent ? mOnViewKeyListener : null);
+        mViewManager.setParent(getViewHolder().getParent());
+        mViewManager.setChild(getViewHolder().getChild());
+        mViewManager.setOnKeyListener(getConfig().mInterceptKeyEvent ? mOnViewKeyListener : null);
         if (!mInitialized) {
             mInitialized = true;
-            mListenerHolder.notifyOnInitialize(this);
+            getListenerHolder().notifyOnInitialize(this);
         }
     }
 
@@ -114,10 +118,10 @@ public class Layer {
             getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
             getViewTreeObserver().addOnPreDrawListener(mOnGlobalPreDrawListener);
         }
-        mListenerHolder.bindOnClickListeners(this);
-        mListenerHolder.bindOnLongClickListeners(this);
-        mListenerHolder.notifyOnVisibleChangeToShow(this);
-        mListenerHolder.notifyOnBindData(this);
+        getListenerHolder().bindOnClickListeners(this);
+        getListenerHolder().bindOnLongClickListeners(this);
+        getListenerHolder().notifyOnVisibleChangeToShow(this);
+        getListenerHolder().notifyOnBindData(this);
     }
 
     @CallSuper
@@ -142,7 +146,7 @@ public class Layer {
 
     @CallSuper
     protected void onDetach() {
-        mListenerHolder.notifyOnVisibleChangeToDismiss(this);
+        getListenerHolder().notifyOnVisibleChangeToDismiss(this);
         if (getViewTreeObserver().isAlive()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
@@ -162,7 +166,7 @@ public class Layer {
     }
 
     protected boolean onKeyBack() {
-        if (mConfig.mCancelableOnKeyBack) {
+        if (getConfig().mCancelableOnKeyBack) {
             dismiss();
         }
         return true;
@@ -391,31 +395,31 @@ public class Layer {
 
     @NonNull
     public Layer setParent(@NonNull ViewGroup parent) {
-        mViewHolder.setParent(parent);
+        getConfig().mParent = parent;
         return this;
     }
 
     @NonNull
     public Layer setChild(@NonNull View child) {
-        mViewHolder.setChild(child);
+        getConfig().mChild = child;
         return this;
     }
 
     @NonNull
-    public Layer setChild(int child) {
-        mConfig.mChildId = child;
+    public Layer setChild(@LayoutRes int child) {
+        getConfig().mChildId = child;
         return this;
     }
 
     @NonNull
     public Layer setAnimator(@Nullable AnimatorCreator creator) {
-        mConfig.mAnimatorCreator = creator;
+        getConfig().mAnimatorCreator = creator;
         return this;
     }
 
     @NonNull
     public Layer setInterceptKeyEvent(boolean intercept) {
-        mConfig.mInterceptKeyEvent = intercept;
+        getConfig().mInterceptKeyEvent = intercept;
         return this;
     }
 
@@ -577,6 +581,8 @@ public class Layer {
     }
 
     protected static class Config {
+        private ViewGroup mParent;
+        private View mChild;
         private int mChildId;
 
         private boolean mInterceptKeyEvent = false;

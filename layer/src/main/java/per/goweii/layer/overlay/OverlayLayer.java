@@ -84,19 +84,21 @@ public class OverlayLayer extends DecorLayer {
     @Override
     protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         DragLayout container = new DragLayout(getActivity());
-        View overlay = onCreateOverlay(inflater, container);
+        if (getViewHolder().getOverlayNullable() == null) {
+            getViewHolder().setOverlay(onCreateOverlay(inflater, container));
+        }
+        View overlay = getViewHolder().getOverlay();
         container.addView(overlay);
-        getViewHolder().setOverlay(overlay);
         return container;
     }
 
     @NonNull
     protected View onCreateOverlay(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         View view;
-        if (getViewHolder().getOverlayOrNull() == null) {
-            view = inflater.inflate(getConfig().mOverlayViewId, parent, false);
+        if (getConfig().mOverlayView != null) {
+            view = getConfig().mOverlayView;
         } else {
-            view = getViewHolder().getOverlay();
+            view = inflater.inflate(getConfig().mOverlayViewId, parent, false);
         }
         Utils.removeViewParent(view);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
@@ -254,7 +256,7 @@ public class OverlayLayer extends DecorLayer {
     }
 
     public OverlayLayer setOverlayView(@NonNull View overlayView) {
-        getViewHolder().setOverlay(overlayView);
+        getConfig().mOverlayView = overlayView;
         return this;
     }
 
@@ -488,7 +490,7 @@ public class OverlayLayer extends DecorLayer {
         }
 
         @Nullable
-        protected View getOverlayOrNull() {
+        protected View getOverlayNullable() {
             return mOverlayView;
         }
 
@@ -506,6 +508,7 @@ public class OverlayLayer extends DecorLayer {
     }
 
     protected static class Config extends DecorLayer.Config {
+        protected View mOverlayView = null;
         protected int mOverlayViewId = -1;
 
         private boolean mOutside = true;
