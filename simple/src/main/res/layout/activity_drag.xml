@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_show_left"
+        style="@style/ListTextStyle"
+        android:text="左侧抽屉" />
+
+    <TextView
+        android:id="@+id/tv_show_right"
+        style="@style/ListTextStyle"
+        android:text="右侧抽屉" />
+
+    <TextView
+        android:id="@+id/tv_show_top"
+        style="@style/ListTextStyle"
+        android:text="顶部抽屉" />
+
+    <TextView
+        android:id="@+id/tv_show_bottom"
+        style="@style/ListTextStyle"
+        android:text="底部抽屉" />
+
+</LinearLayout>

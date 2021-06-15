@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<per.goweii.layer.widget.MaxSizeFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layer_keyboard_pad_latter"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center_horizontal"
+    android:background="@color/layer_keyboard_fg"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_1"
+                style="@style/AnyLayerCommonKeyboardBtnLatterNum"
+                android:text="@string/layer_keyboard_keyname_1" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_2"
+                style="@style/AnyLayerCommonKeyboardBtnLatterNum"
+                android:text="@string/layer_keyboard_keyname_2" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_3"
+                style="@style/AnyLayerCommonKeyboardBtnLatterNum"
+                android:text="@string/layer_keyboard_keyname_3" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_4"
+                style="@style/AnyLayerCommonKeyboardBtnLatterNum"
+                android:text="@string/layer_keyboard_keyname_4" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_5"
+                style="@style/AnyLayerCommonKeyboardBtnLatterNum"
+                android:text="@string/layer_keyboard_keyname_5" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_6"
+                style="@style/AnyLayerCommonKeyboardBtnLatterNum"
+                android:text="@string/layer_keyboard_keyname_6" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_7"
+                style="@style/AnyLayerCommonKeyboardBtnLatterNum"
+                android:text="@string/layer_keyboard_keyname_7" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_8"
+                style="@style/AnyLayerCommonKeyboardBtnLatterNum"
+                android:text="@string/layer_keyboard_keyname_8" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_9"
+                style="@style/AnyLayerCommonKeyboardBtnLatterNum"
+                android:text="@string/layer_keyboard_keyname_9" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_0"
+                style="@style/AnyLayerCommonKeyboardBtnLatterNum"
+                android:text="@string/layer_keyboard_keyname_0" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_q"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:text="@string/layer_keyboard_keyname_q" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_w"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:text="@string/layer_keyboard_keyname_w" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_e"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:text="@string/layer_keyboard_keyname_e" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_r"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:text="@string/layer_keyboard_keyname_r" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_t"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:text="@string/layer_keyboard_keyname_t" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_y"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:text="@string/layer_keyboard_keyname_y" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_u"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:text="@string/layer_keyboard_keyname_u" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_i"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:text="@string/layer_keyboard_keyname_i" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_o"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:text="@string/layer_keyboard_keyname_o" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_p"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:text="@string/layer_keyboard_keyname_p" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_a"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_a" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_s"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_s" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_d"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_d" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_f"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_f" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_g"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_g" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_h"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_h" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_j"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_j" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_k"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_k" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_l"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_l" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@id/layer_keyboard_keycode_caps"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="3"
+                android:contentDescription="@string/layer_keyboard_keyname_del"
+                android:scaleType="centerInside"
+                android:src="@drawable/layer_keyboard_ic_caps_selector"
+                android:tint="@color/layer_keyboard_text_color"
+                tools:ignore="UseAppTint" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_z"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_z" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_x"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_x" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_c"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_c" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_v"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_v" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_b"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_b" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_n"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_n" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_m"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="2"
+                android:text="@string/layer_keyboard_keyname_m" />
+
+            <ImageView
+                android:id="@id/layer_keyboard_keycode_del"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="3"
+                android:contentDescription="@string/layer_keyboard_keyname_del"
+                android:scaleType="centerInside"
+                android:src="@drawable/layer_keyboard_ic_del"
+                android:tint="@color/layer_keyboard_text_color"
+                tools:ignore="UseAppTint" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_input_type_symbol"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="3"
+                android:text="@string/layer_keyboard_keyname_input_type_symbol" />
+
+            <TextView
+                android:id="@id/layer_keyboard_keycode_input_type_number"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="3"
+                android:text="@string/layer_keyboard_keyname_input_type_number" />
+
+            <ImageView
+                android:id="@id/layer_keyboard_keycode_space"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="8"
+                android:contentDescription="@string/layer_keyboard_keyname_space"
+                android:scaleType="centerInside"
+                android:src="@drawable/layer_keyboard_ic_space"
+                android:tint="@color/layer_keyboard_text_color"
+                tools:ignore="UseAppTint" />
+
+            <ImageView
+                android:id="@id/layer_keyboard_keycode_enter"
+                style="@style/AnyLayerCommonKeyboardBtnLatter"
+                android:layout_weight="6"
+                android:contentDescription="@string/layer_keyboard_keyname_enter"
+                android:scaleType="centerInside"
+                android:src="@drawable/layer_keyboard_ic_enter"
+                android:tint="@color/layer_keyboard_text_color"
+                tools:ignore="UseAppTint" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</per.goweii.layer.widget.MaxSizeFrameLayout>

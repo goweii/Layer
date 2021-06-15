@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AnyLayerCommonKeyboardBtnNumber">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/layer_keyboard_text_color</item>
+        <item name="android:background">@drawable/layer_keyboard_btn_bg_selector</item>
+    </style>
+
+    <style name="AnyLayerCommonKeyboardBtnLatter">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/layer_keyboard_text_color</item>
+        <item name="android:background">@drawable/layer_keyboard_btn_bg_selector</item>
+    </style>
+
+    <style name="AnyLayerCommonKeyboardBtnLatterNum">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/layer_keyboard_text_color</item>
+        <item name="android:background">@drawable/layer_keyboard_btn_bg_selector</item>
+    </style>
+
+    <style name="AnyLayerCommonKeyboardBtnSymbol">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/layer_keyboard_text_color</item>
+        <item name="android:background">@drawable/layer_keyboard_btn_bg_selector</item>
+    </style>
+
+</resources>

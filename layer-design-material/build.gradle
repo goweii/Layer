@@ -1,0 +1,10 @@
+apply plugin: 'com.android.library'
+apply from: "../library.gradle"
+
+android {
+}
+
+dependencies {
+    compileOnly project(':layer')
+    compileOnly project(':layer-ext')
+}

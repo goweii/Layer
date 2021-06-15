@@ -1,0 +1,13 @@
+apply from: "../library.gradle"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+}
+
+dependencies {
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compileOnly 'androidx.core:core-ktx:1.3.2'
+    compileOnly project(':layer')
+    compileOnly project(':layer-ext')
+}

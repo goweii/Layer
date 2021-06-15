@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Layer</string>
+    <string name="dialog_msg">Android稳定高效的浮层创建管理框架</string>
+</resources>

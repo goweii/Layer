@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center_horizontal"
+    android:background="@color/layer_keyboard_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@id/layer_keyboard_keycode_hide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.4"
+        android:background="@color/layer_keyboard_bg"
+        android:contentDescription="@string/layer_keyboard_keyname_hide"
+        android:padding="@dimen/layer_margin_small"
+        android:scaleType="centerInside"
+        android:src="@drawable/layer_keyboard_ic_arrow_down"
+        android:tint="@color/layer_keyboard_text_color"
+        tools:ignore="UseAppTint" />
+
+    <include
+        layout="@layout/layer_keyboard_pad_latter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <include
+        layout="@layout/layer_keyboard_pad_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="gone" />
+
+    <include
+        layout="@layout/layer_keyboard_pad_symbol"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="gone" />
+
+</LinearLayout>

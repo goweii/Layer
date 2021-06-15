@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="layer_keyboard_keycode_hide" type="id" />
+    <item name="layer_keyboard_keycode_enter" type="id" />
+    <item name="layer_keyboard_keycode_del" type="id" />
+    <item name="layer_keyboard_keycode_caps" type="id" />
+    <item name="layer_keyboard_keycode_input_type_letter" type="id" />
+    <item name="layer_keyboard_keycode_input_type_number" type="id" />
+    <item name="layer_keyboard_keycode_input_type_symbol" type="id" />
+
+    <item name="layer_keyboard_keycode_0" type="id" />
+    <item name="layer_keyboard_keycode_1" type="id" />
+    <item name="layer_keyboard_keycode_2" type="id" />
+    <item name="layer_keyboard_keycode_3" type="id" />
+    <item name="layer_keyboard_keycode_4" type="id" />
+    <item name="layer_keyboard_keycode_5" type="id" />
+    <item name="layer_keyboard_keycode_6" type="id" />
+    <item name="layer_keyboard_keycode_7" type="id" />
+    <item name="layer_keyboard_keycode_8" type="id" />
+    <item name="layer_keyboard_keycode_9" type="id" />
+
+    <item name="layer_keyboard_keycode_a" type="id" />
+    <item name="layer_keyboard_keycode_b" type="id" />
+    <item name="layer_keyboard_keycode_c" type="id" />
+    <item name="layer_keyboard_keycode_d" type="id" />
+    <item name="layer_keyboard_keycode_e" type="id" />
+    <item name="layer_keyboard_keycode_f" type="id" />
+    <item name="layer_keyboard_keycode_g" type="id" />
+    <item name="layer_keyboard_keycode_h" type="id" />
+    <item name="layer_keyboard_keycode_i" type="id" />
+    <item name="layer_keyboard_keycode_j" type="id" />
+    <item name="layer_keyboard_keycode_k" type="id" />
+    <item name="layer_keyboard_keycode_l" type="id" />
+    <item name="layer_keyboard_keycode_m" type="id" />
+    <item name="layer_keyboard_keycode_n" type="id" />
+    <item name="layer_keyboard_keycode_o" type="id" />
+    <item name="layer_keyboard_keycode_p" type="id" />
+    <item name="layer_keyboard_keycode_q" type="id" />
+    <item name="layer_keyboard_keycode_r" type="id" />
+    <item name="layer_keyboard_keycode_s" type="id" />
+    <item name="layer_keyboard_keycode_t" type="id" />
+    <item name="layer_keyboard_keycode_u" type="id" />
+    <item name="layer_keyboard_keycode_v" type="id" />
+    <item name="layer_keyboard_keycode_w" type="id" />
+    <item name="layer_keyboard_keycode_x" type="id" />
+    <item name="layer_keyboard_keycode_y" type="id" />
+    <item name="layer_keyboard_keycode_z" type="id" />
+
+    <item name="layer_keyboard_keycode_space" type="id" />
+    <item name="layer_keyboard_keycode_line_feed" type="id" />
+
+    <item name="layer_keyboard_keycode_dot" type="id" />
+    <item name="layer_keyboard_keycode_comma" type="id" />
+    <item name="layer_keyboard_keycode_add" type="id" />
+    <item name="layer_keyboard_keycode_subtract" type="id" />
+    <item name="layer_keyboard_keycode_star" type="id" />
+    <item name="layer_keyboard_keycode_slash" type="id" />
+    <item name="layer_keyboard_keycode_exclamation" type="id" />
+    <item name="layer_keyboard_keycode_question" type="id" />
+    <item name="layer_keyboard_keycode_colon" type="id" />
+    <item name="layer_keyboard_keycode_semicolon" type="id" />
+    <item name="layer_keyboard_keycode_single_quote" type="id" />
+    <item name="layer_keyboard_keycode_double_quote" type="id" />
+    <item name="layer_keyboard_keycode_back_quote" type="id" />
+    <item name="layer_keyboard_keycode_equal" type="id" />
+    <item name="layer_keyboard_keycode_backslash" type="id" />
+    <item name="layer_keyboard_keycode_bar" type="id" />
+    <item name="layer_keyboard_keycode_underline" type="id" />
+    <item name="layer_keyboard_keycode_dollar" type="id" />
+    <item name="layer_keyboard_keycode_rmb" type="id" />
+    <item name="layer_keyboard_keycode_at" type="id" />
+    <item name="layer_keyboard_keycode_pound" type="id" />
+    <item name="layer_keyboard_keycode_percent" type="id" />
+    <item name="layer_keyboard_keycode_and" type="id" />
+    <item name="layer_keyboard_keycode_caret" type="id" />
+    <item name="layer_keyboard_keycode_tilde" type="id" />
+    <item name="layer_keyboard_keycode_ellipsis" type="id" />
+    <item name="layer_keyboard_keycode_left_braces" type="id" />
+    <item name="layer_keyboard_keycode_right_braces" type="id" />
+    <item name="layer_keyboard_keycode_left_brackets" type="id" />
+    <item name="layer_keyboard_keycode_right_brackets" type="id" />
+    <item name="layer_keyboard_keycode_left_parentheses" type="id" />
+    <item name="layer_keyboard_keycode_right_parentheses" type="id" />
+    <item name="layer_keyboard_keycode_less_than" type="id" />
+    <item name="layer_keyboard_keycode_greater_than" type="id" />
+</resources>

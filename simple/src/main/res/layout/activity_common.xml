@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingTop="20dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:text="@string/app_name"
+                android:layout_marginLeft="15dp"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/tv_show_menu"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/ic_more" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_show_input"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/shape_input_bg"
+                    style="@style/ListTextStyle"
+                    android:text="" />
+
+                <TextView
+                    android:id="@+id/tv_show_tip"
+                    style="@style/ListTextStyle"
+                    android:text="提示弹窗" />
+
+                <TextView
+                    android:id="@+id/tv_show_tip_no_title"
+                    style="@style/ListTextStyle"
+                    android:text="提示弹窗（无标题）" />
+
+                <TextView
+                    android:id="@+id/tv_show_tip_no_title_single_yes"
+                    style="@style/ListTextStyle"
+                    android:text="提示弹窗（只有确定）" />
+
+                <TextView
+                    android:id="@+id/tv_show_list"
+                    style="@style/ListTextStyle"
+                    android:text="列表弹窗（选择效果）" />
+
+                <TextView
+                    android:id="@+id/tv_show_list_no_title_no_btn"
+                    style="@style/ListTextStyle"
+                    android:text="列表弹窗（菜单效果）" />
+
+                <TextView
+                    android:id="@+id/tv_show_loading"
+                    style="@style/ListTextStyle"
+                    android:text="加载弹窗" />
+
+                <TextView
+                    android:id="@+id/tv_show_loading_no_text"
+                    style="@style/ListTextStyle"
+                    android:text="加载弹窗(没有文字)" />
+
+                <TextView
+                    android:id="@+id/tv_toast"
+                    style="@style/ListTextStyle"
+                    android:text="吐司" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
+
+</LinearLayout>

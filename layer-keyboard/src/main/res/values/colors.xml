@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="layer_keyboard_btn_bg_normal">#FFFFFFFF</color>
+    <color name="layer_keyboard_btn_bg_pressed">#FFF7F7F7</color>
+    <color name="layer_keyboard_bg">#FFF5F5F5</color>
+    <color name="layer_keyboard_fg">#FFF5F5F5</color>
+    <color name="layer_keyboard_divide">#1A000000</color>
+    <color name="layer_keyboard_text_color">#FF232323</color>
+    <color name="layer_keyboard_text_color_on_primary">#FFFFFFFF</color>
+</resources>

@@ -1,0 +1,12 @@
+apply plugin: 'com.android.library'
+apply from: "../library.gradle"
+
+android {
+}
+
+dependencies {
+    compileOnly 'androidx.cardview:cardview:1.0.0'
+    implementation 'per.goweii.visualeffect:visualeffect-core:1.0.4'
+    implementation 'per.goweii.visualeffect:visualeffect-blur:1.0.4'
+    implementation 'per.goweii.visualeffect:visualeffect-view:1.0.4'
+}
