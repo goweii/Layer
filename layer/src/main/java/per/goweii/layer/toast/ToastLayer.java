@@ -197,7 +197,7 @@ public class ToastLayer extends DecorLayer {
     @CallSuper
     @Override
     protected void onDetach() {
-        getChild().setTag(null);
+        getChild().setTag(R.id.layer_toast_tag, null);
         super.onDetach();
     }
 
@@ -213,7 +213,6 @@ public class ToastLayer extends DecorLayer {
         for (int i = count - 1; i >= 0; i--) {
             final View child = parent.getChildAt(i);
             Object tag = child.getTag(R.id.layer_toast_tag);
-            child.setTag(R.id.layer_toast_tag, null);
             if (tag instanceof ToastLayer) {
                 ToastLayer toastLayer = (ToastLayer) tag;
                 if (toastLayer != this) {
