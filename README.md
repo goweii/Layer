@@ -1,6 +1,6 @@
 Android稳定高效的浮层创建管理框架。
 
-可实现Dialog/Popup/BottomSheet等弹窗，引导层，悬浮按钮，浮动通知，吐司，安全键盘等效果。
+可实现Dialog，PopupWindow，引导层，悬浮按钮，通知，吐司，安全键盘等效果。
 
 
 
@@ -16,11 +16,11 @@ Android稳定高效的浮层创建管理框架。
 
 不是单Activity也不影响，上面这些功能一样可以实现，只是Toast无法跨页面，会随Activity一起关闭。
 
-- 同时兼容support和androidx
+- 支持AndroidX
 - 链式调用
 - 支持自由扩展
 - 实现几种常用效果
-  - Dialog/BottomSheet效果
+  - DialogLayer：AlertDialog/BottomSheetDialog
     - 占用区域不会超过当前Activity避免导航栏遮挡
     - 支持自定义大小和显示位置
     - 支持自定义数据绑定
@@ -30,23 +30,23 @@ Android稳定高效的浮层创建管理框架。
     - 支持从ApplicationContext中弹出
     - 支持拖拽关闭
     - 支持不拦截外部事件
-  - Popup效果
+  - PopupLayer：PopupWindow
     - 拥有Dialog效果特性
     - 支持跟随目标View移动
-  - Toast效果
+  - ToastLayer：吐司
     - 支持自定义图标和文字
     - 支持自定义显示时长
     - 支持自定义位置
     - 支持自定义背景资源和颜色
     - 支持自定义透明度
     - 支持自定义进出场动画
-  - Guide效果
-    - 详见demo
-  - Float效果
+  - GuideLayer：引导层
+    - 支持自定义遮罩颜色和圆角半径
+  - OverlayLayer：悬浮按钮
     - 支持自定义吸附边
     - 支持自定义正常和低姿态2中模式
     - 支持自定义低姿态显示效果
-  - Notification效果
+  - NotificationLayer：通知
     - 支持滑动关闭
 
 
@@ -82,7 +82,7 @@ allprojects {
 
 - ### 添加依赖
 
-  [点击查看最新版本号](https://github.com/goweii/AnyLayer/releases)
+  [点击查看最新版本号](https://github.com/goweii/Layer/releases)
 ```groovy
 // build.gradle(Module:)
 dependencies {
@@ -112,24 +112,6 @@ dependencies {
 ## 更新说明
 
 [点击查看](https://github.com/goweii/Layer/releases)
-
-
-
-## 类间关系
-
-- **[ViewManager]()**（管理View的动态添加移除和KeyEvent事件注册）
-
-- **[Layer]()**（对ViewManager的包装，实现进出场动画逻辑和事件监听，规范接口形式，分离出ViewHolder/ListenerHolder/Config三大内部类）
-  - **[FrameLayer]()**（限定父布局为FrameLayout，引入了Layer层级概念）
-    - **[DecorLayer]()**（限定父布局为DecorView）
-      - **[DialogLayer]()**（规范子布局层级，加入背景层，分离动画为背景动画和内容动画）
-        - **[PopupLayer]()**（可依据锚点View定位）
-      - **[ToastLayer]()**（吐司）
-      - **[GuideLayer]()**（引导层）
-      - **[FloatLayer]()**（悬浮按钮）
-      - **[NotificationLayer]()**（通知）
-
-- **[AnimatorHelper]()**（创建常用属性动画）
 
 
 
