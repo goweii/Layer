@@ -144,63 +144,65 @@ public class NotificationLayer extends DecorLayer {
             content.setLayoutParams(generateContentDefaultLayoutParams());
         }
 
-        if (getConfig().mContentBlurPercent > 0 || getConfig().mContentBlurRadius > 0) {
-            final BackdropVisualEffectFrameLayout backdropVisualEffectFrameLayout = new BackdropVisualEffectFrameLayout(context);
-            backdropVisualEffectFrameLayout.setShowDebugInfo(false);
-            backdropVisualEffectFrameLayout.setOverlayColor(getConfig().mContentBlurColor);
+        if (Utils.findViewByClass(content, BackdropVisualEffectFrameLayout.class) == null) {
+            if (getConfig().mContentBlurPercent > 0 || getConfig().mContentBlurRadius > 0) {
+                final BackdropVisualEffectFrameLayout backdropVisualEffectFrameLayout = new BackdropVisualEffectFrameLayout(context);
+                backdropVisualEffectFrameLayout.setShowDebugInfo(false);
+                backdropVisualEffectFrameLayout.setOverlayColor(getConfig().mContentBlurColor);
 
-            FrameLayout.LayoutParams contentLayoutParams = (FrameLayout.LayoutParams) content.getLayoutParams();
-            content.setLayoutParams(new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.MATCH_PARENT
-            ));
-            if (content.getBackground() != null) {
-                content.getBackground().setAlpha(0);
-            }
-            backdropVisualEffectFrameLayout.addView(content);
-
-            CardView cardView = new CardView(context);
-            cardView.setCardBackgroundColor(Color.TRANSPARENT);
-            cardView.setMaxCardElevation(0);
-            cardView.setCardElevation(0);
-            cardView.setRadius(getConfig().mContentBlurCornerRadius);
-            cardView.setLayoutParams(contentLayoutParams);
-
-            cardView.addView(backdropVisualEffectFrameLayout, new CardView.LayoutParams(
-                    CardView.LayoutParams.MATCH_PARENT,
-                    CardView.LayoutParams.MATCH_PARENT
-            ));
-
-            if (getConfig().mContentBlurPercent > 0) {
-                Utils.onViewLayout(backdropVisualEffectFrameLayout, new Runnable() {
-                    @Override
-                    public void run() {
-                        int w = backdropVisualEffectFrameLayout.getWidth();
-                        int h = backdropVisualEffectFrameLayout.getHeight();
-                        float radius = Math.min(w, h) * getConfig().mContentBlurPercent;
-                        float simple = getConfig().mContentBlurSimple;
-                        if (radius > 25) {
-                            simple = simple * (radius / 25);
-                            radius = 25;
-                        }
-                        backdropVisualEffectFrameLayout.setSimpleSize(simple);
-                        VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
-                        backdropVisualEffectFrameLayout.setVisualEffect(visualEffect);
-                    }
-                });
-            } else {
-                float radius = getConfig().mContentBlurRadius;
-                float simple = getConfig().mContentBlurSimple;
-                if (radius > 25) {
-                    simple = simple * (radius / 25);
-                    radius = 25;
+                FrameLayout.LayoutParams contentLayoutParams = (FrameLayout.LayoutParams) content.getLayoutParams();
+                content.setLayoutParams(new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT
+                ));
+                if (content.getBackground() != null) {
+                    content.getBackground().setAlpha(0);
                 }
-                backdropVisualEffectFrameLayout.setSimpleSize(simple);
-                VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
-                backdropVisualEffectFrameLayout.setVisualEffect(visualEffect);
-            }
+                backdropVisualEffectFrameLayout.addView(content);
 
-            content = cardView;
+                CardView cardView = new CardView(context);
+                cardView.setCardBackgroundColor(Color.TRANSPARENT);
+                cardView.setMaxCardElevation(0);
+                cardView.setCardElevation(0);
+                cardView.setRadius(getConfig().mContentBlurCornerRadius);
+                cardView.setLayoutParams(contentLayoutParams);
+
+                cardView.addView(backdropVisualEffectFrameLayout, new CardView.LayoutParams(
+                        CardView.LayoutParams.MATCH_PARENT,
+                        CardView.LayoutParams.MATCH_PARENT
+                ));
+
+                if (getConfig().mContentBlurPercent > 0) {
+                    Utils.onViewLayout(backdropVisualEffectFrameLayout, new Runnable() {
+                        @Override
+                        public void run() {
+                            int w = backdropVisualEffectFrameLayout.getWidth();
+                            int h = backdropVisualEffectFrameLayout.getHeight();
+                            float radius = Math.min(w, h) * getConfig().mContentBlurPercent;
+                            float simple = getConfig().mContentBlurSimple;
+                            if (radius > 25) {
+                                simple = simple * (radius / 25);
+                                radius = 25;
+                            }
+                            backdropVisualEffectFrameLayout.setSimpleSize(simple);
+                            VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
+                            backdropVisualEffectFrameLayout.setVisualEffect(visualEffect);
+                        }
+                    });
+                } else {
+                    float radius = getConfig().mContentBlurRadius;
+                    float simple = getConfig().mContentBlurSimple;
+                    if (radius > 25) {
+                        simple = simple * (radius / 25);
+                        radius = 25;
+                    }
+                    backdropVisualEffectFrameLayout.setSimpleSize(simple);
+                    VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
+                    backdropVisualEffectFrameLayout.setVisualEffect(visualEffect);
+                }
+
+                content = cardView;
+            }
         }
 
         return content;
