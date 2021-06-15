@@ -3,27 +3,17 @@ package per.goweii.layer.toast;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.CallSuper;
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 import per.goweii.layer.DecorLayer;
 import per.goweii.layer.R;
@@ -154,7 +144,7 @@ public class ToastLayer extends DecorLayer {
     @Override
     protected void onAttach() {
         super.onAttach();
-        getChild().setTag(this);
+        getChild().setTag(R.id.layer_toast_tag, this);
         if (getConfig().mRemoveOthers) {
             removeOthers();
         }
@@ -173,7 +163,7 @@ public class ToastLayer extends DecorLayer {
             params.bottomMargin = getConfig().mMarginBottom;
         }
         getChild().setLayoutParams(params);
-        bindDefaultContentData();
+        getViewHolder().getContent().setAlpha(getConfig().mAlpha);
     }
 
     @CallSuper
@@ -222,46 +212,13 @@ public class ToastLayer extends DecorLayer {
         final int count = parent.getChildCount();
         for (int i = count - 1; i >= 0; i--) {
             final View child = parent.getChildAt(i);
-            Object tag = child.getTag();
+            Object tag = child.getTag(R.id.layer_toast_tag);
+            child.setTag(R.id.layer_toast_tag, null);
             if (tag instanceof ToastLayer) {
                 ToastLayer toastLayer = (ToastLayer) tag;
                 if (toastLayer != this) {
                     toastLayer.dismiss(false);
                 }
-            }
-        }
-    }
-
-    private void bindDefaultContentData() {
-        if (getConfig().mBackgroundDrawable != null) {
-            getViewHolder().getContent().setBackgroundDrawable(getConfig().mBackgroundDrawable);
-        } else if (getConfig().mBackgroundResource > 0) {
-            getViewHolder().getContent().setBackgroundResource(getConfig().mBackgroundResource);
-        }
-        if (getViewHolder().getContent().getBackground() != null) {
-            getViewHolder().getContent().getBackground().setColorFilter(getConfig().mBackgroundColor, PorterDuff.Mode.SRC_ATOP);
-        }
-        getViewHolder().getContent().setAlpha(getConfig().mAlpha);
-        if (getViewHolder().getIcon() != null) {
-            if (getConfig().mIcon > 0) {
-                getViewHolder().getIcon().setVisibility(View.VISIBLE);
-                getViewHolder().getIcon().setImageResource(getConfig().mIcon);
-            } else {
-                getViewHolder().getIcon().setVisibility(View.GONE);
-            }
-        }
-        if (getViewHolder().getMessage() != null) {
-            if (getConfig().mTextColorInt != Color.TRANSPARENT) {
-                getViewHolder().getMessage().setTextColor(getConfig().mTextColorInt);
-            } else if (getConfig().mTextColorRes != -1) {
-                getViewHolder().getMessage().setTextColor(ContextCompat.getColor(getActivity(), getConfig().mTextColorRes));
-            }
-            if (TextUtils.isEmpty(getConfig().mMessage)) {
-                getViewHolder().getMessage().setVisibility(View.GONE);
-                getViewHolder().getMessage().setText("");
-            } else {
-                getViewHolder().getMessage().setVisibility(View.VISIBLE);
-                getViewHolder().getMessage().setText(getConfig().mMessage);
             }
         }
     }
@@ -287,24 +244,6 @@ public class ToastLayer extends DecorLayer {
     @NonNull
     public ToastLayer setDuration(long duration) {
         getConfig().mDuration = duration;
-        return this;
-    }
-
-    @NonNull
-    public ToastLayer setMessage(@NonNull CharSequence message) {
-        getConfig().mMessage = message;
-        return this;
-    }
-
-    @NonNull
-    public ToastLayer setMessage(int message) {
-        getConfig().mMessage = getActivity().getString(message);
-        return this;
-    }
-
-    @NonNull
-    public ToastLayer setIcon(@DrawableRes int icon) {
-        getConfig().mIcon = icon;
         return this;
     }
 
@@ -341,42 +280,6 @@ public class ToastLayer extends DecorLayer {
     @NonNull
     public ToastLayer setAlpha(float alpha) {
         getConfig().mAlpha = alpha;
-        return this;
-    }
-
-    @NonNull
-    public ToastLayer setBackgroundDrawable(@NonNull Drawable drawable) {
-        getConfig().mBackgroundDrawable = drawable;
-        return this;
-    }
-
-    @NonNull
-    public ToastLayer setBackgroundResource(@DrawableRes int resource) {
-        getConfig().mBackgroundResource = resource;
-        return this;
-    }
-
-    @NonNull
-    public ToastLayer setBackgroundColorInt(@ColorInt int colorInt) {
-        getConfig().mBackgroundColor = colorInt;
-        return this;
-    }
-
-    @NonNull
-    public ToastLayer setBackgroundColorRes(@ColorRes int colorRes) {
-        getConfig().mBackgroundColor = getActivity().getResources().getColor(colorRes);
-        return this;
-    }
-
-    @NonNull
-    public ToastLayer setTextColorInt(@ColorInt int colorInt) {
-        getConfig().mTextColorInt = colorInt;
-        return this;
-    }
-
-    @NonNull
-    public ToastLayer setTextColorRes(@ColorRes int colorRes) {
-        getConfig().mTextColorRes = colorRes;
         return this;
     }
 
@@ -423,35 +326,14 @@ public class ToastLayer extends DecorLayer {
             Utils.requireNonNull(mContent, "必须在show方法后调用");
             return mContent;
         }
-
-        @Nullable
-        public ImageView getIcon() {
-            return mContent.findViewById(R.id.layer_toast_content_icon);
-        }
-
-        @Nullable
-        public TextView getMessage() {
-            return mContent.findViewById(R.id.layer_toast_content_msg);
-        }
     }
 
     protected static class Config extends DecorLayer.Config {
         private View mContentView = null;
-        private int mContentViewId = R.layout.layer_toast_content;
+        private int mContentViewId = -1;
 
         private boolean mRemoveOthers = true;
         private long mDuration = 3000L;
-        @NonNull
-        private CharSequence mMessage = "";
-        private int mIcon = 0;
-        @Nullable
-        private Drawable mBackgroundDrawable = null;
-        private int mBackgroundResource = -1;
-        private int mBackgroundColor = Color.TRANSPARENT;
-        @ColorInt
-        private int mTextColorInt = Color.TRANSPARENT;
-        @ColorRes
-        private int mTextColorRes = -1;
         private float mAlpha = 1;
         private int mGravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
         private Integer mMarginLeft = null;

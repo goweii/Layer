@@ -15,7 +15,7 @@
         android:alpha="0.4"
         android:background="@color/layer_keyboard_bg"
         android:contentDescription="@string/layer_keyboard_keyname_hide"
-        android:padding="@dimen/layer_margin_small"
+        android:padding="@dimen/layer_keyboard_margin_small"
         android:scaleType="centerInside"
         android:src="@drawable/layer_keyboard_ic_arrow_down"
         android:tint="@color/layer_keyboard_text_color"

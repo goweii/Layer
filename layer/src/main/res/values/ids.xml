@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item type="id" name="layer_overlay_position" />
-    <item type="id" name="layer_dialog_content" />
-    <item type="id" name="layer_dialog_content_really" />
-    <item type="id" name="layer_dialog_content_effect" />
-    <item type="id" name="layer_notification_content_really" />
-    <item type="id" name="layer_notification_content_effect" />
+    <item type="id" name="layer_toast_tag" />
 </resources>

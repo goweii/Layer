@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import per.goweii.layer.Layers;
 import per.goweii.layer.Layer;
 import per.goweii.layer.LayerActivity;
+import per.goweii.layer.design.cupertino.CupertinoToastLayer;
 import per.goweii.layer.dialog.DialogLayer;
 import per.goweii.layer.ext.CircularRevealAnimatorCreator;
 import per.goweii.layer.ext.SimpleAnimatorCreator;
@@ -191,7 +192,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .addOnSoftInputListener(new DialogLayer.OnSoftInputListener() {
                             @Override
                             public void onOpen(@NonNull DialogLayer layer, int height) {
-                                Layers.toast(FullScreenActivity.this)
+                                new CupertinoToastLayer(FullScreenActivity.this)
                                         .setMessage("输入法打开->当前高度" + height)
                                         .setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL)
                                         .setMarginTop(300)
@@ -201,7 +202,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                             @Override
                             public void onClose(@NonNull DialogLayer layer, int height) {
                                 layer.dismiss();
-                                Layers.toast(FullScreenActivity.this)
+                                new CupertinoToastLayer(FullScreenActivity.this)
                                         .setMessage("输入法关闭->当前高度" + height)
                                         .setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL)
                                         .setMarginTop(300)
@@ -210,7 +211,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
 
                             @Override
                             public void onHeightChange(@NonNull DialogLayer layer, int height) {
-                                Layers.toast(FullScreenActivity.this)
+                                new CupertinoToastLayer(FullScreenActivity.this)
                                         .setMessage("输入法高度改变->当前高度" + height)
                                         .setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL)
                                         .setMarginTop(300)

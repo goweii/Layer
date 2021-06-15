@@ -7,4 +7,9 @@ android {
 dependencies {
     compileOnly project(':layer')
     compileOnly project(':layer-ext')
+    implementation project(':layer-design-res')
+    compileOnly "androidx.cardview:cardview:${rootProject.ext.cardview_version}"
+    implementation "per.goweii.visualeffect:visualeffect-core:${rootProject.ext.visual_effect_version}"
+    implementation "per.goweii.visualeffect:visualeffect-blur:${rootProject.ext.visual_effect_version}"
+    implementation "per.goweii.visualeffect:visualeffect-view:${rootProject.ext.visual_effect_version}"
 }

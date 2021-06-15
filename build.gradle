@@ -1,6 +1,8 @@
 buildscript {
     ext {
-        kotlin_version = '1.4.32'
+        kotlin_version = "1.4.32"
+        cardview_version = "1.0.0"
+        visual_effect_version = "1.0.4"
     }
     repositories {
         google()
@@ -8,7 +10,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath "com.android.tools.build:gradle:4.1.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -18,7 +20,7 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven { url "https://jitpack.io" }
         maven { url "https://gitee.com/goweii/maven-repository/raw/master/releases/" }
     }
 }

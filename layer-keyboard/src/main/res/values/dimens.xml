@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="layer_keyboard_margin_common">8dp</dimen>
+    <dimen name="layer_keyboard_margin_small">6dp</dimen>
+</resources>

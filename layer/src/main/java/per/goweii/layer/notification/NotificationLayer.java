@@ -3,47 +3,27 @@ package per.goweii.layer.notification;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.CallSuper;
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import per.goweii.layer.DecorLayer;
-import per.goweii.layer.R;
 import per.goweii.layer.utils.AnimatorHelper;
 import per.goweii.layer.utils.Utils;
 import per.goweii.layer.widget.MaxSizeFrameLayout;
 import per.goweii.layer.widget.SwipeLayout;
-import per.goweii.visualeffect.blur.RSBlurEffect;
-import per.goweii.visualeffect.core.VisualEffect;
-import per.goweii.visualeffect.view.BackdropVisualEffectFrameLayout;
 
 public class NotificationLayer extends DecorLayer {
 
@@ -100,11 +80,6 @@ public class NotificationLayer extends DecorLayer {
         return (ListenerHolder) super.getListenerHolder();
     }
 
-    @Override
-    public void show() {
-        super.show();
-    }
-
     @NonNull
     @Override
     protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
@@ -131,7 +106,6 @@ public class NotificationLayer extends DecorLayer {
 
     @NonNull
     protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        final Context context = getActivity();
         View content;
         if (getConfig().mContentView != null) {
             content = getConfig().mContentView;
@@ -139,72 +113,9 @@ public class NotificationLayer extends DecorLayer {
             content = inflater.inflate(getConfig().mContentViewId, parent, false);
         }
         Utils.removeViewParent(content);
-
         if (content.getLayoutParams() == null) {
             content.setLayoutParams(generateContentDefaultLayoutParams());
         }
-
-        if (Utils.findViewByClass(content, BackdropVisualEffectFrameLayout.class) == null) {
-            if (getConfig().mContentBlurPercent > 0 || getConfig().mContentBlurRadius > 0) {
-                final BackdropVisualEffectFrameLayout backdropVisualEffectFrameLayout = new BackdropVisualEffectFrameLayout(context);
-                backdropVisualEffectFrameLayout.setShowDebugInfo(false);
-                backdropVisualEffectFrameLayout.setOverlayColor(getConfig().mContentBlurColor);
-
-                FrameLayout.LayoutParams contentLayoutParams = (FrameLayout.LayoutParams) content.getLayoutParams();
-                content.setLayoutParams(new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.MATCH_PARENT
-                ));
-                if (content.getBackground() != null) {
-                    content.getBackground().setAlpha(0);
-                }
-                backdropVisualEffectFrameLayout.addView(content);
-
-                CardView cardView = new CardView(context);
-                cardView.setCardBackgroundColor(Color.TRANSPARENT);
-                cardView.setMaxCardElevation(0);
-                cardView.setCardElevation(0);
-                cardView.setRadius(getConfig().mContentBlurCornerRadius);
-                cardView.setLayoutParams(contentLayoutParams);
-
-                cardView.addView(backdropVisualEffectFrameLayout, new CardView.LayoutParams(
-                        CardView.LayoutParams.MATCH_PARENT,
-                        CardView.LayoutParams.MATCH_PARENT
-                ));
-
-                if (getConfig().mContentBlurPercent > 0) {
-                    Utils.onViewLayout(backdropVisualEffectFrameLayout, new Runnable() {
-                        @Override
-                        public void run() {
-                            int w = backdropVisualEffectFrameLayout.getWidth();
-                            int h = backdropVisualEffectFrameLayout.getHeight();
-                            float radius = Math.min(w, h) * getConfig().mContentBlurPercent;
-                            float simple = getConfig().mContentBlurSimple;
-                            if (radius > 25) {
-                                simple = simple * (radius / 25);
-                                radius = 25;
-                            }
-                            backdropVisualEffectFrameLayout.setSimpleSize(simple);
-                            VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
-                            backdropVisualEffectFrameLayout.setVisualEffect(visualEffect);
-                        }
-                    });
-                } else {
-                    float radius = getConfig().mContentBlurRadius;
-                    float simple = getConfig().mContentBlurSimple;
-                    if (radius > 25) {
-                        simple = simple * (radius / 25);
-                        radius = 25;
-                    }
-                    backdropVisualEffectFrameLayout.setSimpleSize(simple);
-                    VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
-                    backdropVisualEffectFrameLayout.setVisualEffect(visualEffect);
-                }
-
-                content = cardView;
-            }
-        }
-
         return content;
     }
 
@@ -290,7 +201,6 @@ public class NotificationLayer extends DecorLayer {
                 }
             }
         });
-        bindDefaultContentData();
     }
 
     @CallSuper
@@ -339,65 +249,6 @@ public class NotificationLayer extends DecorLayer {
         getViewHolder().getChild().setClipToPadding(false);
     }
 
-    private void bindDefaultContentData() {
-        if (getViewHolder().getTop() != null) {
-            if (getViewHolder().getIcon() != null) {
-                if (getConfig().mIcon != null) {
-                    getViewHolder().getIcon().setVisibility(View.VISIBLE);
-                    getViewHolder().getIcon().setImageDrawable(getConfig().mIcon);
-                } else {
-                    getViewHolder().getIcon().setVisibility(View.GONE);
-                }
-            }
-            if (getViewHolder().getLabel() != null) {
-                if (!TextUtils.isEmpty(getConfig().mLabel)) {
-                    getViewHolder().getLabel().setVisibility(View.VISIBLE);
-                    getViewHolder().getLabel().setText(getConfig().mLabel);
-                } else {
-                    getViewHolder().getLabel().setVisibility(View.GONE);
-                }
-            }
-            if (getViewHolder().getTime() != null) {
-                if (!TextUtils.isEmpty(getConfig().mTime)) {
-                    getViewHolder().getTime().setVisibility(View.VISIBLE);
-                    getViewHolder().getTime().setText(getConfig().mTime);
-                } else {
-                    if (!TextUtils.isEmpty(getConfig().mTimePattern)) {
-                        getViewHolder().getTime().setVisibility(View.VISIBLE);
-                        String time = new SimpleDateFormat(getConfig().mTimePattern, Locale.getDefault()).format(new Date());
-                        getViewHolder().getTime().setText(time);
-                    } else {
-                        getViewHolder().getTime().setVisibility(View.GONE);
-                    }
-                }
-            }
-            LinearLayout topView = getViewHolder().getTop();
-            topView.setVisibility(View.GONE);
-            for (int i = 0; i < topView.getChildCount(); i++) {
-                if (topView.getChildAt(i).getVisibility() == View.VISIBLE) {
-                    topView.setVisibility(View.VISIBLE);
-                    break;
-                }
-            }
-        }
-        if (getViewHolder().getTitle() != null) {
-            if (!TextUtils.isEmpty(getConfig().mTitle)) {
-                getViewHolder().getTitle().setVisibility(View.VISIBLE);
-                getViewHolder().getTitle().setText(getConfig().mTitle);
-            } else {
-                getViewHolder().getTitle().setVisibility(View.GONE);
-            }
-        }
-        if (getViewHolder().getDesc() != null) {
-            if (!TextUtils.isEmpty(getConfig().mDesc)) {
-                getViewHolder().getDesc().setVisibility(View.VISIBLE);
-                getViewHolder().getDesc().setText(getConfig().mDesc);
-            } else {
-                getViewHolder().getDesc().setVisibility(View.GONE);
-            }
-        }
-    }
-
     @NonNull
     public NotificationLayer setContentView(@NonNull View contentView) {
         getConfig().mContentView = contentView;
@@ -419,124 +270,6 @@ public class NotificationLayer extends DecorLayer {
     @NonNull
     public NotificationLayer setMaxHeight(int maxHeight) {
         getConfig().mMaxHeight = maxHeight;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setContentBlurRadius(@FloatRange(from = 0F) float radius) {
-        getConfig().mContentBlurRadius = radius;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setContentBlurPercent(@FloatRange(from = 0F) float percent) {
-        getConfig().mContentBlurPercent = percent;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setContentBlurSimple(@FloatRange(from = 1F) float simple) {
-        getConfig().mContentBlurSimple = simple;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setContentBlurColorInt(@ColorInt int colorInt) {
-        getConfig().mContentBlurColor = colorInt;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setContentBlurColorRes(@ColorRes int colorRes) {
-        getConfig().mContentBlurColor = getActivity().getResources().getColor(colorRes);
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setContentBlurCornerRadius(float radius, int unit) {
-        getConfig().mContentBlurCornerRadius = TypedValue.applyDimension(
-                unit, radius, getActivity().getResources().getDisplayMetrics()
-        );
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setContentBlurCornerRadiusDp(float radius) {
-        getConfig().mContentBlurCornerRadius = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, radius, getActivity().getResources().getDisplayMetrics()
-        );
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setContentBlurCornerRadiusPx(float radius) {
-        getConfig().mContentBlurCornerRadius = radius;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setIcon(@DrawableRes int drawableId) {
-        getConfig().mIcon = ContextCompat.getDrawable(getActivity(), drawableId);
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setIcon(@Nullable Drawable drawable) {
-        getConfig().mIcon = drawable;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setLabel(@Nullable CharSequence label) {
-        getConfig().mLabel = label;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setLabel(@StringRes int labelRes) {
-        getConfig().mLabel = getActivity().getString(labelRes);
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setTime(@Nullable CharSequence time) {
-        getConfig().mTime = time;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setTimePattern(@Nullable String pattern) {
-        getConfig().mTimePattern = pattern;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setTitle(@NonNull CharSequence title) {
-        getConfig().mTitle = title;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setTitle(@StringRes int titleRes) {
-        getConfig().mTitle = getActivity().getString(titleRes);
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setDesc(@NonNull CharSequence desc) {
-        getConfig().mDesc = desc;
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setDesc(@StringRes int descRes) {
-        getConfig().mDesc = getActivity().getString(descRes);
-        return this;
-    }
-
-    @NonNull
-    public NotificationLayer setDuration(long duration) {
-        getConfig().mDuration = duration;
         return this;
     }
 
@@ -570,8 +303,8 @@ public class NotificationLayer extends DecorLayer {
     }
 
     @NonNull
-    public NotificationLayer setSwipeTransformer(@Nullable NotificationLayer.SwipeTransformer swipeTransformer) {
-        getConfig().mSwipeTransformer = swipeTransformer;
+    public NotificationLayer setDuration(long duration) {
+        getConfig().mDuration = duration;
         return this;
     }
 
@@ -631,62 +364,15 @@ public class NotificationLayer extends DecorLayer {
         protected View getNoIdClickView() {
             return mContent;
         }
-
-        @Nullable
-        public LinearLayout getTop() {
-            return mContent.findViewById(R.id.layer_notification_content_top);
-        }
-
-        @Nullable
-        public ImageView getIcon() {
-            return mContent.findViewById(R.id.layer_notification_content_icon);
-        }
-
-        @Nullable
-        public TextView getLabel() {
-            return mContent.findViewById(R.id.layer_notification_content_label);
-        }
-
-        @Nullable
-        public TextView getTime() {
-            return mContent.findViewById(R.id.layer_notification_content_time);
-        }
-
-        @Nullable
-        public TextView getTitle() {
-            return mContent.findViewById(R.id.layer_notification_content_title);
-        }
-
-        @Nullable
-        public TextView getDesc() {
-            return mContent.findViewById(R.id.layer_notification_content_desc);
-        }
     }
 
     protected static class Config extends DecorLayer.Config {
         protected View mContentView = null;
-        protected int mContentViewId = R.layout.layer_notification_content;
-
-        protected float mContentBlurPercent = 0F;
-        protected float mContentBlurRadius = 0F;
-        protected float mContentBlurSimple = 4F;
-        @ColorInt
-        protected int mContentBlurColor = Color.TRANSPARENT;
-        protected float mContentBlurCornerRadius = 0F;
+        protected int mContentViewId = -1;
 
         protected long mDuration = 5000L;
         protected int mMaxWidth = -1;
         protected int mMaxHeight = -1;
-
-        protected CharSequence mLabel = null;
-        protected Drawable mIcon = null;
-        protected CharSequence mTime = null;
-        protected String mTimePattern = null;
-        protected CharSequence mTitle = null;
-        protected CharSequence mDesc = null;
-
-        @Nullable
-        protected SwipeTransformer mSwipeTransformer = null;
     }
 
     protected static class ListenerHolder extends DecorLayer.ListenerHolder {
@@ -725,12 +411,6 @@ public class NotificationLayer extends DecorLayer {
                 }
             }
         }
-    }
-
-    public interface SwipeTransformer {
-        void onSwiping(@NonNull NotificationLayer layer,
-                       @SwipeLayout.Direction int direction,
-                       @FloatRange(from = 0F, to = 1F) float fraction);
     }
 
     public interface OnSwipeListener {

@@ -5,31 +5,31 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal|bottom"
-    android:background="@drawable/layer_toast_bg"
+    android:background="@drawable/layer_design_cupertino_toast_bg"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/layer_toast_padding_left"
-    android:paddingTop="@dimen/layer_toast_padding_top"
-    android:paddingRight="@dimen/layer_toast_padding_right"
-    android:paddingBottom="@dimen/layer_toast_padding_bottom"
+    android:paddingLeft="@dimen/layer_design_res_toast_padding_left"
+    android:paddingTop="@dimen/layer_design_res_toast_padding_top"
+    android:paddingRight="@dimen/layer_design_res_toast_padding_right"
+    android:paddingBottom="@dimen/layer_design_res_toast_padding_bottom"
     tools:ignore="RtlHardcoded">
 
     <ImageView
-        android:id="@+id/layer_toast_content_icon"
+        android:id="@+id/layer_design_cupertino_toast_content_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/layer_margin_common"
+        android:layout_marginRight="@dimen/layer_design_res_margin_common"
         android:scaleType="fitCenter"
         tools:ignore="ContentDescription"
         tools:layout_height="22dp"
         tools:layout_width="22dp"
-        tools:src="@color/layer_toast_text_color" />
+        tools:src="@color/layer_design_res_toast_text_color" />
 
     <TextView
-        android:id="@+id/layer_toast_content_msg"
+        android:id="@+id/layer_design_cupertino_toast_content_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/layer_toast_text_color"
-        android:textSize="@dimen/layer_toast_text_size"
+        android:textColor="@color/layer_design_res_toast_text_color"
+        android:textSize="@dimen/layer_design_res_toast_text_size"
         tools:text="TOAST LAYER" />
 
 </LinearLayout>

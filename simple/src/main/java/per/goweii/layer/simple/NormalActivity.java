@@ -20,6 +20,8 @@ import java.util.Random;
 import per.goweii.layer.Layers;
 import per.goweii.layer.Layer;
 import per.goweii.layer.LayerActivity;
+import per.goweii.layer.design.cupertino.CupertinoNotificationLayer;
+import per.goweii.layer.design.cupertino.CupertinoToastLayer;
 import per.goweii.layer.dialog.DialogLayer;
 import per.goweii.layer.ext.CircularRevealAnimatorCreator;
 import per.goweii.layer.ext.SimpleAnimatorCreator;
@@ -101,7 +103,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 .addOnOverlayClickListener(new Layer.OnClickListener() {
                     @Override
                     public void onClick(@NonNull Layer layer, @NonNull View v) {
-                        Layers.toast()
+                        new CupertinoToastLayer(NormalActivity.this)
                                 .setBackgroundColorInt(Color.parseColor("#f5f5f5"))
                                 .setMessage("点击了悬浮按钮")
                                 .setGravity(Gravity.CENTER)
@@ -143,7 +145,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.tv_show_toast:
                 boolean isSucc = mRandom.nextBoolean();
-                Layers.toast()
+                new CupertinoToastLayer(this)
                         .setIcon(isSucc ? R.drawable.ic_success : R.drawable.ic_fail)
                         .setMessage(isSucc ? "哈哈，成功了" : "哎呀，失败了")
                         .setTextColorInt(Color.WHITE)
@@ -152,7 +154,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_notification:
-                new NotificationLayer(this)
+                new CupertinoNotificationLayer(this)
                         .setContentBlurSimple(8)
                         .setContentBlurRadius(20)
                         .setContentBlurColorInt(Color.parseColor("#aaffffff"))
