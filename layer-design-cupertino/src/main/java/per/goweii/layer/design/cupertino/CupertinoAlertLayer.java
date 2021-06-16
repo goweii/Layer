@@ -3,20 +3,32 @@ package per.goweii.layer.design.cupertino;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.cardview.widget.CardView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import per.goweii.layer.dialog.DialogLayer;
+import per.goweii.layer.utils.Utils;
+import per.goweii.visualeffect.blur.RSBlurEffect;
+import per.goweii.visualeffect.core.VisualEffect;
+import per.goweii.visualeffect.view.BackdropVisualEffectFrameLayout;
 
 public class CupertinoAlertLayer extends DialogLayer {
     public CupertinoAlertLayer(@NonNull Context context) {
@@ -67,6 +79,73 @@ public class CupertinoAlertLayer extends DialogLayer {
     @Override
     public ListenerHolder getListenerHolder() {
         return (ListenerHolder) super.getListenerHolder();
+    }
+
+    @NonNull
+    @Override
+    protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        View content = inflater.inflate(R.layout.layer_design_cupertino_alert, parent, false);
+        final Context context = getActivity();
+        if (Utils.findViewByClass(content, BackdropVisualEffectFrameLayout.class) == null) {
+            if (getConfig().mContentBlurPercent > 0 || getConfig().mContentBlurRadius > 0) {
+                final BackdropVisualEffectFrameLayout backdropVisualEffectFrameLayout = new BackdropVisualEffectFrameLayout(context);
+                backdropVisualEffectFrameLayout.setShowDebugInfo(false);
+                backdropVisualEffectFrameLayout.setOverlayColor(getConfig().mContentBlurColor);
+
+                FrameLayout.LayoutParams contentLayoutParams = (FrameLayout.LayoutParams) content.getLayoutParams();
+                content.setLayoutParams(new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT
+                ));
+                if (content.getBackground() != null) {
+                    content.getBackground().setAlpha(0);
+                }
+                backdropVisualEffectFrameLayout.addView(content);
+
+                CardView cardView = new CardView(context);
+                cardView.setCardBackgroundColor(Color.TRANSPARENT);
+                cardView.setMaxCardElevation(0);
+                cardView.setCardElevation(0);
+                cardView.setRadius(getConfig().mContentBlurCornerRadius);
+                cardView.setLayoutParams(contentLayoutParams);
+
+                cardView.addView(backdropVisualEffectFrameLayout, new CardView.LayoutParams(
+                        CardView.LayoutParams.MATCH_PARENT,
+                        CardView.LayoutParams.MATCH_PARENT
+                ));
+
+                if (getConfig().mContentBlurPercent > 0) {
+                    Utils.onViewLayout(backdropVisualEffectFrameLayout, new Runnable() {
+                        @Override
+                        public void run() {
+                            int w = backdropVisualEffectFrameLayout.getWidth();
+                            int h = backdropVisualEffectFrameLayout.getHeight();
+                            float radius = Math.min(w, h) * getConfig().mContentBlurPercent;
+                            float simple = getConfig().mContentBlurSimple;
+                            if (radius > 25) {
+                                simple = simple * (radius / 25);
+                                radius = 25;
+                            }
+                            backdropVisualEffectFrameLayout.setSimpleSize(simple);
+                            VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
+                            backdropVisualEffectFrameLayout.setVisualEffect(visualEffect);
+                        }
+                    });
+                } else {
+                    float radius = getConfig().mContentBlurRadius;
+                    float simple = getConfig().mContentBlurSimple;
+                    if (radius > 25) {
+                        simple = simple * (radius / 25);
+                        radius = 25;
+                    }
+                    backdropVisualEffectFrameLayout.setSimpleSize(simple);
+                    VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
+                    backdropVisualEffectFrameLayout.setVisualEffect(visualEffect);
+                }
+                content = cardView;
+            }
+        }
+        return content;
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -200,6 +279,58 @@ public class CupertinoAlertLayer extends DialogLayer {
         return setDesc(getActivity().getString(desc));
     }
 
+    @NonNull
+    public CupertinoAlertLayer setContentBlurRadius(@FloatRange(from = 0F) float radius) {
+        getConfig().mContentBlurRadius = radius;
+        return this;
+    }
+
+    @NonNull
+    public CupertinoAlertLayer setContentBlurPercent(@FloatRange(from = 0F) float percent) {
+        getConfig().mContentBlurPercent = percent;
+        return this;
+    }
+
+    @NonNull
+    public CupertinoAlertLayer setContentBlurSimple(@FloatRange(from = 1F) float simple) {
+        getConfig().mContentBlurSimple = simple;
+        return this;
+    }
+
+    @NonNull
+    public CupertinoAlertLayer setContentBlurColorInt(@ColorInt int colorInt) {
+        getConfig().mContentBlurColor = colorInt;
+        return this;
+    }
+
+    @NonNull
+    public CupertinoAlertLayer setContentBlurColorRes(@ColorRes int colorRes) {
+        getConfig().mContentBlurColor = getActivity().getResources().getColor(colorRes);
+        return this;
+    }
+
+    @NonNull
+    public CupertinoAlertLayer setContentBlurCornerRadius(float radius, int unit) {
+        getConfig().mContentBlurCornerRadius = TypedValue.applyDimension(
+                unit, radius, getActivity().getResources().getDisplayMetrics()
+        );
+        return this;
+    }
+
+    @NonNull
+    public CupertinoAlertLayer setContentBlurCornerRadiusDp(float radius) {
+        getConfig().mContentBlurCornerRadius = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, radius, getActivity().getResources().getDisplayMetrics()
+        );
+        return this;
+    }
+
+    @NonNull
+    public CupertinoAlertLayer setContentBlurCornerRadiusPx(float radius) {
+        getConfig().mContentBlurCornerRadius = radius;
+        return this;
+    }
+
     private static class Action {
         private final String mName;
         private final OnClickListener mOnClickListener;
@@ -222,6 +353,13 @@ public class CupertinoAlertLayer extends DialogLayer {
         private String mTitle = null;
         private String mDesc = null;
         private final List<Action> mActions = new ArrayList<>(3);
+
+        protected float mContentBlurPercent = 0F;
+        protected float mContentBlurRadius = 0F;
+        protected float mContentBlurSimple = 4F;
+        @ColorInt
+        protected int mContentBlurColor = Color.TRANSPARENT;
+        protected float mContentBlurCornerRadius = 0F;
     }
 
     public static class ViewHolder extends DialogLayer.ViewHolder {

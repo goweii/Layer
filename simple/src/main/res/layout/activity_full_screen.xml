@@ -81,11 +81,6 @@
                 android:text="背景高斯模糊" />
 
             <TextView
-                android:id="@+id/tv_show_blur_content"
-                style="@style/ListTextStyle"
-                android:text="主体高斯模糊" />
-
-            <TextView
                 android:id="@+id/tv_show_tran_bg"
                 style="@style/ListTextStyle"
                 android:text="背景全透明" />

@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.SparseBooleanArray;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +26,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.cardview.widget.CardView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +37,6 @@ import per.goweii.layer.utils.Utils;
 import per.goweii.layer.widget.SwipeLayout;
 import per.goweii.visualeffect.blur.RSBlurEffect;
 import per.goweii.visualeffect.core.VisualEffect;
-import per.goweii.visualeffect.view.BackdropVisualEffectFrameLayout;
 import per.goweii.visualeffect.view.BackdropVisualEffectView;
 
 public class DialogLayer extends DecorLayer {
@@ -191,7 +188,6 @@ public class DialogLayer extends DecorLayer {
 
     @NonNull
     protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        final Context context = getActivity();
         View content;
         if (getConfig().mContentView != null) {
             content = getConfig().mContentView;
@@ -199,7 +195,6 @@ public class DialogLayer extends DecorLayer {
             content = inflater.inflate(getConfig().mContentViewId, parent, false);
         }
         Utils.removeViewParent(content);
-
         ViewGroup.LayoutParams layoutParams = content.getLayoutParams();
         FrameLayout.LayoutParams contentParams;
         if (layoutParams == null) {
@@ -213,68 +208,6 @@ public class DialogLayer extends DecorLayer {
             contentParams.gravity = getConfig().mGravity;
         }
         content.setLayoutParams(contentParams);
-
-        if (Utils.findViewByClass(content, BackdropVisualEffectFrameLayout.class) == null) {
-            if (getConfig().mContentBlurPercent > 0 || getConfig().mContentBlurRadius > 0) {
-                final BackdropVisualEffectFrameLayout backdropVisualEffectFrameLayout = new BackdropVisualEffectFrameLayout(context);
-                backdropVisualEffectFrameLayout.setShowDebugInfo(false);
-                backdropVisualEffectFrameLayout.setOverlayColor(getConfig().mContentBlurColor);
-
-                FrameLayout.LayoutParams contentLayoutParams = (FrameLayout.LayoutParams) content.getLayoutParams();
-                content.setLayoutParams(new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.MATCH_PARENT
-                ));
-                if (content.getBackground() != null) {
-                    content.getBackground().setAlpha(0);
-                }
-                backdropVisualEffectFrameLayout.addView(content);
-
-                CardView cardView = new CardView(context);
-                cardView.setCardBackgroundColor(Color.TRANSPARENT);
-                cardView.setMaxCardElevation(0);
-                cardView.setCardElevation(0);
-                cardView.setRadius(getConfig().mContentBlurCornerRadius);
-                cardView.setLayoutParams(contentLayoutParams);
-
-                cardView.addView(backdropVisualEffectFrameLayout, new CardView.LayoutParams(
-                        CardView.LayoutParams.MATCH_PARENT,
-                        CardView.LayoutParams.MATCH_PARENT
-                ));
-
-                if (getConfig().mContentBlurPercent > 0) {
-                    Utils.onViewLayout(backdropVisualEffectFrameLayout, new Runnable() {
-                        @Override
-                        public void run() {
-                            int w = backdropVisualEffectFrameLayout.getWidth();
-                            int h = backdropVisualEffectFrameLayout.getHeight();
-                            float radius = Math.min(w, h) * getConfig().mContentBlurPercent;
-                            float simple = getConfig().mContentBlurSimple;
-                            if (radius > 25) {
-                                simple = simple * (radius / 25);
-                                radius = 25;
-                            }
-                            backdropVisualEffectFrameLayout.setSimpleSize(simple);
-                            VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
-                            backdropVisualEffectFrameLayout.setVisualEffect(visualEffect);
-                        }
-                    });
-                } else {
-                    float radius = getConfig().mContentBlurRadius;
-                    float simple = getConfig().mContentBlurSimple;
-                    if (radius > 25) {
-                        simple = simple * (radius / 25);
-                        radius = 25;
-                    }
-                    backdropVisualEffectFrameLayout.setSimpleSize(simple);
-                    VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
-                    backdropVisualEffectFrameLayout.setVisualEffect(visualEffect);
-                }
-
-                content = cardView;
-            }
-        }
-
         return content;
     }
 
@@ -770,58 +703,6 @@ public class DialogLayer extends DecorLayer {
         return this;
     }
 
-    @NonNull
-    public DialogLayer setContentBlurRadius(@FloatRange(from = 0F) float radius) {
-        getConfig().mContentBlurRadius = radius;
-        return this;
-    }
-
-    @NonNull
-    public DialogLayer setContentBlurPercent(@FloatRange(from = 0F) float percent) {
-        getConfig().mContentBlurPercent = percent;
-        return this;
-    }
-
-    @NonNull
-    public DialogLayer setContentBlurSimple(@FloatRange(from = 1F) float simple) {
-        getConfig().mContentBlurSimple = simple;
-        return this;
-    }
-
-    @NonNull
-    public DialogLayer setContentBlurColorInt(@ColorInt int colorInt) {
-        getConfig().mContentBlurColor = colorInt;
-        return this;
-    }
-
-    @NonNull
-    public DialogLayer setContentBlurColorRes(@ColorRes int colorRes) {
-        getConfig().mContentBlurColor = getActivity().getResources().getColor(colorRes);
-        return this;
-    }
-
-    @NonNull
-    public DialogLayer setContentBlurCornerRadius(float radius, int unit) {
-        getConfig().mContentBlurCornerRadius = TypedValue.applyDimension(
-                unit, radius, getActivity().getResources().getDisplayMetrics()
-        );
-        return this;
-    }
-
-    @NonNull
-    public DialogLayer setContentBlurCornerRadiusDp(float radius) {
-        getConfig().mContentBlurCornerRadius = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, radius, getActivity().getResources().getDisplayMetrics()
-        );
-        return this;
-    }
-
-    @NonNull
-    public DialogLayer setContentBlurCornerRadiusPx(float radius) {
-        getConfig().mContentBlurCornerRadius = radius;
-        return this;
-    }
-
     /**
      * 设置背景为当前activity的高斯模糊效果
      * 设置之后其他背景设置方法失效，仅{@link #setBackgroundColorInt(int)}生效
@@ -1094,13 +975,6 @@ public class DialogLayer extends DecorLayer {
         protected float mBackgroundDimAmount = -1;
         @ColorInt
         protected int mBackgroundColor = Color.TRANSPARENT;
-
-        protected float mContentBlurPercent = 0F;
-        protected float mContentBlurRadius = 0F;
-        protected float mContentBlurSimple = 4F;
-        @ColorInt
-        protected int mContentBlurColor = Color.TRANSPARENT;
-        protected float mContentBlurCornerRadius = 0F;
 
         @SwipeLayout.Direction
         protected int mSwipeDirection = 0;

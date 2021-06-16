@@ -133,7 +133,6 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
         findViewById(R.id.tv_show_target_bottom).setOnClickListener(this);
         findViewById(R.id.tv_show_target_left).setOnClickListener(this);
         findViewById(R.id.tv_show_blur_bg).setOnClickListener(this);
-        findViewById(R.id.tv_show_blur_content).setOnClickListener(this);
         findViewById(R.id.tv_show_tran_bg).setOnClickListener(this);
         findViewById(R.id.tv_show_bottom_in).setOnClickListener(this);
         findViewById(R.id.tv_show_bottom_alpha_in).setOnClickListener(this);
@@ -410,17 +409,6 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .setContentView(R.layout.dialog_icon)
                         .setBackgroundBlurPercent(0.05f)
                         .setBackgroundColorInt(Color.parseColor("#33ffffff"))
-                        .show();
-                break;
-            case R.id.tv_show_blur_content:
-                Layers.dialog(FullScreenActivity.this)
-                        .setContentView(R.layout.dialog_content_blur)
-                        .setBackgroundColorInt(Color.parseColor("#33000000"))
-                        .setContentBlurRadius(8F)
-                        .setContentBlurSimple(8F)
-                        .setContentBlurCornerRadiusDp(10F)
-                        .setContentBlurColorInt(Color.parseColor("#66ffffff"))
-                        .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
             case R.id.tv_show_tran_bg:

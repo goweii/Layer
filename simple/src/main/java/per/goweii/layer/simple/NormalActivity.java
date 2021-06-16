@@ -37,7 +37,6 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
     private DialogLayer anyLayer_show_target_right = null;
     private boolean anyLayer_show_target_right_shown = false;
     private DialogLayer anyLayer_show_target_bottom = null;
-    private Layer layer_show_blur_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,6 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
         findViewById(R.id.tv_show_target_bottom).setOnClickListener(this);
         findViewById(R.id.tv_show_target_left).setOnClickListener(this);
         findViewById(R.id.tv_show_blur_bg).setOnClickListener(this);
-        findViewById(R.id.tv_show_blur_content).setOnClickListener(this);
         findViewById(R.id.tv_show_tran_bg).setOnClickListener(this);
         findViewById(R.id.tv_show_bottom_in).setOnClickListener(this);
         findViewById(R.id.tv_show_bottom_alpha_in).setOnClickListener(this);
@@ -265,40 +263,6 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .setBackgroundBlurSimple(8F)
                         .setBackgroundColorInt(Color.parseColor("#33ffffff"))
                         .show();
-                break;
-            case R.id.tv_show_blur_content:
-                if (layer_show_blur_content == null) {
-                    layer_show_blur_content = Layers.dialog(NormalActivity.this)
-                            .setContentView(R.layout.dialog_content_blur)
-                            .setBackgroundColorInt(Color.parseColor("#33000000"))
-                            .setContentBlurRadius(8F)
-                            .setContentBlurSimple(8F)
-                            .setContentBlurCornerRadiusDp(10F)
-                            .setContentBlurColorInt(Color.parseColor("#66ffffff"))
-                            .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
-                            .addOnInitializeListener(new Layer.OnInitializeListener() {
-                                @Override
-                                public void onInitialize(@NonNull Layer layer) {
-                                    TextView tv_dialog_content = layer.findView(R.id.tv_dialog_content);
-                                    tv_dialog_content.setText("这是第一次初始化时绑定的随机数\n" + Math.random());
-                                }
-                            })
-                            .addOnBindDataListener(new Layer.OnBindDataListener() {
-                                @Override
-                                public void onBindData(@NonNull Layer layer) {
-                                    DialogLayer dialogLayer = (DialogLayer) layer;
-                                    TextView tv_dialog_title = layer.findView(R.id.tv_dialog_title);
-                                    tv_dialog_title.setText("主体View哈希地址" + System.identityHashCode(dialogLayer.getViewHolder().getContent()));
-                                }
-                            })
-                            .addOnClickListener(new Layer.OnClickListener() {
-                                @Override
-                                public void onClick(@NonNull Layer anyLayer, @NonNull View v) {
-                                    anyLayer.dismiss();
-                                }
-                            }, R.id.fl_dialog_yes);
-                }
-                layer_show_blur_content.show();
                 break;
             case R.id.tv_show_tran_bg:
                 Layers.dialog(NormalActivity.this)
