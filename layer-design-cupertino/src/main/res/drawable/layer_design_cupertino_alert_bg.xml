@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/layer_design_res_color_surface" />
+    <corners
+        android:bottomLeftRadius="@dimen/layer_design_cupertino_corner_radius_big"
+        android:bottomRightRadius="@dimen/layer_design_cupertino_corner_radius_big"
+        android:topLeftRadius="@dimen/layer_design_cupertino_corner_radius_big"
+        android:topRightRadius="@dimen/layer_design_cupertino_corner_radius_big" />
+</shape>

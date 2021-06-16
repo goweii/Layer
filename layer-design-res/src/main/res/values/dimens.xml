@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="layer_design_res_margin_huge">48dp</dimen>
+    <dimen name="layer_design_res_margin_large">32dp</dimen>
+    <dimen name="layer_design_res_margin_big">24dp</dimen>
+    <dimen name="layer_design_res_margin_default">16dp</dimen>
     <dimen name="layer_design_res_margin_common">8dp</dimen>
-    <dimen name="layer_design_res_margin_small">6dp</dimen>
 
-    <dimen name="layer_design_res_notification_corner_radius">8dp</dimen>
-    <dimen name="layer_design_res_notification_padding_left">16dp</dimen>
-    <dimen name="layer_design_res_notification_padding_right">16dp</dimen>
-    <dimen name="layer_design_res_notification_padding_top">16dp</dimen>
-    <dimen name="layer_design_res_notification_padding_bottom">16dp</dimen>
-    <dimen name="layer_design_res_notification_title_text_size">15sp</dimen>
-    <dimen name="layer_design_res_notification_desc_text_size">13sp</dimen>
-    <dimen name="layer_design_res_notification_label_text_size">13sp</dimen>
-    <dimen name="layer_design_res_notification_time_text_size">11sp</dimen>
+    <dimen name="layer_design_res_divider">0.5dp</dimen>
 
-    <dimen name="layer_design_res_toast_corner_radius">8dp</dimen>
-    <dimen name="layer_design_res_toast_margin">48dp</dimen>
-    <dimen name="layer_design_res_toast_padding_left">24dp</dimen>
-    <dimen name="layer_design_res_toast_padding_right">24dp</dimen>
-    <dimen name="layer_design_res_toast_padding_top">16dp</dimen>
-    <dimen name="layer_design_res_toast_padding_bottom">16dp</dimen>
-    <dimen name="layer_design_res_toast_text_size">14sp</dimen>
+    <dimen name="layer_design_res_corner_radius">8dp</dimen>
+
+    <dimen name="layer_design_res_icon_size">24dp</dimen>
+
+    <dimen name="layer_design_res_button_height">48dp</dimen>
+
+    <dimen name="layer_design_res_text_size_headline">18sp</dimen>
+    <dimen name="layer_design_res_text_size_subtitle">16sp</dimen>
+    <dimen name="layer_design_res_text_size_body">16sp</dimen>
+    <dimen name="layer_design_res_text_size_body2">14sp</dimen>
+    <dimen name="layer_design_res_text_size_button">14sp</dimen>
+    <dimen name="layer_design_res_text_size_caption">12sp</dimen>
+    <dimen name="layer_design_res_text_size_overline">10sp</dimen>
 </resources>

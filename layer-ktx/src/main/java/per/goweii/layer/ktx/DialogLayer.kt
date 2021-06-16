@@ -14,7 +14,7 @@ fun <T : DialogLayer> T.cancelableOnTouchOutside(enable: Boolean) = this.apply {
     this.setCancelableOnTouchOutside(enable)
 }
 
-fun <T : DialogLayer> T.contentView(contentView: View) = this.apply {
+fun <T : DialogLayer> T.contentView(contentView: View?) = this.apply {
     this.setContentView(contentView)
 }
 

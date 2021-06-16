@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +68,7 @@ public class CupertinoToastLayer extends ToastLayer {
 
     @NonNull
     protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        return inflater.inflate(R.layout.layer_design_cupertino_toast_content, parent, false);
+        return inflater.inflate(R.layout.layer_design_cupertino_toast, parent, false);
     }
 
     @Override

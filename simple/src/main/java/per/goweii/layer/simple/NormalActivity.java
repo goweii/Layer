@@ -22,6 +22,7 @@ import per.goweii.layer.Layer;
 import per.goweii.layer.LayerActivity;
 import per.goweii.layer.design.cupertino.CupertinoNotificationLayer;
 import per.goweii.layer.design.cupertino.CupertinoToastLayer;
+import per.goweii.layer.design.material.MaterialNotificationLayer;
 import per.goweii.layer.dialog.DialogLayer;
 import per.goweii.layer.ext.CircularRevealAnimatorCreator;
 import per.goweii.layer.ext.SimpleAnimatorCreator;
@@ -154,11 +155,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_notification:
-                new CupertinoNotificationLayer(this)
-                        .setContentBlurSimple(8)
-                        .setContentBlurRadius(20)
-                        .setContentBlurColorInt(Color.parseColor("#aaffffff"))
-                        .setContentBlurCornerRadiusDp(10)
+                new MaterialNotificationLayer(this)
                         .setTitle("这是一个通知")
                         .setDesc(R.string.dialog_msg)
                         .setTimePattern("HH:mm")

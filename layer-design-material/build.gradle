@@ -7,4 +7,6 @@ android {
 dependencies {
     compileOnly project(':layer')
     compileOnly project(':layer-ext')
+    implementation project(':layer-design-res')
+    compileOnly "androidx.cardview:cardview:${rootProject.ext.cardview_version}"
 }

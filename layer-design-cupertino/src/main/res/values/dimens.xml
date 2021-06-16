@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="layer_design_cupertino_icon_size">20dp</dimen>
+    <dimen name="layer_design_cupertino_margin_big">20dp</dimen>
+    <dimen name="layer_design_cupertino_margin_default">10dp</dimen>
+    <dimen name="layer_design_cupertino_margin_small">6dp</dimen>
+    <dimen name="layer_design_cupertino_margin_thin">2dp</dimen>
+
+    <dimen name="layer_design_cupertino_corner_radius_big">14dp</dimen>
+
+    <dimen name="layer_design_cupertino_text_size_title">17sp</dimen>
+    <dimen name="layer_design_cupertino_text_size_desc">13sp</dimen>
+    <dimen name="layer_design_cupertino_text_size_btn">17sp</dimen>
+    <dimen name="layer_design_cupertino_btn_height">44dp</dimen>
+</resources>

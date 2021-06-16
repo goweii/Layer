@@ -26,12 +26,12 @@
             android:name="per.goweii.layer.simple.FullScreenActivity"
             android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize|keyboard|smallestScreenSize|screenLayout"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="per.goweii.layer.simple.CommonActivity"
             android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize|keyboard|smallestScreenSize|screenLayout"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="per.goweii.layer.simple.DragActivity"
             android:windowSoftInputMode="adjustPan"

@@ -225,6 +225,9 @@ public class DialogLayer extends DecorLayer {
                         FrameLayout.LayoutParams.MATCH_PARENT,
                         FrameLayout.LayoutParams.MATCH_PARENT
                 ));
+                if (content.getBackground() != null) {
+                    content.getBackground().setAlpha(0);
+                }
                 backdropVisualEffectFrameLayout.addView(content);
 
                 CardView cardView = new CardView(context);
@@ -660,7 +663,7 @@ public class DialogLayer extends DecorLayer {
      * @param contentView 自定以View
      */
     @NonNull
-    public DialogLayer setContentView(@NonNull View contentView) {
+    public DialogLayer setContentView(@Nullable View contentView) {
         getConfig().mContentView = contentView;
         return this;
     }

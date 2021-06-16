@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="layer_design_res_color_card">#FFFFFFFF</color>
-    <color name="layer_design_res_color_divide">#1A000000</color>
-    <color name="layer_design_res_text_color">#BF000000</color>
-    <color name="layer_design_res_text_color_second">#80000000</color>
-    <color name="layer_design_res_text_color_third">#59000000</color>
-    <color name="layer_design_res_text_color_fourth">#33000000</color>
+    <color name="layer_design_res_color_surface">#FFFFFFFF</color>
+    <color name="layer_design_res_color_background">#FFFFFFFF</color>
+    <color name="layer_design_res_color_divider">#1A000000</color>
+    <color name="layer_design_res_color_on_surface">#BF000000</color>
+    <color name="layer_design_res_color_on_surface_secondary">#80000000</color>
+    <color name="layer_design_res_color_on_surface_thirdly">#59000000</color>
+    <color name="layer_design_res_color_on_surface_fourth">#33000000</color>
 
-    <color name="layer_design_res_notification_bg">@color/layer_design_res_color_card</color>
-    <color name="layer_design_res_notification_title_text_color">@color/layer_design_res_text_color</color>
-    <color name="layer_design_res_notification_label_text_color">@color/layer_design_res_text_color_second</color>
-    <color name="layer_design_res_notification_time_text_color">@color/layer_design_res_text_color_third</color>
-    <color name="layer_design_res_notification_desc_text_color">@color/layer_design_res_text_color_second</color>
-
-    <color name="layer_design_res_toast_bg">#F2F5F5F5</color>
-    <color name="layer_design_res_toast_text_color">@color/layer_design_res_text_color</color>
+    <color name="layer_design_res_color_toast_background">#F2F5F5F5</color>
+    <color name="layer_design_res_color_toast_text">@color/layer_design_res_color_on_surface</color>
 </resources>

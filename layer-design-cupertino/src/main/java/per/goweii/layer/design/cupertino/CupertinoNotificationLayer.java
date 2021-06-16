@@ -81,7 +81,7 @@ public class CupertinoNotificationLayer extends NotificationLayer {
 
     @NonNull
     protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View content = inflater.inflate(R.layout.layer_design_cupertino_notification_content, parent, false);
+        View content = inflater.inflate(R.layout.layer_design_cupertino_notification, parent, false);
         final Context context = getActivity();
         if (Utils.findViewByClass(content, BackdropVisualEffectFrameLayout.class) == null) {
             if (getConfig().mContentBlurPercent > 0 || getConfig().mContentBlurRadius > 0) {
@@ -342,32 +342,32 @@ public class CupertinoNotificationLayer extends NotificationLayer {
     public static class ViewHolder extends NotificationLayer.ViewHolder {
         @Nullable
         public LinearLayout getTop() {
-            return findViewInChild(R.id.layer_design_cupertino_notification_content_top);
+            return findViewInChild(R.id.layer_design_cupertino_notification_top);
         }
 
         @Nullable
         public ImageView getIcon() {
-            return getContent().findViewById(R.id.layer_design_cupertino_notification_content_icon);
+            return getContent().findViewById(R.id.layer_design_cupertino_notification_icon);
         }
 
         @Nullable
         public TextView getLabel() {
-            return getContent().findViewById(R.id.layer_design_cupertino_notification_content_label);
+            return getContent().findViewById(R.id.layer_design_cupertino_notification_label);
         }
 
         @Nullable
         public TextView getTime() {
-            return getContent().findViewById(R.id.layer_design_cupertino_notification_content_time);
+            return getContent().findViewById(R.id.layer_design_cupertino_notification_time);
         }
 
         @Nullable
         public TextView getTitle() {
-            return getContent().findViewById(R.id.layer_design_cupertino_notification_content_title);
+            return getContent().findViewById(R.id.layer_design_cupertino_notification_title);
         }
 
         @Nullable
         public TextView getDesc() {
-            return getContent().findViewById(R.id.layer_design_cupertino_notification_content_desc);
+            return getContent().findViewById(R.id.layer_design_cupertino_notification_desc);
         }
     }
 
