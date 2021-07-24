@@ -5,12 +5,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class ContainerLayout extends FrameLayout {
+import per.goweii.layer.widget.LayerContainer;
+
+public class ContainerLayout extends LayerContainer {
     private final GestureDetector mGestureDetector;
 
     private boolean mHandleTouchEvent = false;

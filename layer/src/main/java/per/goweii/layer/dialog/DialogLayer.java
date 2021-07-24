@@ -465,6 +465,7 @@ public class DialogLayer extends DecorLayer {
 
     protected void onInitContainer() {
         if (getConfig().mOutsideInterceptTouchEvent) {
+            getViewHolder().getContainer().setFocusInside(true);
             getViewHolder().getContainer().setHandleTouchEvent(true);
             if (getConfig().mCancelableOnTouchOutside) {
                 getViewHolder().getContainer().setOnTappedListener(new ContainerLayout.OnTappedListener() {
@@ -476,6 +477,7 @@ public class DialogLayer extends DecorLayer {
             }
         } else {
             getViewHolder().getContainer().setOnTappedListener(null);
+            getViewHolder().getContainer().setFocusInside(false);
             getViewHolder().getContainer().setHandleTouchEvent(false);
         }
         if (getConfig().mOutsideTouchedToDismiss || getConfig().mOnOutsideTouchListener != null) {

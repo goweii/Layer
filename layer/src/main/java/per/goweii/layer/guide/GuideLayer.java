@@ -26,6 +26,7 @@ import java.util.List;
 import per.goweii.layer.DecorLayer;
 import per.goweii.layer.utils.AnimatorHelper;
 import per.goweii.layer.utils.Utils;
+import per.goweii.layer.widget.LayerContainer;
 
 public class GuideLayer extends DecorLayer {
 
@@ -85,7 +86,8 @@ public class GuideLayer extends DecorLayer {
     @Override
     protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         Context context = getActivity();
-        FrameLayout container = new FrameLayout(context);
+        LayerContainer container = new LayerContainer(context);
+        container.setFocusInside(true);
         container.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
