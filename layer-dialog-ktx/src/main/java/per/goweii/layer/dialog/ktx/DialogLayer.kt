@@ -22,6 +22,14 @@ fun <T : DialogLayer> T.contentView(@LayoutRes contentViewId: Int) = this.apply 
     this.setContentView(contentViewId)
 }
 
+fun <T : DialogLayer> T.backgroundView(backgroundView: View?) = this.apply {
+    this.setBackgroundView(backgroundView)
+}
+
+fun <T : DialogLayer> T.backgroundView(@LayoutRes backgroundViewId: Int) = this.apply {
+    this.setBackgroundView(backgroundViewId)
+}
+
 fun <T : DialogLayer> T.avoidStatusBar(enable: Boolean) = this.apply {
     this.setAvoidStatusBar(enable)
 }
@@ -104,18 +112,6 @@ fun <T : DialogLayer, R : Animator?> T.backgroundAnimator(
 
 fun <T : DialogLayer> T.backgroundAnimator(creator: Layer.AnimatorCreator) = this.apply {
     this.setBackgroundAnimator(creator)
-}
-
-fun <T : DialogLayer> T.backgroundBlurRadius(@FloatRange(from = 0.0) radius: Float) = this.apply {
-    this.setBackgroundBlurRadius(radius)
-}
-
-fun <T : DialogLayer> T.backgroundBlurPercent(@FloatRange(from = 0.0) percent: Float) = this.apply {
-    this.setBackgroundBlurPercent(percent)
-}
-
-fun <T : DialogLayer> T.backgroundBlurScale(@FloatRange(from = 1.0) scale: Float) = this.apply {
-    this.setBackgroundBlurSimple(scale)
 }
 
 fun <T : DialogLayer> T.backgroundBitmap(bitmap: Bitmap) = this.apply {

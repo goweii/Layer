@@ -36,9 +36,6 @@ import per.goweii.layer.core.anim.AnimatorHelper;
 import per.goweii.layer.core.utils.SoftInputCompat;
 import per.goweii.layer.core.utils.Utils;
 import per.goweii.layer.core.widget.SwipeLayout;
-import per.goweii.visualeffect.blur.RSBlurEffect;
-import per.goweii.visualeffect.core.VisualEffect;
-import per.goweii.visualeffect.view.BackdropVisualEffectView;
 
 public class DialogLayer extends DecorLayer {
     private final long mAnimDurDef = 220L;
@@ -138,71 +135,35 @@ public class DialogLayer extends DecorLayer {
         View background;
         if (getConfig().mBackgroundView != null) {
             background = getConfig().mBackgroundView;
-        } else if (getConfig().mBackgroundViewId > 0){
+        } else if (getConfig().mBackgroundViewId > 0) {
             background = inflater.inflate(getConfig().mBackgroundViewId, parent, false);
         } else {
-            final Context context = getActivity();
-            if (getConfig().mBackgroundBlurPercent > 0 || getConfig().mBackgroundBlurRadius > 0) {
-                final BackdropVisualEffectView backdropVisualEffectView = new BackdropVisualEffectView(context);
-                backdropVisualEffectView.setShowDebugInfo(false);
-                backdropVisualEffectView.setOverlayColor(getConfig().mBackgroundColor);
-                if (getConfig().mBackgroundBlurPercent > 0) {
-                    Utils.onViewLayout(backdropVisualEffectView, new Runnable() {
-                        @Override
-                        public void run() {
-                            int w = backdropVisualEffectView.getWidth();
-                            int h = backdropVisualEffectView.getHeight();
-                            float radius = Math.min(w, h) * getConfig().mBackgroundBlurPercent;
-                            float simple = getConfig().mBackgroundBlurSimple;
-                            if (radius > 25) {
-                                simple = simple * (radius / 25);
-                                radius = 25;
-                            }
-                            backdropVisualEffectView.setSimpleSize(simple);
-                            VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
-                            backdropVisualEffectView.setVisualEffect(visualEffect);
-                        }
-                    });
-                } else {
-                    float radius = getConfig().mBackgroundBlurRadius;
-                    float simple = getConfig().mBackgroundBlurSimple;
-                    if (radius > 25) {
-                        simple = simple * (radius / 25);
-                        radius = 25;
-                    }
-                    backdropVisualEffectView.setSimpleSize(simple);
-                    VisualEffect visualEffect = new RSBlurEffect(getActivity(), radius);
-                    backdropVisualEffectView.setVisualEffect(visualEffect);
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            if (getConfig().mBackgroundBitmap != null) {
+                imageView.setImageBitmap(getConfig().mBackgroundBitmap);
+                if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
+                    imageView.setColorFilter(getConfig().mBackgroundColor);
                 }
-                background = backdropVisualEffectView;
+            } else if (getConfig().mBackgroundDrawable != null) {
+                imageView.setImageDrawable(getConfig().mBackgroundDrawable);
+                if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
+                    imageView.setColorFilter(getConfig().mBackgroundColor);
+                }
+            } else if (getConfig().mBackgroundResource != -1) {
+                imageView.setImageResource(getConfig().mBackgroundResource);
+                if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
+                    imageView.setColorFilter(getConfig().mBackgroundColor);
+                }
+            } else if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
+                imageView.setImageDrawable(new ColorDrawable(getConfig().mBackgroundColor));
+            } else if (getConfig().mBackgroundDimAmount != -1) {
+                int color = Color.argb((int) (255 * Utils.floatRange01(getConfig().mBackgroundDimAmount)), 0, 0, 0);
+                imageView.setImageDrawable(new ColorDrawable(color));
             } else {
-                ImageView imageView = new ImageView(getActivity());
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                if (getConfig().mBackgroundBitmap != null) {
-                    imageView.setImageBitmap(getConfig().mBackgroundBitmap);
-                    if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
-                        imageView.setColorFilter(getConfig().mBackgroundColor);
-                    }
-                } else if (getConfig().mBackgroundDrawable != null) {
-                    imageView.setImageDrawable(getConfig().mBackgroundDrawable);
-                    if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
-                        imageView.setColorFilter(getConfig().mBackgroundColor);
-                    }
-                } else if (getConfig().mBackgroundResource != -1) {
-                    imageView.setImageResource(getConfig().mBackgroundResource);
-                    if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
-                        imageView.setColorFilter(getConfig().mBackgroundColor);
-                    }
-                } else if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
-                    imageView.setImageDrawable(new ColorDrawable(getConfig().mBackgroundColor));
-                } else if (getConfig().mBackgroundDimAmount != -1) {
-                    int color = Color.argb((int) (255 * Utils.floatRange01(getConfig().mBackgroundDimAmount)), 0, 0, 0);
-                    imageView.setImageDrawable(new ColorDrawable(color));
-                } else {
-                    imageView.setImageDrawable(new ColorDrawable(Color.TRANSPARENT));
-                }
-                background = imageView;
+                imageView.setImageDrawable(new ColorDrawable(Color.TRANSPARENT));
             }
+            background = imageView;
         }
         return background;
     }
@@ -749,37 +710,6 @@ public class DialogLayer extends DecorLayer {
     }
 
     /**
-     * 设置背景为当前activity的高斯模糊效果
-     * 设置之后其他背景设置方法失效，仅{@link #setBackgroundColorInt(int)}生效
-     * 且设置的backgroundColor值调用imageView.setColorFilter(backgroundColor)设置
-     * 建议此时的{@link #setBackgroundColorInt(int)}传入的为半透明颜色
-     *
-     * @param radius 模糊半径
-     */
-    @NonNull
-    public DialogLayer setBackgroundBlurRadius(@FloatRange(from = 0F) float radius) {
-        getConfig().mBackgroundBlurRadius = radius;
-        return this;
-    }
-
-    @NonNull
-    public DialogLayer setBackgroundBlurPercent(@FloatRange(from = 0F) float percent) {
-        getConfig().mBackgroundBlurPercent = percent;
-        return this;
-    }
-
-    /**
-     * 设置背景高斯模糊的采样比例
-     *
-     * @param simple 采样比例
-     */
-    @NonNull
-    public DialogLayer setBackgroundBlurSimple(@FloatRange(from = 1F) float simple) {
-        getConfig().mBackgroundBlurSimple = simple;
-        return this;
-    }
-
-    /**
      * 设置背景图片
      *
      * @param bitmap 图片
@@ -833,7 +763,7 @@ public class DialogLayer extends DecorLayer {
 
     /**
      * 设置背景颜色
-     * 在调用了{@link #setBackgroundBitmap(Bitmap)}或者{@link #setBackgroundBlurRadius(float)}方法后
+     * 在调用了{@link #setBackgroundBitmap(Bitmap)}方法后
      * 该颜色值将调用imageView.setColorFilter(backgroundColor)设置
      * 建议此时传入的颜色为半透明颜色
      *
@@ -847,7 +777,7 @@ public class DialogLayer extends DecorLayer {
 
     /**
      * 设置背景颜色
-     * 在调用了{@link #setBackgroundBitmap(Bitmap)}或者{@link #setBackgroundBlurRadius(float)}方法后
+     * 在调用了{@link #setBackgroundBitmap(Bitmap)}方法后
      * 该颜色值将调用imageView.setColorFilter(backgroundColor)设置
      * 建议此时传入的颜色为半透明颜色
      *
@@ -1017,9 +947,6 @@ public class DialogLayer extends DecorLayer {
         protected boolean mAvoidStatusBar = false;
 
         protected int mGravity = Gravity.CENTER;
-        protected float mBackgroundBlurPercent = 0F;
-        protected float mBackgroundBlurRadius = 0F;
-        protected float mBackgroundBlurSimple = 4F;
         @Nullable
         protected Bitmap mBackgroundBitmap = null;
         protected int mBackgroundResource = -1;

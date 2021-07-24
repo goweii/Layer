@@ -1,0 +1,11 @@
+apply plugin: "com.android.library"
+apply from: "../library.gradle"
+
+android {
+}
+
+dependencies {
+    api "per.goweii.visualeffect:visualeffect-core:$visual_effect_version"
+    api "per.goweii.visualeffect:visualeffect-blur:$visual_effect_version"
+    api "per.goweii.visualeffect:visualeffect-view:$visual_effect_version"
+}

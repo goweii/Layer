@@ -18,9 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import per.goweii.layer.core.Layer;
+import per.goweii.layer.core.anim.AnimatorHelper;
 import per.goweii.layer.core.anim.CircularRevealAnimatorCreator;
 import per.goweii.layer.core.anim.SimpleAnimatorCreator;
-import per.goweii.layer.core.anim.AnimatorHelper;
 import per.goweii.layer.core.widget.SwipeLayout;
 import per.goweii.layer.design.cupertino.CupertinoToastLayer;
 import per.goweii.layer.dialog.DialogLayer;
@@ -28,6 +28,7 @@ import per.goweii.layer.dialog.DialogLayerActivity;
 import per.goweii.layer.guide.GuideLayer;
 import per.goweii.layer.popup.PopupLayer;
 import per.goweii.layer.popup.PopupLayer.Align;
+import per.goweii.layer.visualeffectview.BackdropBlurView;
 import per.goweii.statusbarcompat.StatusBarCompat;
 
 public class FullScreenActivity extends AppCompatActivity implements View.OnClickListener {
@@ -404,10 +405,13 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 }
                 break;
             case R.id.tv_show_blur_bg:
+                BackdropBlurView backdropBlurView = new BackdropBlurView(FullScreenActivity.this);
+                backdropBlurView.setOverlayColor(Color.parseColor("#33ffffff"));
+                backdropBlurView.setSimpleSize(8);
+                backdropBlurView.setBlurRadius(8);
                 new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_icon)
-                        .setBackgroundBlurPercent(0.05f)
-                        .setBackgroundColorInt(Color.parseColor("#33ffffff"))
+                        .setBackgroundView(backdropBlurView)
                         .show();
                 break;
             case R.id.tv_show_tran_bg:

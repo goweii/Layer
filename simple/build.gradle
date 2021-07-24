@@ -29,6 +29,7 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.startup:startup-runtime:1.0.0"
     implementation "com.github.goweii:StatusBarCompat:1.2.1"
+    implementation project(":layer-startup")
     implementation project(":layer-dialog-ktx")
     implementation project(":layer-popup-ktx")
     implementation project(":layer-notification-ktx")
@@ -36,7 +37,7 @@ dependencies {
     implementation project(":layer-overlay-ktx")
     implementation project(":layer-toast-ktx")
     implementation project(":layer-keyboard-ktx")
-    implementation project(":layer-startup")
+    implementation project(":layer-visualeffectview")
     implementation project(":layer-design-cupertino")
     implementation project(":layer-design-material")
 }

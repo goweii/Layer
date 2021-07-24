@@ -27,6 +27,7 @@ import per.goweii.layer.dialog.DialogLayerActivity;
 import per.goweii.layer.overlay.OverlayLayer;
 import per.goweii.layer.popup.PopupLayer;
 import per.goweii.layer.popup.PopupLayer.Align;
+import per.goweii.layer.visualeffectview.BackdropBlurView;
 
 public class NormalActivity extends AppCompatActivity implements View.OnClickListener {
     private final Random mRandom = new Random();
@@ -254,11 +255,13 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.tv_show_blur_bg:
+                BackdropBlurView backdropBlurView = new BackdropBlurView(NormalActivity.this);
+                backdropBlurView.setOverlayColor(Color.parseColor("#33ffffff"));
+                backdropBlurView.setSimpleSize(8);
+                backdropBlurView.setBlurRadius(8);
                 new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_icon)
-                        .setBackgroundBlurRadius(8F)
-                        .setBackgroundBlurSimple(8F)
-                        .setBackgroundColorInt(Color.parseColor("#33ffffff"))
+                        .setBackgroundView(backdropBlurView)
                         .show();
                 break;
             case R.id.tv_show_tran_bg:
