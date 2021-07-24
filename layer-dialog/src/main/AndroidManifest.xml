@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="per.goweii.layer.dialog">
+    <application>
+        <activity
+            android:name="per.goweii.layer.dialog.DialogLayerActivity"
+            android:configChanges="screenLayout|screenSize|density|layoutDirection|colorMode|smallestScreenSize|locale|fontScale|orientation|keyboard|keyboardHidden|touchscreen|navigation|uiMode"
+            android:theme="@style/AnyLayerActivityTheme" />
+    </application>
+</manifest>

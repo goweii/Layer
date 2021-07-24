@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: "com.android.application"
 
 android {
     compileSdkVersion 30
@@ -14,7 +14,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
     compileOptions {
@@ -24,16 +24,19 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.startup:startup-runtime:1.0.0'
-    implementation 'com.github.goweii:StatusBarCompat:1.2.1'
-    implementation project(':layer')
-    implementation project(':layer-ext')
-    implementation project(':layer-ktx')
-    implementation project(':layer-startup')
-    implementation project(':layer-keyboard')
-    implementation project(':layer-design-cupertino')
-    implementation project(':layer-design-material')
+    implementation fileTree(include: ["*.jar"], dir: "libs")
+    implementation "androidx.appcompat:appcompat:1.3.1"
+    implementation "androidx.cardview:cardview:1.0.0"
+    implementation "androidx.startup:startup-runtime:1.0.0"
+    implementation "com.github.goweii:StatusBarCompat:1.2.1"
+    implementation project(":layer-dialog-ktx")
+    implementation project(":layer-popup-ktx")
+    implementation project(":layer-notification-ktx")
+    implementation project(":layer-guide-ktx")
+    implementation project(":layer-overlay-ktx")
+    implementation project(":layer-toast-ktx")
+    implementation project(":layer-keyboard-ktx")
+    implementation project(":layer-startup")
+    implementation project(":layer-design-cupertino")
+    implementation project(":layer-design-material")
 }

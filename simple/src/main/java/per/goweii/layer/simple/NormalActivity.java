@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,19 +16,17 @@ import androidx.cardview.widget.CardView;
 
 import java.util.Random;
 
-import per.goweii.layer.Layers;
-import per.goweii.layer.Layer;
-import per.goweii.layer.LayerActivity;
-import per.goweii.layer.design.cupertino.CupertinoNotificationLayer;
+import per.goweii.layer.core.Layer;
+import per.goweii.layer.core.anim.CircularRevealAnimatorCreator;
+import per.goweii.layer.core.anim.SimpleAnimatorCreator;
+import per.goweii.layer.core.anim.AnimatorHelper;
 import per.goweii.layer.design.cupertino.CupertinoToastLayer;
 import per.goweii.layer.design.material.MaterialNotificationLayer;
 import per.goweii.layer.dialog.DialogLayer;
-import per.goweii.layer.ext.CircularRevealAnimatorCreator;
-import per.goweii.layer.ext.SimpleAnimatorCreator;
-import per.goweii.layer.notification.NotificationLayer;
+import per.goweii.layer.dialog.DialogLayerActivity;
 import per.goweii.layer.overlay.OverlayLayer;
+import per.goweii.layer.popup.PopupLayer;
 import per.goweii.layer.popup.PopupLayer.Align;
-import per.goweii.layer.utils.AnimatorHelper;
 
 public class NormalActivity extends AppCompatActivity implements View.OnClickListener {
     private final Random mRandom = new Random();
@@ -110,7 +107,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 })
                 .show();
-        Layer dialog = Layers.dialog(this)
+        Layer dialog = new DialogLayer(this)
                 .setContentView(R.layout.dialog_normal)
                 .setBackgroundDimDefault()
                 .setGravity(Gravity.CENTER)
@@ -169,13 +166,13 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_full:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_fullscreen)
                         .addOnClickToDismissListener(R.id.iv_1)
                         .show();
                 break;
             case R.id.tv_show_app_context:
-                Layers.dialog(new LayerActivity.OnLayerCreatedCallback() {
+                DialogLayer.create(new DialogLayerActivity.OnLayerCreatedCallback() {
                     @Override
                     public void onLayerCreated(@NonNull DialogLayer anyLayer) {
                         anyLayer.setContentView(R.layout.dialog_normal)
@@ -186,21 +183,21 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 });
                 break;
             case R.id.tv_show_no_context:
-                Layers.dialog()
+                new DialogLayer()
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
             case R.id.tv_show_target_full:
-                Layers.popup(findViewById(R.id.tv_show_target_full))
+                new PopupLayer(findViewById(R.id.tv_show_target_full))
                         .setContentView(R.layout.dialog_fullscreen)
                         .setAnimStyle(DialogLayer.AnimStyle.TOP)
                         .show();
                 break;
             case R.id.tv_show_target_right:
                 if (anyLayer_show_target_right == null) {
-                    anyLayer_show_target_right = Layers.popup(findViewById(R.id.tv_show_target_right))
+                    anyLayer_show_target_right = new PopupLayer(findViewById(R.id.tv_show_target_right))
                             .setAlign(Align.Direction.HORIZONTAL, Align.Horizontal.TO_RIGHT, Align.Vertical.CENTER, false)
                             .setOutsideInterceptTouchEvent(false)
                             .setContentView(R.layout.popup_normal)
@@ -215,14 +212,14 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.tv_show_target_left:
-                Layers.popup(findViewById(R.id.tv_show_target_left))
+                new PopupLayer(findViewById(R.id.tv_show_target_left))
                         .setAlign(Align.Direction.HORIZONTAL, Align.Horizontal.TO_LEFT, Align.Vertical.CENTER, true)
                         .setContentView(R.layout.popup_normal)
                         .setAnimStyle(DialogLayer.AnimStyle.RIGHT)
                         .show();
                 break;
             case R.id.tv_show_target_top:
-                Layers.popup(findViewById(R.id.tv_show_target_top))
+                new PopupLayer(findViewById(R.id.tv_show_target_top))
                         .setAlign(Align.Direction.VERTICAL, Align.Horizontal.CENTER, Align.Vertical.ABOVE, true)
                         .setContentView(R.layout.popup_match_width)
                         .setBackgroundDimDefault()
@@ -232,7 +229,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.tv_show_target_bottom:
                 if (anyLayer_show_target_bottom == null) {
-                    anyLayer_show_target_bottom = Layers.popup(findViewById(R.id.tv_show_target_bottom))
+                    anyLayer_show_target_bottom = new PopupLayer(findViewById(R.id.tv_show_target_bottom))
                             .setAlign(Align.Direction.VERTICAL, Align.Horizontal.CENTER, Align.Vertical.BELOW, false)
                             .setContentClip(false)
                             .setOutsideInterceptTouchEvent(false)
@@ -257,7 +254,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.tv_show_blur_bg:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_icon)
                         .setBackgroundBlurRadius(8F)
                         .setBackgroundBlurSimple(8F)
@@ -265,13 +262,13 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_tran_bg:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
             case R.id.tv_show_bottom_in:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM))
@@ -279,7 +276,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_bottom_alpha_in:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM_ALPHA))
@@ -287,7 +284,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_bottom_zoom_alpha_in:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM_ZOOM_ALPHA))
@@ -295,7 +292,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_top_in:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.TOP))
@@ -303,7 +300,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_top_alpha_in:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.TOP_ALPHA))
@@ -311,7 +308,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_left_in:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.LEFT))
@@ -319,7 +316,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_left_alpha_in:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.LEFT_ALPHA))
@@ -327,7 +324,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_right_in:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.RIGHT))
@@ -335,7 +332,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_right_alpha_in:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.RIGHT_ALPHA))
@@ -343,7 +340,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .show();
                 break;
             case R.id.tv_show_reveal:
-                Layers.dialog(NormalActivity.this)
+                new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(

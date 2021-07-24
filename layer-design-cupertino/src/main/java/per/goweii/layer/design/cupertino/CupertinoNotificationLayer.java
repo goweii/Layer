@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import per.goweii.layer.notification.NotificationLayer;
-import per.goweii.layer.utils.Utils;
+import per.goweii.layer.core.utils.Utils;
 import per.goweii.visualeffect.blur.RSBlurEffect;
 import per.goweii.visualeffect.core.VisualEffect;
 import per.goweii.visualeffect.view.BackdropVisualEffectFrameLayout;

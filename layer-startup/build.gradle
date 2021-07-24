@@ -1,10 +1,10 @@
-apply plugin: 'com.android.library'
+apply plugin: "com.android.library"
 apply from: "../library.gradle"
 
 android {
 }
 
 dependencies {
-    compileOnly 'androidx.startup:startup-runtime:1.0.0'
-    compileOnly project(':layer')
+    implementation project(":layer-core")
+    compileOnly "androidx.startup:startup-runtime:$androidx_startup_version"
 }

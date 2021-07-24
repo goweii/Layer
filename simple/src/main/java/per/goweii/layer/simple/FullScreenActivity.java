@@ -17,18 +17,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import per.goweii.layer.Layers;
-import per.goweii.layer.Layer;
-import per.goweii.layer.LayerActivity;
+import per.goweii.layer.core.Layer;
+import per.goweii.layer.core.anim.CircularRevealAnimatorCreator;
+import per.goweii.layer.core.anim.SimpleAnimatorCreator;
+import per.goweii.layer.core.anim.AnimatorHelper;
+import per.goweii.layer.core.widget.SwipeLayout;
 import per.goweii.layer.design.cupertino.CupertinoToastLayer;
 import per.goweii.layer.dialog.DialogLayer;
-import per.goweii.layer.ext.CircularRevealAnimatorCreator;
-import per.goweii.layer.ext.SimpleAnimatorCreator;
+import per.goweii.layer.dialog.DialogLayerActivity;
 import per.goweii.layer.guide.GuideLayer;
 import per.goweii.layer.popup.PopupLayer;
 import per.goweii.layer.popup.PopupLayer.Align;
-import per.goweii.layer.utils.AnimatorHelper;
-import per.goweii.layer.widget.SwipeLayout;
 import per.goweii.statusbarcompat.StatusBarCompat;
 
 public class FullScreenActivity extends AppCompatActivity implements View.OnClickListener {
@@ -155,7 +154,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
             case R.id.tv_title:
                 break;
             case R.id.tv_show_app_context:
-                Layers.dialog(new LayerActivity.OnLayerCreatedCallback() {
+                DialogLayer.create(new DialogLayerActivity.OnLayerCreatedCallback() {
                     @Override
                     public void onLayerCreated(@NonNull DialogLayer anyLayer) {
                         anyLayer.setContentView(R.layout.dialog_normal)
@@ -169,7 +168,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 showMulti();
                 break;
             case R.id.tv_show_input:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_input)
                         .setBackgroundDimDefault()
                         .setGravity(Gravity.BOTTOM)
@@ -254,7 +253,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_edit:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_edit)
                         .setBackgroundDimDefault()
                         .setGravity(Gravity.BOTTOM)
@@ -282,14 +281,14 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_full:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_fullscreen)
                         .addOnClickToDismissListener(R.id.iv_1)
                         .show();
                 break;
             case R.id.tv_show_target_full:
                 if (anyLayer_show_target_full == null) {
-                    anyLayer_show_target_full = (PopupLayer) Layers.popup(findViewById(R.id.tv_show_target_full))
+                    anyLayer_show_target_full = (PopupLayer) new PopupLayer(findViewById(R.id.tv_show_target_full))
                             .setOutsideInterceptTouchEvent(false)
                             .setContentView(R.layout.dialog_fullscreen)
                             .setContentAnimator(new DialogLayer.AnimatorCreator() {
@@ -312,7 +311,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.tv_show_target_right:
                 if (anyLayer_show_target_right == null) {
-                    anyLayer_show_target_right = (PopupLayer) Layers.popup(findViewById(R.id.tv_show_target_right))
+                    anyLayer_show_target_right = (PopupLayer) new PopupLayer(findViewById(R.id.tv_show_target_right))
                             .setDirection(Align.Direction.HORIZONTAL)
                             .setHorizontal(Align.Horizontal.TO_RIGHT)
                             .setVertical(Align.Vertical.CENTER)
@@ -344,7 +343,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 }
                 break;
             case R.id.tv_show_target_left:
-                Layers.popup(findViewById(R.id.tv_show_target_left))
+                new PopupLayer(findViewById(R.id.tv_show_target_left))
                         .setAlign(Align.Direction.HORIZONTAL, Align.Horizontal.TO_LEFT, Align.Vertical.CENTER, true)
                         .setContentView(R.layout.popup_normal)
                         .setContentAnimator(new DialogLayer.AnimatorCreator() {
@@ -361,7 +360,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_target_top:
-                Layers.popup(findViewById(R.id.tv_show_target_top))
+                new PopupLayer(findViewById(R.id.tv_show_target_top))
                         .setAlign(Align.Direction.VERTICAL, Align.Horizontal.CENTER, Align.Vertical.ABOVE, true)
                         .setContentView(R.layout.popup_match_width)
                         .setBackgroundDimDefault()
@@ -381,7 +380,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.tv_show_target_bottom:
                 if (anyLayer_show_target_bottom == null) {
-                    anyLayer_show_target_bottom = (PopupLayer) Layers.popup(findViewById(R.id.tv_show_target_bottom))
+                    anyLayer_show_target_bottom = (PopupLayer) new PopupLayer(findViewById(R.id.tv_show_target_bottom))
                             .setAlign(Align.Direction.VERTICAL, Align.Horizontal.CENTER, Align.Vertical.BELOW, true)
                             .setOutsideInterceptTouchEvent(false)
                             .setBackgroundDimDefault()
@@ -405,20 +404,20 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 }
                 break;
             case R.id.tv_show_blur_bg:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_icon)
                         .setBackgroundBlurPercent(0.05f)
                         .setBackgroundColorInt(Color.parseColor("#33ffffff"))
                         .show();
                 break;
             case R.id.tv_show_tran_bg:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
             case R.id.tv_show_bottom_in:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM))
@@ -426,7 +425,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_bottom_alpha_in:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM_ALPHA))
@@ -434,7 +433,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_bottom_zoom_alpha_in:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM_ZOOM_ALPHA))
@@ -442,7 +441,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_top_in:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.TOP))
@@ -450,7 +449,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_top_alpha_in:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.TOP_ALPHA))
@@ -458,7 +457,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_left_in:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.LEFT))
@@ -466,7 +465,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_left_alpha_in:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.LEFT_ALPHA))
@@ -474,7 +473,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_right_in:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.RIGHT))
@@ -482,7 +481,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_right_alpha_in:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.RIGHT_ALPHA))
@@ -490,7 +489,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .show();
                 break;
             case R.id.tv_show_reveal:
-                Layers.dialog(FullScreenActivity.this)
+                new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
                         .setContentAnimator(
@@ -503,7 +502,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.tv_show_menu:
                 if (anyLayer_show_menu == null) {
-                    anyLayer_show_menu = Layers.popup(findViewById(R.id.tv_show_menu))
+                    anyLayer_show_menu = new PopupLayer(findViewById(R.id.tv_show_menu))
                             .setAlign(Align.Direction.VERTICAL, Align.Horizontal.ALIGN_RIGHT, Align.Vertical.BELOW, false)
                             .setOffsetYdp(15)
                             .setOutsideTouchToDismiss(true)
@@ -531,7 +530,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void showMulti() {
-        Layers.dialog(FullScreenActivity.this)
+        new DialogLayer(FullScreenActivity.this)
                 .setContentView(R.layout.dialog_more)
                 .setBackgroundDimDefault()
                 .setGravity(Gravity.CENTER)

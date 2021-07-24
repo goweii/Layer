@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import per.goweii.layer.dialog.DialogLayer;
-import per.goweii.layer.utils.Utils;
+import per.goweii.layer.core.utils.Utils;
 import per.goweii.visualeffect.blur.RSBlurEffect;
 import per.goweii.visualeffect.core.VisualEffect;
 import per.goweii.visualeffect.view.BackdropVisualEffectFrameLayout;

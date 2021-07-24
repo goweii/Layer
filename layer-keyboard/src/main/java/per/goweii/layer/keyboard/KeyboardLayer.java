@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import per.goweii.layer.core.anim.SimpleAnimatorCreator;
+import per.goweii.layer.core.utils.Utils;
 import per.goweii.layer.dialog.DialogLayer;
-import per.goweii.layer.ext.SimpleAnimatorCreator;
-import per.goweii.layer.utils.Utils;
 
 public class KeyboardLayer extends DialogLayer {
     private KeyboardSoundEffect mSoundEffect = null;
@@ -248,6 +248,7 @@ public class KeyboardLayer extends DialogLayer {
     public void setCaps(boolean isCaps) {
         getViewHolder().setCaps(isCaps);
     }
+
     public void toggleCaps() {
         setCaps(!isCaps());
     }

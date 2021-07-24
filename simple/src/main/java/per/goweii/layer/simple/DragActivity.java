@@ -7,9 +7,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import per.goweii.layer.Layers;
-import per.goweii.layer.Layer;
-import per.goweii.layer.widget.SwipeLayout;
+import per.goweii.layer.core.Layers;
+import per.goweii.layer.core.Layer;
+import per.goweii.layer.core.widget.SwipeLayout;
+import per.goweii.layer.dialog.DialogLayer;
 
 public class DragActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,7 +34,7 @@ public class DragActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
             case R.id.tv_show_left:
-                Layers.dialog(DragActivity.this)
+                new DialogLayer(DragActivity.this)
                         .setContentView(R.layout.dialog_drag_h)
                         .setBackgroundDimDefault()
                         .setGravity(Gravity.LEFT)
@@ -42,7 +43,7 @@ public class DragActivity extends AppCompatActivity implements View.OnClickListe
                         .show();
                 break;
             case R.id.tv_show_right:
-                Layers.dialog(DragActivity.this)
+                new DialogLayer(DragActivity.this)
                         .setContentView(R.layout.dialog_drag_h)
                         .setBackgroundDimDefault()
                         .setGravity(Gravity.RIGHT)
@@ -51,7 +52,7 @@ public class DragActivity extends AppCompatActivity implements View.OnClickListe
                         .show();
                 break;
             case R.id.tv_show_top:
-                Layers.dialog(DragActivity.this)
+                new DialogLayer(DragActivity.this)
                         .setContentView(R.layout.dialog_list)
                         .setBackgroundDimDefault()
                         .setAvoidStatusBar(true)
@@ -61,7 +62,7 @@ public class DragActivity extends AppCompatActivity implements View.OnClickListe
                         .show();
                 break;
             case R.id.tv_show_bottom:
-                Layers.dialog(DragActivity.this)
+                new DialogLayer(DragActivity.this)
                         .setContentView(R.layout.dialog_list)
                         .setBackgroundDimDefault()
                         .setGravity(Gravity.BOTTOM)

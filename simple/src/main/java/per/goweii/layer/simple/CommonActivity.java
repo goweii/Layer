@@ -6,7 +6,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import per.goweii.layer.Layer;
+import per.goweii.layer.core.Layer;
 import per.goweii.layer.design.cupertino.CupertinoAlertLayer;
 import per.goweii.layer.keyboard.KeyboardLayer;
 import per.goweii.statusbarcompat.StatusBarCompat;

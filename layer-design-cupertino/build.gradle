@@ -1,15 +1,20 @@
-apply plugin: 'com.android.library'
+apply plugin: "com.android.library"
 apply from: "../library.gradle"
 
 android {
 }
 
 dependencies {
-    compileOnly project(':layer')
-    compileOnly project(':layer-ext')
-    implementation project(':layer-design-res')
-    compileOnly "androidx.cardview:cardview:${rootProject.ext.cardview_version}"
-    implementation "per.goweii.visualeffect:visualeffect-core:${rootProject.ext.visual_effect_version}"
-    implementation "per.goweii.visualeffect:visualeffect-blur:${rootProject.ext.visual_effect_version}"
-    implementation "per.goweii.visualeffect:visualeffect-view:${rootProject.ext.visual_effect_version}"
+    api project(":layer-dialog")
+    api project(":layer-popup")
+    api project(":layer-notification")
+    api project(":layer-guide")
+    api project(":layer-overlay")
+    api project(":layer-toast")
+    api project(":layer-keyboard")
+    api project(":layer-design-res")
+    implementation "per.goweii.visualeffect:visualeffect-core:$visual_effect_version"
+    implementation "per.goweii.visualeffect:visualeffect-blur:$visual_effect_version"
+    implementation "per.goweii.visualeffect:visualeffect-view:$visual_effect_version"
+    compileOnly "androidx.cardview:cardview:$cardview_version"
 }

@@ -9,7 +9,7 @@ import androidx.startup.Initializer;
 import java.util.Collections;
 import java.util.List;
 
-import per.goweii.layer.Layers;
+import per.goweii.layer.core.Layers;
 
 public class LayerInitializer implements Initializer<Layers> {
     @NonNull

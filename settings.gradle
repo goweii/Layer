@@ -1,9 +1,25 @@
-include ':simple'
-include ':layer'
-include ':layer-ext'
-include ':layer-ktx'
-include ':layer-startup'
-include ':layer-keyboard'
-include ':layer-design-res'
-include ':layer-design-cupertino'
-include ':layer-design-material'
+include ":simple"
+
+include ":layer-core"
+include ":layer-core-ktx"
+
+include ":layer-startup"
+
+include ":layer-dialog"
+include ":layer-dialog-ktx"
+include ":layer-popup"
+include ":layer-popup-ktx"
+include ":layer-notification"
+include ":layer-notification-ktx"
+include ":layer-guide"
+include ":layer-guide-ktx"
+include ":layer-overlay"
+include ":layer-overlay-ktx"
+include ":layer-toast"
+include ":layer-toast-ktx"
+include ":layer-keyboard"
+include ":layer-keyboard-ktx"
+
+include ":layer-design-res"
+include ":layer-design-cupertino"
+include ":layer-design-material"
