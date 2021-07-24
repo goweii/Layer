@@ -79,7 +79,7 @@ public class CupertinoAlertLayer extends DialogLayer {
     @NonNull
     @Override
     protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View content = inflater.inflate(R.layout.layer_design_cupertino_alert, parent, false);
+        View content = super.onCreateContent(inflater, parent);
         if (getConfig().mContentBlurPercent > 0 || getConfig().mContentBlurRadius > 0) {
             final BackdropBlurView backdropBlurView = new BackdropBlurView(getActivity());
             backdropBlurView.setOverlayColor(getConfig().mContentBlurColor);
@@ -99,6 +99,20 @@ public class CupertinoAlertLayer extends DialogLayer {
             content = backdropBlurView;
         }
         return content;
+    }
+
+    @NonNull
+    @Override
+    protected View onCreateBackground(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        if (getConfig().mBackgroundBlurPercent > 0 || getConfig().mBackgroundBlurRadius > 0) {
+            final BackdropBlurView backdropBlurView = new BackdropBlurView(getActivity());
+            backdropBlurView.setOverlayColor(getConfig().mBackgroundBlurColor);
+            backdropBlurView.setSimpleSize(getConfig().mBackgroundBlurSimple);
+            backdropBlurView.setBlurRadius(getConfig().mBackgroundBlurRadius);
+            backdropBlurView.setBlurPercent(getConfig().mBackgroundBlurPercent);
+            return backdropBlurView;
+        }
+        return super.onCreateBackground(inflater, parent);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -233,6 +247,36 @@ public class CupertinoAlertLayer extends DialogLayer {
     }
 
     @NonNull
+    public CupertinoAlertLayer setBackgroundBlurRadius(@FloatRange(from = 0F) float radius) {
+        getConfig().mBackgroundBlurRadius = radius;
+        return this;
+    }
+
+    @NonNull
+    public CupertinoAlertLayer setBackgroundBlurPercent(@FloatRange(from = 0F) float percent) {
+        getConfig().mBackgroundBlurPercent = percent;
+        return this;
+    }
+
+    @NonNull
+    public CupertinoAlertLayer setBackgroundBlurSimple(@FloatRange(from = 1F) float simple) {
+        getConfig().mBackgroundBlurSimple = simple;
+        return this;
+    }
+
+    @NonNull
+    public CupertinoAlertLayer setBackgroundBlurColorInt(@ColorInt int colorInt) {
+        getConfig().mBackgroundBlurColor = colorInt;
+        return this;
+    }
+
+    @NonNull
+    public CupertinoAlertLayer setBackgroundBlurColorRes(@ColorRes int colorRes) {
+        getConfig().mBackgroundBlurColor = getActivity().getResources().getColor(colorRes);
+        return this;
+    }
+
+    @NonNull
     public CupertinoAlertLayer setContentBlurRadius(@FloatRange(from = 0F) float radius) {
         getConfig().mContentBlurRadius = radius;
         return this;
@@ -307,9 +351,15 @@ public class CupertinoAlertLayer extends DialogLayer {
         private String mDesc = null;
         private final List<Action> mActions = new ArrayList<>(3);
 
+        protected float mBackgroundBlurPercent = 0F;
+        protected float mBackgroundBlurRadius = 0F;
+        protected float mBackgroundBlurSimple = 8F;
+        @ColorInt
+        protected int mBackgroundBlurColor = Color.TRANSPARENT;
+
         protected float mContentBlurPercent = 0F;
         protected float mContentBlurRadius = 0F;
-        protected float mContentBlurSimple = 4F;
+        protected float mContentBlurSimple = 8F;
         @ColorInt
         protected int mContentBlurColor = Color.TRANSPARENT;
         protected float mContentBlurCornerRadius = 0F;
