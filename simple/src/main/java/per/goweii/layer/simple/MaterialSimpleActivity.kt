@@ -42,7 +42,7 @@ class MaterialSimpleActivity : AppCompatActivity() {
 
     fun onBtnToastClick(view: View) {
         MaterialToastLayer(this)
-                .setBackgroundColorRes(R.color.colorPrimary)
+                .setIcon(R.drawable.ic_warning)
                 .setMessage(R.string.toast_msg)
                 .show()
     }
