@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="layer_design_cupertino_alert_width">270dp</dimen>
     <dimen name="layer_design_cupertino_icon_size">20dp</dimen>
     <dimen name="layer_design_cupertino_margin_big">20dp</dimen>
     <dimen name="layer_design_cupertino_margin_default">10dp</dimen>

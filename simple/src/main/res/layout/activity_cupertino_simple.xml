@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_alert"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnDialogClick"
+            android:text="Dialog" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_popover"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnPopoverClick"
+            android:text="Popover" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_modality"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnModalityClick"
+            android:text="Modality" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_toast"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnToastClick"
+            android:text="Toast" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_notification"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnNotificationClick"
+            android:text="Notification" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

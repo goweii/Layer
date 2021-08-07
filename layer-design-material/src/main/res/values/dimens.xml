@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="layer_design_material_dialog_width">300dp</dimen>
+    <dimen name="layer_design_material_icon_size">20dp</dimen>
+    <dimen name="layer_design_material_margin_big">24dp</dimen>
+    <dimen name="layer_design_material_margin_default">16dp</dimen>
+    <dimen name="layer_design_material_margin_small">8dp</dimen>
+    <dimen name="layer_design_material_margin_thin">4dp</dimen>
+
+    <dimen name="layer_design_material_corner_radius_small">4dp</dimen>
+    <dimen name="layer_design_material_corner_radius_big">12dp</dimen>
+
+    <dimen name="layer_design_material_text_size_title">17sp</dimen>
+    <dimen name="layer_design_material_text_size_desc">15sp</dimen>
+    <dimen name="layer_design_material_text_size_btn">15sp</dimen>
+    <dimen name="layer_design_material_btn_height">44dp</dimen>
+</resources>

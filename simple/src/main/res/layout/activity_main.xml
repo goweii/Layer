@@ -6,8 +6,21 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_dialog"
+        android:id="@+id/btn_layers"
         style="@style/ListBtnStyle"
+        android:onClick="onBtnLayers"
         android:text="已实现效果演示" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_material"
+        style="@style/ListBtnStyle"
+        android:onClick="onBtnMaterial"
+        android:text="Material风格" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_cupertino"
+        style="@style/ListBtnStyle"
+        android:onClick="onBtnCupertino"
+        android:text="Cupertino风格" />
 
 </LinearLayout>

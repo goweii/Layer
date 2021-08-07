@@ -25,10 +25,10 @@ import per.goweii.layer.overlay.OverlayLayer
 import per.goweii.layer.overlay.ktx.*
 import per.goweii.layer.popup.PopupLayer
 
-class LayerSimpleActivity : AppCompatActivity() {
+class LayersSimpleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_layer_simple)
+        setContentView(R.layout.activity_layers_simple)
         OverlayLayer(this)
                 .overlayView(R.layout.overlay)
                 .snapEdge(OverlayLayer.Edge.ALL)

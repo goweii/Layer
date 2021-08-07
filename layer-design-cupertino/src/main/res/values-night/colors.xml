@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="layer_design_cupertino_color_alert_blur_overlay">#991E1E1E</color>
+    <color name="layer_design_cupertino_color_notification_blur_overlay">#991E1E1E</color>
 </resources>

@@ -24,6 +24,7 @@ import java.util.List;
 
 import per.goweii.layer.dialog.DialogLayer;
 import per.goweii.layer.visualeffectview.BackdropBlurView;
+import per.goweii.layer.visualeffectview.BackdropIgnoreView;
 
 public class CupertinoAlertLayer extends DialogLayer {
     public CupertinoAlertLayer(@NonNull Context context) {
@@ -78,6 +79,25 @@ public class CupertinoAlertLayer extends DialogLayer {
 
     @NonNull
     @Override
+    protected View onCreateBackground(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        if (getConfig().mContentBlurPercent > 0 || getConfig().mContentBlurRadius > 0) {
+            BackdropIgnoreView backdropIgnoreView = new BackdropIgnoreView(getActivity());
+            backdropIgnoreView.setBackgroundColor(getConfig().getBackgroundColor());
+            return backdropIgnoreView;
+        }
+        if (getConfig().mBackgroundBlurPercent > 0 || getConfig().mBackgroundBlurRadius > 0) {
+            final BackdropBlurView backdropBlurView = new BackdropBlurView(getActivity());
+            backdropBlurView.setOverlayColor(getConfig().mBackgroundBlurColor);
+            backdropBlurView.setSimpleSize(getConfig().mBackgroundBlurSimple);
+            backdropBlurView.setBlurRadius(getConfig().mBackgroundBlurRadius);
+            backdropBlurView.setBlurPercent(getConfig().mBackgroundBlurPercent);
+            return backdropBlurView;
+        }
+        return super.onCreateBackground(inflater, parent);
+    }
+
+    @NonNull
+    @Override
     protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         View content = super.onCreateContent(inflater, parent);
         if (getConfig().mContentBlurPercent > 0 || getConfig().mContentBlurRadius > 0) {
@@ -101,18 +121,16 @@ public class CupertinoAlertLayer extends DialogLayer {
         return content;
     }
 
-    @NonNull
     @Override
-    protected View onCreateBackground(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        if (getConfig().mBackgroundBlurPercent > 0 || getConfig().mBackgroundBlurRadius > 0) {
-            final BackdropBlurView backdropBlurView = new BackdropBlurView(getActivity());
-            backdropBlurView.setOverlayColor(getConfig().mBackgroundBlurColor);
-            backdropBlurView.setSimpleSize(getConfig().mBackgroundBlurSimple);
-            backdropBlurView.setBlurRadius(getConfig().mBackgroundBlurRadius);
-            backdropBlurView.setBlurPercent(getConfig().mBackgroundBlurPercent);
-            return backdropBlurView;
+    protected void onInitBackground() {
+        super.onInitBackground();
+        View background = getViewHolder().getBackground();
+        View content = getViewHolder().getContent();
+        if (background instanceof BackdropIgnoreView && content instanceof BackdropBlurView) {
+            BackdropIgnoreView backdropIgnoreView = (BackdropIgnoreView) background;
+            BackdropBlurView backdropBlurView = (BackdropBlurView) content;
+            backdropIgnoreView.setBackdropBlurView(backdropBlurView);
         }
-        return super.onCreateBackground(inflater, parent);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -212,6 +230,16 @@ public class CupertinoAlertLayer extends DialogLayer {
                     viewHolder.mActions.addView(textView);
                 }
             }
+        }
+    }
+
+    @Override
+    protected void onDetach() {
+        super.onDetach();
+        View background = getViewHolder().getBackground();
+        if (background instanceof BackdropIgnoreView) {
+            BackdropIgnoreView backdropIgnoreView = (BackdropIgnoreView) background;
+            backdropIgnoreView.setBackdropBlurView(null);
         }
     }
 
@@ -363,6 +391,11 @@ public class CupertinoAlertLayer extends DialogLayer {
         @ColorInt
         protected int mContentBlurColor = Color.TRANSPARENT;
         protected float mContentBlurCornerRadius = 0F;
+
+        @ColorInt
+        public int getBackgroundColor() {
+            return mBackgroundColor;
+        }
     }
 
     public static class ViewHolder extends DialogLayer.ViewHolder {

@@ -19,7 +19,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LayerSimpleActivity"
+            android:name=".LayersSimpleActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|keyboardHidden|keyboard" />
+        <activity
+            android:name=".CupertinoSimpleActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|keyboardHidden|keyboard" />
+        <activity
+            android:name=".MaterialSimpleActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|keyboardHidden|keyboard" />
     </application>
 

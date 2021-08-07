@@ -9,9 +9,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
@@ -37,6 +36,10 @@ public class CupertinoNotificationLayer extends NotificationLayer {
 
     public CupertinoNotificationLayer(@NonNull Activity activity) {
         super(activity);
+        setContentBlurSimple(8F);
+        setContentBlurRadius(10F);
+        setContentBlurColorRes(R.color.layer_design_cupertino_color_notification_blur_overlay);
+        setContentBlurCornerRadiusPx(activity.getResources().getDimensionPixelSize(R.dimen.layer_design_cupertino_corner_radius_big));
     }
 
     @NonNull
@@ -137,7 +140,7 @@ public class CupertinoNotificationLayer extends NotificationLayer {
                     }
                 }
             }
-            LinearLayout topView = getViewHolder().getTop();
+            RelativeLayout topView = getViewHolder().getTop();
             topView.setVisibility(View.GONE);
             for (int i = 0; i < topView.getChildCount(); i++) {
                 if (topView.getChildAt(i).getVisibility() == View.VISIBLE) {
@@ -279,7 +282,7 @@ public class CupertinoNotificationLayer extends NotificationLayer {
     protected static class Config extends NotificationLayer.Config {
         protected float mContentBlurPercent = 0F;
         protected float mContentBlurRadius = 0F;
-        protected float mContentBlurSimple = 4F;
+        protected float mContentBlurSimple = 8F;
         @ColorInt
         protected int mContentBlurColor = Color.TRANSPARENT;
         protected float mContentBlurCornerRadius = 0F;
@@ -294,7 +297,7 @@ public class CupertinoNotificationLayer extends NotificationLayer {
 
     public static class ViewHolder extends NotificationLayer.ViewHolder {
         @Nullable
-        public LinearLayout getTop() {
+        public RelativeLayout getTop() {
             return findViewInChild(R.id.layer_design_cupertino_notification_top);
         }
 
