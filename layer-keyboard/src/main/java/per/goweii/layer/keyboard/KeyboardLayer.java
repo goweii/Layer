@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import per.goweii.layer.core.anim.SimpleAnimatorCreator;
+import per.goweii.layer.core.anim.AnimStyle;
 import per.goweii.layer.core.utils.Utils;
 import per.goweii.layer.dialog.DialogLayer;
 
@@ -36,7 +36,7 @@ public class KeyboardLayer extends DialogLayer {
     private void init() {
         setContentView(R.layout.layer_keyboard);
         setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
-        setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM));
+        setContentAnimator(AnimStyle.BOTTOM);
         setCancelableOnClickKeyBack(true);
         setCancelableOnTouchOutside(true);
         setOutsideInterceptTouchEvent(false);

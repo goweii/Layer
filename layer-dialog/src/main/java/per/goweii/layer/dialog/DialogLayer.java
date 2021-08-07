@@ -4,22 +4,17 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
@@ -38,7 +33,8 @@ import per.goweii.layer.core.utils.Utils;
 import per.goweii.layer.core.widget.SwipeLayout;
 
 public class DialogLayer extends DecorLayer {
-    private final long mAnimDurDef = 220L;
+    private static final long ANIM_DUR_DEF = 220L;
+    private static final float DIM_AMOUNT_DEF = 0.6F;
 
     private SoftInputCompat mSoftInputCompat = null;
 
@@ -138,32 +134,9 @@ public class DialogLayer extends DecorLayer {
         } else if (getConfig().mBackgroundViewId > 0) {
             background = inflater.inflate(getConfig().mBackgroundViewId, parent, false);
         } else {
-            ImageView imageView = new ImageView(getActivity());
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            if (getConfig().mBackgroundBitmap != null) {
-                imageView.setImageBitmap(getConfig().mBackgroundBitmap);
-                if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
-                    imageView.setColorFilter(getConfig().mBackgroundColor);
-                }
-            } else if (getConfig().mBackgroundDrawable != null) {
-                imageView.setImageDrawable(getConfig().mBackgroundDrawable);
-                if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
-                    imageView.setColorFilter(getConfig().mBackgroundColor);
-                }
-            } else if (getConfig().mBackgroundResource != -1) {
-                imageView.setImageResource(getConfig().mBackgroundResource);
-                if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
-                    imageView.setColorFilter(getConfig().mBackgroundColor);
-                }
-            } else if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
-                imageView.setImageDrawable(new ColorDrawable(getConfig().mBackgroundColor));
-            } else if (getConfig().mBackgroundDimAmount != -1) {
-                int color = Color.argb((int) (255 * Utils.floatRange01(getConfig().mBackgroundDimAmount)), 0, 0, 0);
-                imageView.setImageDrawable(new ColorDrawable(color));
-            } else {
-                imageView.setImageDrawable(new ColorDrawable(Color.TRANSPARENT));
-            }
-            background = imageView;
+            View view = new View(getActivity());
+            view.setBackgroundColor(getConfig().mBackgroundColor);
+            background = view;
         }
         return background;
     }
@@ -220,7 +193,7 @@ public class DialogLayer extends DecorLayer {
     @NonNull
     protected Animator onCreateDefBackgroundInAnimator(@NonNull View view) {
         Animator animator = AnimatorHelper.createAlphaInAnim(view);
-        animator.setDuration(mAnimDurDef);
+        animator.setDuration(ANIM_DUR_DEF);
         return animator;
     }
 
@@ -230,45 +203,7 @@ public class DialogLayer extends DecorLayer {
         if (getConfig().mContentAnimatorCreator != null) {
             contentAnimator = getConfig().mContentAnimatorCreator.createInAnimator(view);
         } else {
-            if (getConfig().mAnimStyle != null) {
-                switch (getConfig().mAnimStyle) {
-                    case ALPHA:
-                        contentAnimator = AnimatorHelper.createAlphaInAnim(view);
-                        break;
-                    case ZOOM:
-                        contentAnimator = AnimatorHelper.createZoomInAnim(view);
-                        break;
-                    case LEFT:
-                        contentAnimator = AnimatorHelper.createLeftInAnim(view);
-                        break;
-                    case RIGHT:
-                        contentAnimator = AnimatorHelper.createRightInAnim(view);
-                        break;
-                    case TOP:
-                        contentAnimator = AnimatorHelper.createTopInAnim(view);
-                        break;
-                    case BOTTOM:
-                        contentAnimator = AnimatorHelper.createBottomInAnim(view);
-                        break;
-                    default:
-                        contentAnimator = onCreateDefContentInAnimator(view);
-                        break;
-                }
-            } else {
-                int swipeDirection = getConfig().mSwipeDirection;
-                if ((swipeDirection & SwipeLayout.Direction.LEFT) != 0) {
-                    contentAnimator = AnimatorHelper.createLeftInAnim(view);
-                } else if ((swipeDirection & SwipeLayout.Direction.TOP) != 0) {
-                    contentAnimator = AnimatorHelper.createTopInAnim(view);
-                } else if ((swipeDirection & SwipeLayout.Direction.RIGHT) != 0) {
-                    contentAnimator = AnimatorHelper.createRightInAnim(view);
-                } else if ((swipeDirection & SwipeLayout.Direction.BOTTOM) != 0) {
-                    contentAnimator = AnimatorHelper.createBottomInAnim(view);
-                } else {
-                    contentAnimator = onCreateDefContentInAnimator(view);
-                }
-            }
-            contentAnimator.setDuration(mAnimDurDef);
+            contentAnimator = onCreateDefContentInAnimator(view);
         }
         return contentAnimator;
     }
@@ -276,7 +211,7 @@ public class DialogLayer extends DecorLayer {
     @NonNull
     protected Animator onCreateDefContentInAnimator(@NonNull View view) {
         Animator animator = AnimatorHelper.createZoomAlphaInAnim(view);
-        animator.setDuration(mAnimDurDef);
+        animator.setDuration(ANIM_DUR_DEF);
         return animator;
     }
 
@@ -307,7 +242,7 @@ public class DialogLayer extends DecorLayer {
     @NonNull
     protected Animator onCreateDefBackgroundOutAnimator(@NonNull View view) {
         Animator animator = AnimatorHelper.createAlphaOutAnim(view);
-        animator.setDuration(mAnimDurDef);
+        animator.setDuration(ANIM_DUR_DEF);
         return animator;
     }
 
@@ -317,45 +252,7 @@ public class DialogLayer extends DecorLayer {
         if (getConfig().mContentAnimatorCreator != null) {
             contentAnimator = getConfig().mContentAnimatorCreator.createOutAnimator(view);
         } else {
-            if (getConfig().mAnimStyle != null) {
-                switch (getConfig().mAnimStyle) {
-                    case ALPHA:
-                        contentAnimator = AnimatorHelper.createAlphaOutAnim(view);
-                        break;
-                    case ZOOM:
-                        contentAnimator = AnimatorHelper.createZoomOutAnim(view);
-                        break;
-                    case LEFT:
-                        contentAnimator = AnimatorHelper.createLeftOutAnim(view);
-                        break;
-                    case RIGHT:
-                        contentAnimator = AnimatorHelper.createRightOutAnim(view);
-                        break;
-                    case TOP:
-                        contentAnimator = AnimatorHelper.createTopOutAnim(view);
-                        break;
-                    case BOTTOM:
-                        contentAnimator = AnimatorHelper.createBottomOutAnim(view);
-                        break;
-                    default:
-                        contentAnimator = onCreateDefContentOutAnimator(view);
-                        break;
-                }
-            } else {
-                int swipeDirection = getConfig().mSwipeDirection;
-                if ((swipeDirection & SwipeLayout.Direction.LEFT) != 0) {
-                    contentAnimator = AnimatorHelper.createLeftOutAnim(view);
-                } else if ((swipeDirection & SwipeLayout.Direction.TOP) != 0) {
-                    contentAnimator = AnimatorHelper.createTopOutAnim(view);
-                } else if ((swipeDirection & SwipeLayout.Direction.RIGHT) != 0) {
-                    contentAnimator = AnimatorHelper.createRightOutAnim(view);
-                } else if ((swipeDirection & SwipeLayout.Direction.BOTTOM) != 0) {
-                    contentAnimator = AnimatorHelper.createBottomOutAnim(view);
-                } else {
-                    contentAnimator = onCreateDefContentOutAnimator(view);
-                }
-            }
-            contentAnimator.setDuration(mAnimDurDef);
+            contentAnimator = onCreateDefContentOutAnimator(view);
         }
         return contentAnimator;
     }
@@ -363,7 +260,7 @@ public class DialogLayer extends DecorLayer {
     @NonNull
     protected Animator onCreateDefContentOutAnimator(@NonNull View view) {
         Animator animator = AnimatorHelper.createZoomAlphaOutAnim(view);
-        animator.setDuration(mAnimDurDef);
+        animator.setDuration(ANIM_DUR_DEF);
         return animator;
     }
 
@@ -675,17 +572,6 @@ public class DialogLayer extends DecorLayer {
     }
 
     /**
-     * 自定义浮层进入和退出动画样式
-     *
-     * @param animStyle AnimStyle
-     */
-    @NonNull
-    public DialogLayer setAnimStyle(@Nullable AnimStyle animStyle) {
-        getConfig().mAnimStyle = animStyle;
-        return this;
-    }
-
-    /**
      * 自定义浮层的进入和退出动画
      * 可使用工具类{@link AnimatorHelper}
      *
@@ -710,24 +596,13 @@ public class DialogLayer extends DecorLayer {
     }
 
     /**
-     * 设置背景图片
-     *
-     * @param bitmap 图片
-     */
-    @NonNull
-    public DialogLayer setBackgroundBitmap(@Nullable Bitmap bitmap) {
-        getConfig().mBackgroundBitmap = bitmap;
-        return this;
-    }
-
-    /**
      * 设置背景变暗程度
      *
      * @param dimAmount 变暗程度 0~1
      */
     @NonNull
     public DialogLayer setBackgroundDimAmount(@FloatRange(from = 0F, to = 1F) float dimAmount) {
-        getConfig().mBackgroundDimAmount = Utils.floatRange01(dimAmount);
+        getConfig().mBackgroundColor = Color.argb((int) (dimAmount * 255), 0, 0, 0);
         return this;
     }
 
@@ -736,36 +611,12 @@ public class DialogLayer extends DecorLayer {
      */
     @NonNull
     public DialogLayer setBackgroundDimDefault() {
-        return setBackgroundDimAmount(0.6F);
+        return setBackgroundDimAmount(DIM_AMOUNT_DEF);
     }
 
-    /**
-     * 设置背景资源
-     *
-     * @param resource 资源ID
-     */
-    @NonNull
-    public DialogLayer setBackgroundResource(@DrawableRes int resource) {
-        getConfig().mBackgroundResource = resource;
-        return this;
-    }
-
-    /**
-     * 设置背景Drawable
-     *
-     * @param drawable Drawable
-     */
-    @NonNull
-    public DialogLayer setBackgroundDrawable(@Nullable Drawable drawable) {
-        getConfig().mBackgroundDrawable = drawable;
-        return this;
-    }
 
     /**
      * 设置背景颜色
-     * 在调用了{@link #setBackgroundBitmap(Bitmap)}方法后
-     * 该颜色值将调用imageView.setColorFilter(backgroundColor)设置
-     * 建议此时传入的颜色为半透明颜色
      *
      * @param colorInt 颜色值
      */
@@ -777,9 +628,6 @@ public class DialogLayer extends DecorLayer {
 
     /**
      * 设置背景颜色
-     * 在调用了{@link #setBackgroundBitmap(Bitmap)}方法后
-     * 该颜色值将调用imageView.setColorFilter(backgroundColor)设置
-     * 建议此时传入的颜色为半透明颜色
      *
      * @param colorRes 颜色资源ID
      */
@@ -933,29 +781,20 @@ public class DialogLayer extends DecorLayer {
         protected AnimatorCreator mBackgroundAnimatorCreator = null;
         @Nullable
         protected AnimatorCreator mContentAnimatorCreator = null;
-        @Nullable
-        protected AnimStyle mAnimStyle = null;
 
         protected View mContentView = null;
         protected int mContentViewId = -1;
 
         protected View mBackgroundView = null;
         protected int mBackgroundViewId = -1;
+        @ColorInt
+        protected int mBackgroundColor = Color.TRANSPARENT;
 
         protected boolean mCancelableOnTouchOutside = true;
 
         protected boolean mAvoidStatusBar = false;
 
         protected int mGravity = Gravity.CENTER;
-        @Nullable
-        protected Bitmap mBackgroundBitmap = null;
-        protected int mBackgroundResource = -1;
-        @Nullable
-        protected Drawable mBackgroundDrawable = null;
-        protected float mBackgroundDimAmount = -1;
-        @ColorInt
-        protected int mBackgroundColor = Color.TRANSPARENT;
-
         @SwipeLayout.Direction
         protected int mSwipeDirection = 0;
         @Nullable
@@ -1061,14 +900,5 @@ public class DialogLayer extends DecorLayer {
         void onClose(@NonNull DialogLayer layer, @Px int height);
 
         void onHeightChange(@NonNull DialogLayer layer, @Px int height);
-    }
-
-    public enum AnimStyle {
-        ALPHA,
-        ZOOM,
-        LEFT,
-        RIGHT,
-        TOP,
-        BOTTOM
     }
 }

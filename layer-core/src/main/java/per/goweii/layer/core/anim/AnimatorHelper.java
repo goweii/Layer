@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnimatorHelper {
-
     public static final float ZOOM_PERCENT = 0.9F;
     public static final float MOVE_PERCENT = 0.9F;
     public static final float INTERPOLATOR_FACTOR_1 = 1.5F;

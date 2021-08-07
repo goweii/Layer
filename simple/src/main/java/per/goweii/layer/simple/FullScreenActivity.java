@@ -18,9 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import per.goweii.layer.core.Layer;
+import per.goweii.layer.core.anim.AnimStyle;
 import per.goweii.layer.core.anim.AnimatorHelper;
 import per.goweii.layer.core.anim.CircularRevealAnimatorCreator;
-import per.goweii.layer.core.anim.SimpleAnimatorCreator;
 import per.goweii.layer.core.widget.SwipeLayout;
 import per.goweii.layer.design.cupertino.CupertinoToastLayer;
 import per.goweii.layer.dialog.DialogLayer;
@@ -424,7 +424,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM))
+                        .setContentAnimator(AnimStyle.BOTTOM)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -432,7 +432,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM_ALPHA))
+                        .setContentAnimator(AnimStyle.BOTTOM_ALPHA)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -440,7 +440,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM_ZOOM_ALPHA))
+                        .setContentAnimator(AnimStyle.BOTTOM_ZOOM_ALPHA)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -448,7 +448,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.TOP))
+                        .setContentAnimator(AnimStyle.TOP)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -456,7 +456,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.TOP_ALPHA))
+                        .setContentAnimator(AnimStyle.TOP_ALPHA)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -464,7 +464,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.LEFT))
+                        .setContentAnimator(AnimStyle.LEFT)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -472,7 +472,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.LEFT_ALPHA))
+                        .setContentAnimator(AnimStyle.LEFT_ALPHA)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -480,7 +480,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.RIGHT))
+                        .setContentAnimator(AnimStyle.RIGHT)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -488,7 +488,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                 new DialogLayer(FullScreenActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.RIGHT_ALPHA))
+                        .setContentAnimator(AnimStyle.RIGHT_ALPHA)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -499,7 +499,7 @@ public class FullScreenActivity extends AppCompatActivity implements View.OnClic
                         .setContentAnimator(
                                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                                         ? new CircularRevealAnimatorCreator()
-                                        : new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.ALPHA)
+                                        : AnimStyle.ALPHA
                         )
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();

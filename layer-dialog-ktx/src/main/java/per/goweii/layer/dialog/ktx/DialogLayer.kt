@@ -4,8 +4,10 @@ import android.animation.Animator
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.view.View
+import android.widget.ImageView
 import androidx.annotation.*
 import per.goweii.layer.core.Layer
+import per.goweii.layer.core.anim.AnimStyle
 import per.goweii.layer.core.widget.SwipeLayout
 import per.goweii.layer.dialog.DefaultDialogOnSwipeListener
 import per.goweii.layer.dialog.DialogLayer
@@ -72,8 +74,8 @@ fun <T : DialogLayer> T.onSwipeEnd(onEnd: T.(direction: Int) -> Unit) = this.app
     })
 }
 
-fun <T : DialogLayer> T.animStyle(animStyle: DialogLayer.AnimStyle?) = this.apply {
-    this.setAnimStyle(animStyle)
+fun <T : DialogLayer> T.animStyle(animStyle: AnimStyle?) = this.apply {
+    this.setContentAnimator(animStyle)
 }
 
 fun <T : DialogLayer, R : Animator?> T.contentAnimator(
@@ -114,10 +116,6 @@ fun <T : DialogLayer> T.backgroundAnimator(creator: Layer.AnimatorCreator) = thi
     this.setBackgroundAnimator(creator)
 }
 
-fun <T : DialogLayer> T.backgroundBitmap(bitmap: Bitmap) = this.apply {
-    this.setBackgroundBitmap(bitmap)
-}
-
 fun <T : DialogLayer> T.backgroundDimAmount(@FloatRange(from = 0.0, to = 1.0) dimAmount: Float) = this.apply {
     this.setBackgroundDimAmount(dimAmount)
 }
@@ -126,12 +124,25 @@ fun <T : DialogLayer> T.backgroundDimDefault() = this.apply {
     this.setBackgroundDimDefault()
 }
 
+fun <T : DialogLayer> T.backgroundBitmap(bitmap: Bitmap) = this.apply {
+    this.setBackgroundView(ImageView(activity).also {
+        it.scaleType = ImageView.ScaleType.CENTER_CROP
+        it.setImageBitmap(bitmap)
+    })
+}
+
 fun <T : DialogLayer> T.backgroundResource(@DrawableRes resource: Int) = this.apply {
-    this.setBackgroundResource(resource)
+    this.setBackgroundView(ImageView(activity).also {
+        it.scaleType = ImageView.ScaleType.CENTER_CROP
+        it.setImageResource(resource)
+    })
 }
 
 fun <T : DialogLayer> T.backgroundDrawable(drawable: Drawable?) = this.apply {
-    this.setBackgroundDrawable(drawable)
+    this.setBackgroundView(ImageView(activity).also {
+        it.scaleType = ImageView.ScaleType.CENTER_CROP
+        it.setImageDrawable(drawable)
+    })
 }
 
 fun <T : DialogLayer> T.backgroundColorInt(@ColorInt colorInt: Int) = this.apply {

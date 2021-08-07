@@ -17,9 +17,9 @@ import androidx.cardview.widget.CardView;
 import java.util.Random;
 
 import per.goweii.layer.core.Layer;
-import per.goweii.layer.core.anim.CircularRevealAnimatorCreator;
-import per.goweii.layer.core.anim.SimpleAnimatorCreator;
+import per.goweii.layer.core.anim.AnimStyle;
 import per.goweii.layer.core.anim.AnimatorHelper;
+import per.goweii.layer.core.anim.CircularRevealAnimatorCreator;
 import per.goweii.layer.design.cupertino.CupertinoToastLayer;
 import per.goweii.layer.design.material.MaterialNotificationLayer;
 import per.goweii.layer.dialog.DialogLayer;
@@ -193,7 +193,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.tv_show_target_full:
                 new PopupLayer(findViewById(R.id.tv_show_target_full))
                         .setContentView(R.layout.dialog_fullscreen)
-                        .setAnimStyle(DialogLayer.AnimStyle.TOP)
+                        .setContentAnimator(AnimStyle.TOP)
                         .show();
                 break;
             case R.id.tv_show_target_right:
@@ -202,7 +202,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                             .setAlign(Align.Direction.HORIZONTAL, Align.Horizontal.TO_RIGHT, Align.Vertical.CENTER, false)
                             .setOutsideInterceptTouchEvent(false)
                             .setContentView(R.layout.popup_normal)
-                            .setAnimStyle(DialogLayer.AnimStyle.LEFT);
+                            .setContentAnimator(AnimStyle.LEFT);
                 }
                 if (anyLayer_show_target_right_shown) {
                     anyLayer_show_target_right_shown = false;
@@ -216,7 +216,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 new PopupLayer(findViewById(R.id.tv_show_target_left))
                         .setAlign(Align.Direction.HORIZONTAL, Align.Horizontal.TO_LEFT, Align.Vertical.CENTER, true)
                         .setContentView(R.layout.popup_normal)
-                        .setAnimStyle(DialogLayer.AnimStyle.RIGHT)
+                        .setContentAnimator(AnimStyle.RIGHT)
                         .show();
                 break;
             case R.id.tv_show_target_top:
@@ -225,7 +225,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .setContentView(R.layout.popup_match_width)
                         .setBackgroundDimDefault()
                         .setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL)
-                        .setAnimStyle(DialogLayer.AnimStyle.BOTTOM)
+                        .setContentAnimator(AnimStyle.BOTTOM)
                         .show();
                 break;
             case R.id.tv_show_target_bottom:
@@ -274,7 +274,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM))
+                        .setContentAnimator(AnimStyle.BOTTOM)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -282,7 +282,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM_ALPHA))
+                        .setContentAnimator(AnimStyle.BOTTOM_ALPHA)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -290,7 +290,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.BOTTOM_ZOOM_ALPHA))
+                        .setContentAnimator(AnimStyle.BOTTOM_ZOOM_ALPHA)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -298,7 +298,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.TOP))
+                        .setContentAnimator(AnimStyle.TOP)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -306,7 +306,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.TOP_ALPHA))
+                        .setContentAnimator(AnimStyle.TOP_ALPHA)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -314,7 +314,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.LEFT))
+                        .setContentAnimator(AnimStyle.LEFT)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -322,7 +322,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.LEFT_ALPHA))
+                        .setContentAnimator(AnimStyle.LEFT_ALPHA)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -330,7 +330,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.RIGHT))
+                        .setContentAnimator(AnimStyle.RIGHT)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -338,7 +338,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                 new DialogLayer(NormalActivity.this)
                         .setContentView(R.layout.dialog_normal)
                         .setBackgroundDimDefault()
-                        .setContentAnimator(new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.RIGHT_ALPHA))
+                        .setContentAnimator(AnimStyle.RIGHT_ALPHA)
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();
                 break;
@@ -349,7 +349,7 @@ public class NormalActivity extends AppCompatActivity implements View.OnClickLis
                         .setContentAnimator(
                                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
                                         ? new CircularRevealAnimatorCreator()
-                                        : new SimpleAnimatorCreator(SimpleAnimatorCreator.AnimStyle.ALPHA)
+                                        : AnimStyle.ALPHA
                         )
                         .addOnClickToDismissListener(R.id.fl_dialog_yes, R.id.fl_dialog_no)
                         .show();

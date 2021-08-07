@@ -13,9 +13,6 @@ import java.util.List;
 
 import per.goweii.layer.core.Layer;
 
-/**
- * @author CuiZhen
- */
 public class CommonAnimatorCreator implements Layer.AnimatorCreator {
 
     public interface Attr {
