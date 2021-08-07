@@ -1,14 +1,15 @@
 package per.goweii.layer.overlay.ktx
 
 import android.view.View
+import androidx.annotation.FloatRange
 import androidx.annotation.LayoutRes
 import per.goweii.layer.overlay.OverlayLayer
 
-fun <T : OverlayLayer> T.floatView(@LayoutRes layoutId: Int) = this.apply {
+fun <T : OverlayLayer> T.overlayView(@LayoutRes layoutId: Int) = this.apply {
     this.setOverlayView(layoutId)
 }
 
-fun <T : OverlayLayer> T.floatView(floatView: View) = this.apply {
+fun <T : OverlayLayer> T.overlayView(floatView: View) = this.apply {
     this.setOverlayView(floatView)
 }
 
@@ -20,7 +21,7 @@ fun <T : OverlayLayer> T.defPercentY(p: Float) = this.apply {
     this.setDefPercentY(p)
 }
 
-fun <T : OverlayLayer> T.defAlpha(alpha: Float) = this.apply {
+fun <T : OverlayLayer> T.defAlpha(@FloatRange(from = 0.0, to = 1.0) alpha: Float) = this.apply {
     this.setDefAlpha(alpha)
 }
 
@@ -28,7 +29,7 @@ fun <T : OverlayLayer> T.defScale(scale: Float) = this.apply {
     this.setDefScale(scale)
 }
 
-fun <T : OverlayLayer> T.normalAlpha(alpha: Float) = this.apply {
+fun <T : OverlayLayer> T.normalAlpha(@FloatRange(from = 0.0, to = 1.0) alpha: Float) = this.apply {
     this.setNormalAlpha(alpha)
 }
 
@@ -36,7 +37,7 @@ fun <T : OverlayLayer> T.normalScale(scale: Float) = this.apply {
     this.setNormalScale(scale)
 }
 
-fun <T : OverlayLayer> T.lowProfileAlpha(alpha: Float) = this.apply {
+fun <T : OverlayLayer> T.lowProfileAlpha(@FloatRange(from = 0.0, to = 1.0)alpha: Float) = this.apply {
     this.setLowProfileAlpha(alpha)
 }
 
@@ -44,7 +45,7 @@ fun <T : OverlayLayer> T.lowProfileScale(scale: Float) = this.apply {
     this.setLowProfileScale(scale)
 }
 
-fun <T : OverlayLayer> T.lowProfileIndent(indent: Float) = this.apply {
+fun <T : OverlayLayer> T.lowProfileIndent(@FloatRange(from = 0.0, to = 1.0) indent: Float) = this.apply {
     this.setLowProfileIndent(indent)
 }
 

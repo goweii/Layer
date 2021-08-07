@@ -3,6 +3,7 @@ package per.goweii.layer.notification;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -90,10 +91,13 @@ public class NotificationLayer extends DecorLayer {
                 ViewGroup.LayoutParams.MATCH_PARENT
         ));
         MaxSizeFrameLayout contentWrapper = new MaxSizeFrameLayout(context);
-        contentWrapper.setLayoutParams(new ViewGroup.LayoutParams(
+        contentWrapper.setMaxWidth(Math.min(Utils.getScreenWidth(context), Utils.getScreenHeight(context)));
+        FrameLayout.LayoutParams contentWrapperLayoutParams = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
+        );
+        contentWrapperLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+        contentWrapper.setLayoutParams(contentWrapperLayoutParams);
         getViewHolder().setContentWrapper(contentWrapper);
         container.addView(contentWrapper);
         if (getViewHolder().getContentNullable() == null) {
@@ -185,6 +189,7 @@ public class NotificationLayer extends DecorLayer {
             getViewHolder().getContentWrapper().setMaxHeight(getConfig().mMaxHeight);
         }
         getViewHolder().getContent().setVisibility(View.VISIBLE);
+        getViewHolder().getContent().setClickable(true);
         getViewHolder().getContentWrapper().setOnDispatchTouchListener(new MaxSizeFrameLayout.OnDispatchTouchListener() {
             @Override
             public void onDispatch(MotionEvent e) {

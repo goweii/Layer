@@ -196,11 +196,12 @@ public class KeyboardLayer extends DialogLayer {
         return getConfig().mInputType;
     }
 
-    public void setInputType(@NonNull InputType inputType) {
+    public KeyboardLayer setInputType(@NonNull InputType inputType) {
         if (getConfig().mInputType != inputType) {
             getConfig().mInputType = inputType;
             refreshInputType();
         }
+        return this;
     }
 
     public void refreshInputType() {

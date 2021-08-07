@@ -269,7 +269,7 @@ public class OverlayLayer extends DecorLayer {
         return this;
     }
 
-    public OverlayLayer setDefAlpha(float alpha) {
+    public OverlayLayer setDefAlpha(@FloatRange(from = 0.0, to = 1.0) float alpha) {
         getConfig().mDefAlpha = alpha;
         return this;
     }
@@ -289,7 +289,7 @@ public class OverlayLayer extends DecorLayer {
         return this;
     }
 
-    public OverlayLayer setNormalAlpha(float alpha) {
+    public OverlayLayer setNormalAlpha(@FloatRange(from = 0.0, to = 1.0) float alpha) {
         getConfig().mNormalAlpha = alpha;
         return this;
     }
@@ -299,7 +299,7 @@ public class OverlayLayer extends DecorLayer {
         return this;
     }
 
-    public OverlayLayer setLowProfileAlpha(float alpha) {
+    public OverlayLayer setLowProfileAlpha(@FloatRange(from = 0.0, to = 1.0) float alpha) {
         getConfig().mLowProfileAlpha = alpha;
         return this;
     }
@@ -309,7 +309,7 @@ public class OverlayLayer extends DecorLayer {
         return this;
     }
 
-    public OverlayLayer setLowProfileIndent(float indent) {
+    public OverlayLayer setLowProfileIndent(@FloatRange(from = 0.0, to = 1.0) float indent) {
         getConfig().mLowProfileIndent = indent;
         return this;
     }
@@ -529,10 +529,10 @@ public class OverlayLayer extends DecorLayer {
         private float mNormalScale = 1F;
         @IntRange(from = 0)
         private long mLowProfileDelay = 3000L;
-        @FloatRange(from = 0F, to = 1F)
+        @FloatRange(from = 0, to = 1)
         private float mLowProfileAlpha = 0.8F;
         private float mLowProfileScale = 1F;
-        @FloatRange(from = 0F, to = 1F)
+        @FloatRange(from = 0, to = 1)
         private float mLowProfileIndent = 0F;
 
         private Integer mMarginLeft = null;

@@ -4,7 +4,6 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.IdRes
-import per.goweii.layer.core.Layer
 import per.goweii.layer.guide.GuideLayer
 
 fun <T : GuideLayer> T.backgroundColorInt(@ColorInt colorInt: Int) = this.apply {
@@ -23,6 +22,9 @@ fun <T : GuideLayer> T.mapping(init: GuideLayer.Mapping.() -> Unit) = this.apply
     this.addMapping(GuideLayer.Mapping().apply { init() })
 }
 
-fun GuideLayer.Mapping.onClick(@IdRes viewId: Int, onClickListener: GuideLayer.Mapping.(view: View) -> Unit) = this.apply {
-    this.addOnClickListener(Layer.OnClickListener { _, v -> this.onClickListener(v) }, viewId)
+fun GuideLayer.Mapping.onClick(@IdRes viewId: Int, onClickListener: GuideLayer.(view: View) -> Unit) = this.apply {
+    this.addOnClickListener({ layer, v ->
+        layer as GuideLayer
+        layer.onClickListener(v)
+    }, viewId)
 }

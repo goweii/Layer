@@ -12,30 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="per.goweii.layer.simple.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="per.goweii.layer.simple.NormalActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:configChanges="orientation|screenSize|keyboard|smallestScreenSize|screenLayout" />
-        <activity
-            android:name="per.goweii.layer.simple.FullScreenActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:configChanges="orientation|screenSize|keyboard|smallestScreenSize|screenLayout"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="per.goweii.layer.simple.CommonActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:configChanges="orientation|screenSize|keyboard|smallestScreenSize|screenLayout"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="per.goweii.layer.simple.DragActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:configChanges="orientation|screenSize|keyboard|smallestScreenSize|screenLayout" />
+            android:name=".LayerSimpleActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|keyboardHidden|keyboard" />
     </application>
 
 </manifest>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_dialog"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnDialogClick"
+            android:text="Dialog" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_bottom_sheet"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnBottomSheetClick"
+            android:text="Bottom Sheet" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_slide_panel"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnSlidePanelClick"
+            android:text="Slide Panel" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_input"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnInputClick"
+            android:text="Input" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_popup"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnPopupClick"
+            android:text="Popup" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_toast"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnToastClick"
+            android:text="Toast" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_notification"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnNotificationClick"
+            android:text="Notification" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_guide"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnGuideClick"
+            android:text="Guide" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_keyboard"
+            style="@style/ListBtnStyle"
+            android:onClick="onBtnKeyboardClick"
+            android:text="Keyboard" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

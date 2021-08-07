@@ -16,8 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="菜单1"
-            android:textColor="#fff"
+            android:text="@string/popup_menu_item"
+            android:textColor="@color/textColorPrimary"
             android:textSize="15sp" />
 
         <View
@@ -37,8 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="菜单2"
-            android:textColor="#fff"
+            android:text="@string/popup_menu_item"
+            android:textColor="@color/textColorPrimary"
             android:textSize="15sp" />
 
         <View
@@ -58,8 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="菜单3"
-            android:textColor="#fff"
+            android:text="@string/popup_menu_item"
+            android:textColor="@color/textColorPrimary"
             android:textSize="15sp" />
 
         <View
@@ -79,8 +79,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="菜单4"
-            android:textColor="#fff"
+            android:text="@string/popup_menu_item"
+            android:textColor="@color/textColorPrimary"
             android:textSize="15sp" />
 
         <View
@@ -100,8 +100,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:text="菜单5"
-            android:textColor="#fff"
+            android:text="@string/popup_menu_item"
+            android:textColor="@color/textColorPrimary"
             android:textSize="15sp" />
 
     </LinearLayout>

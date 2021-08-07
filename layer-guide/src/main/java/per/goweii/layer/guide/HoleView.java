@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
 
+import per.goweii.layer.core.utils.Utils;
+
 public class HoleView extends View {
     private final Paint mPaint;
     private final Path mTempPath = new Path();
@@ -60,6 +62,7 @@ public class HoleView extends View {
     }
 
     public void addRect(@NonNull RectF rectF, float radii) {
+        radii = Utils.floatRange(radii, 0F, Math.min(rectF.width(), rectF.height()) / 2F);
         mTempPath.addRoundRect(
                 rectF,
                 new float[]{radii, radii, radii, radii, radii, radii, radii, radii},

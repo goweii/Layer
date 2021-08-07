@@ -18,7 +18,6 @@ import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.ColorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -375,7 +374,7 @@ public class GuideLayer extends DecorLayer {
 
     protected static class Config extends DecorLayer.Config {
         @ColorInt
-        protected int mBackgroundColor = ColorUtils.setAlphaComponent(Color.BLACK, (int) (255 * 0.6));
+        protected int mBackgroundColor = Color.argb((int) (255 * 0.6), 0, 0, 0);
         protected final List<Mapping> mMapping = new ArrayList<>(1);
     }
 

@@ -20,8 +20,8 @@ import per.goweii.layer.core.Layer;
 public class DelayedZoomAnimatorCreator implements Layer.AnimatorCreator {
     private boolean mUsePercentX = true;
     private boolean mUsePercentY = true;
-    private float mCenterPercentX = 0.5F;
-    private float mCenterPercentY = 0.5F;
+    private float mCenterPercentX = 0.0F;
+    private float mCenterPercentY = 0.0F;
     private int mCenterX = 0;
     private int mCenterY = 0;
 

@@ -58,6 +58,14 @@ public final class Utils {
         return 0;
     }
 
+    public static int getScreenWidth(@NonNull Context context) {
+        return context.getResources().getDisplayMetrics().widthPixels;
+    }
+
+    public static int getScreenHeight(@NonNull Context context) {
+        return context.getResources().getDisplayMetrics().heightPixels;
+    }
+
     /**
      * 从当前上下文获取Activity
      */

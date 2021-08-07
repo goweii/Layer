@@ -159,7 +159,7 @@ public class DialogLayer extends DecorLayer {
         } else {
             contentParams = new FrameLayout.LayoutParams(layoutParams.width, layoutParams.height);
         }
-        if (getConfig().mGravity != -1) {
+        if (getConfig().mGravity != Gravity.NO_GRAVITY) {
             contentParams.gravity = getConfig().mGravity;
         }
         content.setLayoutParams(contentParams);
@@ -794,7 +794,7 @@ public class DialogLayer extends DecorLayer {
 
         protected boolean mAvoidStatusBar = false;
 
-        protected int mGravity = Gravity.CENTER;
+        protected int mGravity = Gravity.NO_GRAVITY;
         @SwipeLayout.Direction
         protected int mSwipeDirection = 0;
         @Nullable
