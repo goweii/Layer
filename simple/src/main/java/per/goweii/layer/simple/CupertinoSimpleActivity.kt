@@ -5,8 +5,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import per.goweii.layer.design.cupertino.CupertinoAlertLayer
 import per.goweii.layer.design.cupertino.CupertinoNotificationLayer
+import per.goweii.layer.design.cupertino.CupertinoPopoverLayer
 import per.goweii.layer.design.cupertino.CupertinoToastLayer
-import per.goweii.layer.design.material.MaterialNotificationLayer
+import per.goweii.layer.dialog.ktx.contentView
+import per.goweii.layer.popup.PopupLayer
+import per.goweii.layer.popup.ktx.direction
+import per.goweii.layer.popup.ktx.horizontal
+import per.goweii.layer.popup.ktx.vertical
 
 class CupertinoSimpleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +36,11 @@ class CupertinoSimpleActivity : AppCompatActivity() {
     }
 
     fun onBtnPopoverClick(view: View) {
+        CupertinoPopoverLayer(view)
+                .contentView(R.layout.popup_meun)
+                .setArrowDefault()
+                .setSolidColor(resources.getColor(R.color.colorPopupBg))
+                .show()
     }
 
     fun onBtnModalityClick(view: View) {

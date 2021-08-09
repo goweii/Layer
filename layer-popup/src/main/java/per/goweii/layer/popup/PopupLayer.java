@@ -90,13 +90,13 @@ public class PopupLayer extends DialogLayer {
     @NonNull
     @Override
     protected Animator onCreateDefContentInAnimator(@NonNull View view) {
-        return AnimatorHelper.createTopInAnim(view);
+        return AnimatorHelper.createZoomAlphaInAnim(view);
     }
 
     @NonNull
     @Override
     protected Animator onCreateDefContentOutAnimator(@NonNull View view) {
-        return AnimatorHelper.createTopOutAnim(view);
+        return AnimatorHelper.createZoomAlphaOutAnim(view);
     }
 
     @CallSuper

@@ -5,4 +5,5 @@
     <color name="colorAccent">#F62343</color>
     <color name="textColor">#B3000000</color>
     <color name="textColorPrimary">#FFFFFF</color>
+    <color name="colorPopupBg">#222222</color>
 </resources>

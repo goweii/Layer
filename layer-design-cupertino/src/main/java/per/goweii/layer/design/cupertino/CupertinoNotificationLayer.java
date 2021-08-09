@@ -32,14 +32,19 @@ import per.goweii.layer.visualeffectview.BackdropBlurView;
 public class CupertinoNotificationLayer extends NotificationLayer {
     public CupertinoNotificationLayer(@NonNull Context context) {
         super(context);
+        init();
     }
 
     public CupertinoNotificationLayer(@NonNull Activity activity) {
         super(activity);
+        init();
+    }
+
+    private void init() {
         setContentBlurSimple(8F);
         setContentBlurRadius(10F);
         setContentBlurColorRes(R.color.layer_design_cupertino_color_notification_blur_overlay);
-        setContentBlurCornerRadiusPx(activity.getResources().getDimensionPixelSize(R.dimen.layer_design_cupertino_corner_radius_big));
+        setContentBlurCornerRadiusPx(getActivity().getResources().getDimensionPixelSize(R.dimen.layer_design_cupertino_corner_radius_big));
     }
 
     @NonNull

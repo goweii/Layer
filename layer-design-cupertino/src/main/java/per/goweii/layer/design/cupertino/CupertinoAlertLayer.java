@@ -29,16 +29,21 @@ import per.goweii.layer.visualeffectview.BackdropIgnoreView;
 public class CupertinoAlertLayer extends DialogLayer {
     public CupertinoAlertLayer(@NonNull Context context) {
         super(context);
+        init();
     }
 
     public CupertinoAlertLayer(@NonNull Activity activity) {
         super(activity);
+        init();
+    }
+
+    private void init() {
         setContentView(R.layout.layer_design_cupertino_alert);
         setBackgroundDimDefault();
         setContentBlurColorRes(R.color.layer_design_cupertino_color_alert_blur_overlay);
         setContentBlurSimple(8F);
         setContentBlurRadius(10F);
-        setContentBlurCornerRadiusPx(activity.getResources().getDimensionPixelSize(R.dimen.layer_design_cupertino_corner_radius_big));
+        setContentBlurCornerRadiusPx(getActivity().getResources().getDimensionPixelSize(R.dimen.layer_design_cupertino_corner_radius_big));
     }
 
     @NonNull
