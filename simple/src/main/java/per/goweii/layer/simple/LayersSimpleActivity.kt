@@ -98,7 +98,6 @@ class LayersSimpleActivity : AppCompatActivity() {
     fun onBtnPopupClick(view: View) {
         PopupLayer(view)
                 .contentView(R.layout.popup_meun)
-                .contentAnimator(DelayedZoomAnimatorCreator().setCenterPercentX(0.5F))
                 .show()
     }
 

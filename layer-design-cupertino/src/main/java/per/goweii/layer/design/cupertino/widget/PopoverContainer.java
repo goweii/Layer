@@ -64,12 +64,13 @@ public class PopoverContainer extends FrameLayout {
         super(context, attrs, defStyleAttr);
         super.setClipToPadding(true);
         super.setWillNotDraw(false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !isInEditMode()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             super.setClipToOutline(true);
             super.setOutlineProvider(new ViewOutlineProvider() {
                 @Override
                 public void getOutline(View view, Outline outline) {
-                    outline.setPath(mOutlinePath);
+                    //noinspection deprecation
+                    outline.setConvexPath(mOutlinePath);
                 }
             });
         }
