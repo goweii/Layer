@@ -3,10 +3,10 @@ package per.goweii.layer.design.cupertino.widget;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.CornerPathEffect;
 import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -17,7 +17,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.ColorUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -42,12 +41,14 @@ public class PopoverContainer extends FrameLayout {
     private int mArrowHeight = 0;
     private int mCornerRadius = 0;
     private int mSolidColor = Color.TRANSPARENT;
+    private boolean mFitArrowInsetByChildren = false;
 
-    private CornerPathEffect mPathEffect = null;
+    private final ViewOutlineProvider mOutlineProvider;
     private final Path mOutlinePath = new Path();
     private final Path mArrowPath = new Path();
-    private final RectF mRectF = new RectF();
-    private final float[] mRadii = new float[8];
+    private final RectF mRoundRectF = new RectF();
+    private final float[] mRoundRadii = new float[8];
+    private final Rect mArrowInset = new Rect();
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private boolean mOutlineDirty = true;
@@ -62,19 +63,25 @@ public class PopoverContainer extends FrameLayout {
 
     public PopoverContainer(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        super.setClipToPadding(true);
-        super.setWillNotDraw(false);
+        setClipToPadding(true);
+        setWillNotDraw(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            super.setClipToOutline(true);
-            super.setOutlineProvider(new ViewOutlineProvider() {
+            mOutlineProvider = new ViewOutlineProvider() {
                 @Override
                 public void getOutline(View view, Outline outline) {
-                    //noinspection deprecation
-                    outline.setConvexPath(mOutlinePath);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        outline.setPath(mOutlinePath);
+                    } else {
+                        outline.setConvexPath(mOutlinePath);
+                    }
                 }
-            });
+            };
+            setOutlineProvider(mOutlineProvider);
+            setClipToOutline(true);
+        } else {
+            mOutlineProvider = null;
         }
-        fitPaddingByArrowHeight();
+        fitArrowInsetBySelfPadding();
     }
 
     @Override
@@ -86,6 +93,34 @@ public class PopoverContainer extends FrameLayout {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         mOutlineDirty = true;
+    }
+
+    @Override
+    protected int getSuggestedMinimumWidth() {
+        switch (mArrowSide) {
+            case ARROW_SIDE_LEFT:
+            case ARROW_SIDE_RIGHT:
+                return mCornerRadius * 2 + mArrowHeight;
+            case ARROW_SIDE_TOP:
+            case ARROW_SIDE_BOTTOM:
+                return (int) (mCornerRadius * 2 + calcRealHalfArrowWidth() * 2);
+            default:
+                return mCornerRadius * 2;
+        }
+    }
+
+    @Override
+    protected int getSuggestedMinimumHeight() {
+        switch (mArrowSide) {
+            case ARROW_SIDE_LEFT:
+            case ARROW_SIDE_RIGHT:
+                return (int) (mCornerRadius * 2 + calcRealHalfArrowWidth() * 2);
+            case ARROW_SIDE_TOP:
+            case ARROW_SIDE_BOTTOM:
+                return mCornerRadius * 2 + mArrowHeight;
+            default:
+                return mCornerRadius * 2;
+        }
     }
 
     @Override
@@ -103,7 +138,7 @@ public class PopoverContainer extends FrameLayout {
         } else {
             canvas.save();
             canvas.clipPath(mOutlinePath);
-            super.draw(canvas);
+            super.dispatchDraw(canvas);
             canvas.restore();
         }
     }
@@ -112,35 +147,26 @@ public class PopoverContainer extends FrameLayout {
     protected void onDraw(Canvas canvas) {
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mSolidColor);
-        mPaint.setPathEffect(mPathEffect);
         canvas.drawPath(mArrowPath, mPaint);
+
+        mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(mSolidColor);
-        mPaint.setPathEffect(null);
-        canvas.drawRoundRect(mRectF, mCornerRadius, mCornerRadius, mPaint);
+        canvas.drawRoundRect(mRoundRectF, mCornerRadius, mCornerRadius, mPaint);
     }
 
     @Override
-    public void setOutlineProvider(ViewOutlineProvider provider) {
+    public void onViewAdded(View child) {
+        super.onViewAdded(child);
+        if (mFitArrowInsetByChildren) {
+            fitArrowInsetByChildrenPadding();
+        }
     }
 
-    @Override
-    public void setClipToOutline(boolean clipToOutline) {
-    }
-
-    @Override
-    public void setWillNotDraw(boolean willNotDraw) {
-    }
-
-    @Override
-    public void setPadding(int left, int top, int right, int bottom) {
-    }
-
-    @Override
-    public void setPaddingRelative(int start, int top, int end, int bottom) {
-    }
-
-    @Override
-    public void setClipToPadding(boolean clipToPadding) {
+    public void setFitArrowInsetByChildren(boolean fitArrowInsetByChildren) {
+        if (mFitArrowInsetByChildren != fitArrowInsetByChildren) {
+            mFitArrowInsetByChildren = fitArrowInsetByChildren;
+            rebuildOutlinePath();
+        }
     }
 
     public void setArrowSide(@ArrowSide int arrowSide) {
@@ -160,7 +186,6 @@ public class PopoverContainer extends FrameLayout {
     public void setArrowRadius(int arrowRadius) {
         if (mArrowRadius != arrowRadius) {
             mArrowRadius = arrowRadius;
-            mPathEffect = new CornerPathEffect(mArrowRadius);
             rebuildOutlinePath();
         }
     }
@@ -195,41 +220,69 @@ public class PopoverContainer extends FrameLayout {
 
     private void rebuildOutlinePath() {
         mOutlineDirty = true;
-        fitPaddingByArrowHeight();
+        if (mFitArrowInsetByChildren) {
+            fitArrowInsetByChildrenPadding();
+        } else {
+            fitArrowInsetBySelfPadding();
+        }
         invalidate();
     }
 
-    private void fitPaddingByArrowHeight() {
-        int pl = 0, pt = 0, pr = 0, pb = 0;
+    private void fitArrowInsetBySelfPadding() {
+        Rect inset = calcArrowInset();
+        Utils.setViewPadding(this, inset);
+    }
+
+    private void fitArrowInsetByChildrenPadding() {
+        Utils.setViewPadding(this, 0, 0, 0, 0);
+        Rect inset = calcArrowInset();
+        int childCount = getChildCount();
+        int l, t, r, b;
+        for (int i = 0; i < childCount; i++) {
+            View child = getChildAt(i);
+            l = Math.max(inset.left, child.getPaddingLeft());
+            t = Math.max(inset.top, child.getPaddingTop());
+            r = Math.max(inset.right, child.getPaddingRight());
+            b = Math.max(inset.bottom, child.getPaddingBottom());
+            Utils.setViewPadding(child, l, t, r, b);
+        }
+    }
+
+    @SuppressWarnings("SuspiciousNameCombination")
+    @NonNull
+    private Rect calcArrowInset() {
+        mArrowInset.setEmpty();
         switch (mArrowSide) {
             case ARROW_SIDE_TOP:
-                pt = mArrowHeight;
+                mArrowInset.top = mArrowHeight;
                 break;
             case ARROW_SIDE_LEFT:
-                pl = mArrowHeight;
+                mArrowInset.left = mArrowHeight;
                 break;
             case ARROW_SIDE_RIGHT:
-                pr = mArrowHeight;
+                mArrowInset.right = mArrowHeight;
                 break;
             case ARROW_SIDE_BOTTOM:
-                pb = mArrowHeight;
+                mArrowInset.bottom = mArrowHeight;
                 break;
             default:
                 break;
         }
-        if (pl != getPaddingLeft() || pt != getPaddingTop() ||
-                pr != getPaddingRight() || pb != getPaddingBottom()) {
-            super.setPadding(pl, pt, pr, pb);
-        }
+        return mArrowInset;
     }
 
     private void buildOutlinePath() {
-        mRectF.set(getPaddingLeft(), getPaddingTop(), getWidth() - getPaddingRight(), getHeight() - getPaddingBottom());
-        Arrays.fill(mRadii, mCornerRadius);
-        mOutlinePath.reset();
+        mRoundRectF.set(
+                mArrowInset.left,
+                mArrowInset.top,
+                getWidth() - mArrowInset.right,
+                getHeight() - mArrowInset.bottom
+        );
+        Arrays.fill(mRoundRadii, mCornerRadius);
         mOutlinePath.rewind();
-        mArrowPath.reset();
+        mOutlinePath.reset();
         mArrowPath.rewind();
+        mArrowPath.reset();
         switch (mArrowSide) {
             case ARROW_SIDE_LEFT:
                 buildLeftArrow();
@@ -247,54 +300,215 @@ public class PopoverContainer extends FrameLayout {
                 break;
         }
         mOutlinePath.addPath(mArrowPath);
-        mOutlinePath.addRoundRect(mRectF, mRadii, Path.Direction.CW);
+        mOutlinePath.addRoundRect(mRoundRectF, mRoundRadii, Path.Direction.CW);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            invalidateOutline();
+            if (getOutlineProvider() != mOutlineProvider) {
+                setOutlineProvider(mOutlineProvider);
+                setClipToOutline(true);
+            } else {
+                invalidateOutline();
+            }
         }
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     private void buildLeftArrow() {
+        final float arrowRadius = mArrowRadius;
+        final float arrowHeight = mArrowHeight;
         final float halfArrowWidth = getHalfArrowWidth();
         final float realArrowOffset = getRealArrowOffset();
-        mArrowPath.moveTo(mRectF.left, realArrowOffset + halfArrowWidth);
-        mArrowPath.lineTo(mRectF.left, realArrowOffset + halfArrowWidth - mArrowRadius);
-        mArrowPath.lineTo(0, realArrowOffset);
-        mArrowPath.lineTo(mRectF.left, realArrowOffset - halfArrowWidth + mArrowRadius);
-        mArrowPath.lineTo(mRectF.left, realArrowOffset - halfArrowWidth);
+        final float realHalfArrowWidth = calcRealHalfArrowWidth();
+        final double vertexDegrees = calcVertexDegrees();
+
+        final float a1 = (float) (arrowRadius * Math.sin(Math.toRadians(vertexDegrees)));
+        final float b1 = (float) (arrowRadius * Math.cos(Math.toRadians(vertexDegrees)));
+        final float a2 = b1;
+        final float b2 = arrowHeight * a2 / halfArrowWidth;
+
+        mArrowPath.moveTo(
+                arrowHeight,
+                realArrowOffset + realHalfArrowWidth
+        );
+        mArrowPath.quadTo(
+                arrowHeight,
+                realArrowOffset + halfArrowWidth,
+                arrowHeight - arrowRadius + a1,
+                realArrowOffset + realHalfArrowWidth - b1
+        );
+        mArrowPath.lineTo(
+                b2,
+                realArrowOffset + a2
+        );
+        mArrowPath.quadTo(
+                0,
+                realArrowOffset,
+                b2,
+                realArrowOffset - a2
+        );
+        mArrowPath.lineTo(
+                arrowHeight - arrowRadius + a1,
+                realArrowOffset - realHalfArrowWidth + b1
+        );
+        mArrowPath.quadTo(
+                arrowHeight,
+                realArrowOffset - halfArrowWidth,
+                arrowHeight,
+                realArrowOffset - realHalfArrowWidth
+        );
         mArrowPath.close();
     }
 
     private void buildTopArrow() {
+        final float arrowRadius = mArrowRadius;
+        final float arrowHeight = mArrowHeight;
         final float halfArrowWidth = getHalfArrowWidth();
         final float realArrowOffset = getRealArrowOffset();
-        mArrowPath.moveTo(realArrowOffset - halfArrowWidth, mRectF.top);
-        mArrowPath.lineTo(realArrowOffset - halfArrowWidth + mArrowRadius, mRectF.top);
-        mArrowPath.lineTo(realArrowOffset, 0);
-        mArrowPath.lineTo(realArrowOffset + halfArrowWidth - mArrowRadius, mRectF.top);
-        mArrowPath.lineTo(realArrowOffset + halfArrowWidth, mRectF.top);
+        final float realHalfArrowWidth = calcRealHalfArrowWidth();
+        final double vertexDegrees = calcVertexDegrees();
+
+        final float a1 = (float) (arrowRadius * Math.sin(Math.toRadians(vertexDegrees)));
+        final float b1 = (float) (arrowRadius * Math.cos(Math.toRadians(vertexDegrees)));
+        final float a2 = b1;
+        final float b2 = arrowHeight * a2 / halfArrowWidth;
+
+        mArrowPath.moveTo(
+                realArrowOffset - realHalfArrowWidth,
+                arrowHeight
+        );
+        mArrowPath.quadTo(
+                realArrowOffset - halfArrowWidth,
+                arrowHeight,
+                realArrowOffset - realHalfArrowWidth + b1,
+                arrowHeight - arrowRadius + a1
+        );
+        mArrowPath.lineTo(
+                realArrowOffset - a2,
+                b2
+        );
+        mArrowPath.quadTo(
+                realArrowOffset,
+                0,
+                realArrowOffset + a2,
+                b2
+        );
+        mArrowPath.lineTo(
+                realArrowOffset + realHalfArrowWidth - b1,
+                arrowHeight - arrowRadius + a1
+        );
+        mArrowPath.quadTo(
+                realArrowOffset + halfArrowWidth,
+                arrowHeight,
+                realArrowOffset + realHalfArrowWidth,
+                arrowHeight
+        );
         mArrowPath.close();
     }
 
     private void buildRightArrow() {
+        final float arrowRadius = mArrowRadius;
+        final float arrowHeight = mArrowHeight;
         final float halfArrowWidth = getHalfArrowWidth();
         final float realArrowOffset = getRealArrowOffset();
-        mArrowPath.moveTo(mRectF.right, realArrowOffset + halfArrowWidth);
-        mArrowPath.lineTo(mRectF.right, realArrowOffset + halfArrowWidth - mArrowRadius);
-        mArrowPath.lineTo(getWidth(), realArrowOffset);
-        mArrowPath.lineTo(mRectF.right, realArrowOffset - halfArrowWidth + mArrowRadius);
-        mArrowPath.lineTo(mRectF.right, realArrowOffset - halfArrowWidth);
+        final float realHalfArrowWidth = calcRealHalfArrowWidth();
+        final double vertexDegrees = calcVertexDegrees();
+
+        final float a1 = (float) (arrowRadius * Math.sin(Math.toRadians(vertexDegrees)));
+        final float b1 = (float) (arrowRadius * Math.cos(Math.toRadians(vertexDegrees)));
+        final float a2 = b1;
+        final float b2 = arrowHeight * a2 / halfArrowWidth;
+
+        mArrowPath.moveTo(
+                getWidth() - arrowHeight,
+                realArrowOffset + realHalfArrowWidth
+        );
+        mArrowPath.quadTo(
+                getWidth() - arrowHeight,
+                realArrowOffset + halfArrowWidth,
+                getWidth() - arrowHeight + arrowRadius - a1,
+                realArrowOffset + realHalfArrowWidth - b1
+        );
+        mArrowPath.lineTo(
+                getWidth() - b2,
+                realArrowOffset + a2
+        );
+        mArrowPath.quadTo(
+                getWidth(),
+                realArrowOffset,
+                getWidth() - b2,
+                realArrowOffset - a2
+        );
+        mArrowPath.lineTo(
+                getWidth() - arrowHeight + arrowRadius - a1,
+                realArrowOffset - realHalfArrowWidth + b1
+        );
+        mArrowPath.quadTo(
+                getWidth() - arrowHeight,
+                realArrowOffset - halfArrowWidth,
+                getWidth() - arrowHeight,
+                realArrowOffset - realHalfArrowWidth
+        );
         mArrowPath.close();
     }
 
     private void buildBottomArrow() {
+        final float arrowRadius = mArrowRadius;
+        final float arrowHeight = mArrowHeight;
         final float halfArrowWidth = getHalfArrowWidth();
         final float realArrowOffset = getRealArrowOffset();
-        mArrowPath.moveTo(realArrowOffset - halfArrowWidth, mRectF.bottom);
-        mArrowPath.lineTo(realArrowOffset - halfArrowWidth + mArrowRadius, mRectF.bottom);
-        mArrowPath.lineTo(realArrowOffset, getHeight());
-        mArrowPath.lineTo(realArrowOffset + halfArrowWidth - mArrowRadius, mRectF.bottom);
-        mArrowPath.lineTo(realArrowOffset + halfArrowWidth, mRectF.bottom);
+        final float realHalfArrowWidth = calcRealHalfArrowWidth();
+        final double vertexDegrees = calcVertexDegrees();
+
+        final float a1 = (float) (arrowRadius * Math.sin(Math.toRadians(vertexDegrees)));
+        final float b1 = (float) (arrowRadius * Math.cos(Math.toRadians(vertexDegrees)));
+        final float a2 = b1;
+        final float b2 = arrowHeight * a2 / halfArrowWidth;
+
+        mArrowPath.moveTo(
+                realArrowOffset - realHalfArrowWidth,
+                getHeight() - arrowHeight
+        );
+        mArrowPath.quadTo(
+                realArrowOffset - halfArrowWidth,
+                getHeight() - arrowHeight,
+                realArrowOffset - realHalfArrowWidth + b1,
+                getHeight() - arrowHeight + arrowRadius - a1
+        );
+        mArrowPath.lineTo(
+                realArrowOffset - a2,
+                getHeight() - b2
+        );
+        mArrowPath.quadTo(
+                realArrowOffset,
+                getHeight(),
+                realArrowOffset + a2,
+                getHeight() - b2
+        );
+        mArrowPath.lineTo(
+                realArrowOffset + realHalfArrowWidth - b1,
+                getHeight() - arrowHeight + arrowRadius - a1
+        );
+        mArrowPath.quadTo(
+                realArrowOffset + halfArrowWidth,
+                getHeight() - arrowHeight,
+                realArrowOffset + realHalfArrowWidth,
+                getHeight() - arrowHeight
+        );
         mArrowPath.close();
+    }
+
+    private float calcRealHalfArrowWidth() {
+        double vertexDegrees = calcVertexDegrees();
+        double d = (90.0 - vertexDegrees) / 2.0;
+        float increase = (float) (Math.tan(Math.toRadians(d)) * mArrowRadius);
+        return getHalfArrowWidth() + increase;
+    }
+
+    private double calcVertexDegrees() {
+        if (mArrowHeight <= 0) return 180.0;
+        if (mArrowWidth <= 0) return 0.0;
+        double tan = (mArrowWidth / 2.0) / mArrowHeight;
+        double d = Math.atan(tan);
+        return Math.toDegrees(d);
     }
 
     private float getHalfArrowWidth() {
@@ -302,7 +516,7 @@ public class PopoverContainer extends FrameLayout {
     }
 
     public float getRealArrowOffset() {
-        final float minArrowOffset = mCornerRadius + mArrowWidth / 2F + mArrowRadius;
+        final float minArrowOffset = mCornerRadius + calcRealHalfArrowWidth();
         switch (mArrowSide) {
             case ARROW_SIDE_LEFT:
             case ARROW_SIDE_RIGHT:

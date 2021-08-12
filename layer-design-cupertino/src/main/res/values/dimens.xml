@@ -9,8 +9,8 @@
 
     <dimen name="layer_design_cupertino_corner_radius_big">14dp</dimen>
 
-    <dimen name="layer_design_cupertino_popover_corner_radius">14dp</dimen>
-    <dimen name="layer_design_cupertino_popover_arrow_corner_radius">2dp</dimen>
+    <dimen name="layer_design_cupertino_popover_corner_radius">12dp</dimen>
+    <dimen name="layer_design_cupertino_popover_arrow_corner_radius">3dp</dimen>
     <dimen name="layer_design_cupertino_popover_arrow_width">24dp</dimen>
     <dimen name="layer_design_cupertino_popover_arrow_height">12dp</dimen>
 

@@ -188,19 +188,30 @@ public final class Utils {
     }
 
     public static void setViewPaddingLeft(@NonNull View view, int padding) {
-        view.setPadding(padding, view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
+        setViewPadding(view, padding, view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
     }
 
     public static void setViewPaddingTop(@NonNull View view, int padding) {
-        view.setPadding(view.getPaddingLeft(), padding, view.getPaddingRight(), view.getPaddingBottom());
+        setViewPadding(view, view.getPaddingLeft(), padding, view.getPaddingRight(), view.getPaddingBottom());
     }
 
     public static void setViewPaddingRight(@NonNull View view, int padding) {
-        view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), padding, view.getPaddingBottom());
+        setViewPadding(view, view.getPaddingLeft(), view.getPaddingTop(), padding, view.getPaddingBottom());
     }
 
     public static void setViewPaddingBottom(@NonNull View view, int padding) {
-        view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), padding);
+        setViewPadding(view, view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), padding);
+    }
+
+    public static void setViewPadding(@NonNull View view, int l, int t, int r, int b) {
+        if (l != view.getPaddingLeft() || t != view.getPaddingTop() ||
+                r != view.getPaddingRight() || b != view.getPaddingBottom()) {
+            view.setPadding(l, t, r, b);
+        }
+    }
+
+    public static void setViewPadding(@NonNull View view, @NonNull Rect padding) {
+        setViewPadding(view, padding.left, padding.top, padding.right, padding.bottom);
     }
 
     public static void removeViewParent(@NonNull View view) {
@@ -218,7 +229,7 @@ public final class Utils {
         final ViewGroup viewGroup = (ViewGroup) view;
         final int count = viewGroup.getChildCount();
         for (int i = 0; i < count; i++) {
-            V v =  findViewByClass(viewGroup.getChildAt(i), cls);
+            V v = findViewByClass(viewGroup.getChildAt(i), cls);
             if (v != null) return v;
         }
         return null;

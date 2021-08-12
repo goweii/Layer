@@ -105,6 +105,7 @@ public class CupertinoPopoverLayer extends PopupLayer {
         content.setArrowHeight(getConfig().mArrowHeight);
         content.setCornerRadius(getConfig().mCornerRadius);
         content.setSolidColor(getConfig().mSolidColor);
+        content.setFitArrowInsetByChildren(getConfig().mFitArrowInsetByContent);
     }
 
     @NonNull
@@ -165,14 +166,19 @@ public class CupertinoPopoverLayer extends PopupLayer {
         }
     }
 
-    public CupertinoPopoverLayer setArrowDefault() {
-        getConfig().mArrowSide = PopoverContainer.ARROW_SIDE_TOP;
-        getConfig().mArrowOffset = PopoverContainer.ARROW_CENTER;
-        getConfig().mArrowRadius = getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_corner_radius);
-        getConfig().mArrowWidth = getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_width);
-        getConfig().mArrowHeight = getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_height);
-        getConfig().mCornerRadius = getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_corner_radius);
-        getConfig().mSolidColor = ContextCompat.getColor(getActivity(), R.color.layer_design_res_color_surface);
+    public CupertinoPopoverLayer setUseDefaultConfig() {
+        setDirection(Align.Direction.VERTICAL);
+        setHorizontal(Align.Horizontal.CENTER);
+        setVertical(Align.Vertical.BELOW);
+        setInside(true);
+        setFitArrowInsetByContent(false);
+        setArrowSide(PopoverContainer.ARROW_SIDE_TOP);
+        setArrowOffset(PopoverContainer.ARROW_CENTER);
+        setArrowRadius(getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_corner_radius));
+        setArrowWidth(getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_width));
+        setArrowHeight(getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_height));
+        setCornerRadius(getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_corner_radius));
+        setSolidColor(ContextCompat.getColor(getActivity(), R.color.layer_design_res_color_surface));
         return this;
     }
 
@@ -217,6 +223,11 @@ public class CupertinoPopoverLayer extends PopupLayer {
         return this;
     }
 
+    public CupertinoPopoverLayer setFitArrowInsetByContent(boolean fitArrowInsetByContent) {
+        getConfig().mFitArrowInsetByContent = fitArrowInsetByContent;
+        return this;
+    }
+
     public static class Config extends PopupLayer.Config {
         protected int mArrowSide = PopoverContainer.ARROW_SIDE_NONE;
         protected int mArrowOffset = PopoverContainer.ARROW_CENTER;
@@ -225,6 +236,7 @@ public class CupertinoPopoverLayer extends PopupLayer {
         protected int mArrowHeight = 0;
         protected int mCornerRadius = 0;
         protected int mSolidColor = Color.TRANSPARENT;
+        private boolean mFitArrowInsetByContent = false;
     }
 
     public static class ViewHolder extends PopupLayer.ViewHolder {
