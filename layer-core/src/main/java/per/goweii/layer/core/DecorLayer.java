@@ -145,15 +145,13 @@ public class DecorLayer extends FrameLayer {
     @Override
     protected void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            Utils.onViewLayout(getViewHolder().getChild(), new Runnable() {
-                @Override
-                public void run() {
-                    Rect decorInsets = getDecorInsets();
-                    fitDecorInsets(decorInsets);
-                }
-            });
-        }
+        Utils.onViewLayout(getViewHolder().getChild(), new Runnable() {
+            @Override
+            public void run() {
+                Rect decorInsets = getDecorInsets();
+                fitDecorInsets(decorInsets);
+            }
+        });
     }
 
     protected void fitDecorInsets(@NonNull Rect insets) {
