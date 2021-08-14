@@ -2,4 +2,5 @@
 <resources>
     <color name="layer_design_cupertino_color_alert_blur_overlay">#B3F2F2F2</color>
     <color name="layer_design_cupertino_color_notification_blur_overlay">#B3F2F2F2</color>
+    <color name="layer_design_cupertino_color_toast_background">#F2EEEEEE</color>
 </resources>

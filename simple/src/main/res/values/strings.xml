@@ -9,7 +9,7 @@
     <string name="dialog_msg">这么好用的框架，动动手指给个Star吧！</string>
     <string name="notification_title">你有一条新短消息</string>
     <string name="notification_desc">点击查看详情</string>
-    <string name="toast_msg">网络开小差啦，检查下网络吧~</string>
+    <string name="toast_msg">这也太秀了~</string>
     <string name="guide_content">实现一个引导层就是这么简单！</string>
     <string name="send">发送</string>
 </resources>

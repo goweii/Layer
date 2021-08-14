@@ -15,6 +15,7 @@
     <dimen name="layer_design_cupertino_popover_arrow_height">12dp</dimen>
 
     <dimen name="layer_design_cupertino_text_size_title">17sp</dimen>
+    <dimen name="layer_design_cupertino_text_size_body">16sp</dimen>
     <dimen name="layer_design_cupertino_text_size_desc">13sp</dimen>
     <dimen name="layer_design_cupertino_text_size_btn">17sp</dimen>
     <dimen name="layer_design_cupertino_btn_height">44dp</dimen>

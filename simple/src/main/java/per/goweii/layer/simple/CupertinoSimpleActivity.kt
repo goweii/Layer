@@ -54,7 +54,7 @@ class CupertinoSimpleActivity : AppCompatActivity() {
 
     fun onBtnToastClick(view: View) {
         CupertinoToastLayer(this)
-                .setIcon(R.drawable.ic_warning)
+                .setIcon(R.drawable.ic_success_big)
                 .setMessage(R.string.toast_msg)
                 .show()
     }

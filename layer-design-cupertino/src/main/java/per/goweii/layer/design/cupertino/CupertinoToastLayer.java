@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,16 @@ import per.goweii.layer.toast.ToastLayer;
 public class CupertinoToastLayer extends ToastLayer {
     public CupertinoToastLayer(@NonNull Context context) {
         super(context);
+        init();
     }
 
     public CupertinoToastLayer(@NonNull Activity activity) {
         super(activity);
+        init();
+    }
+
+    private void init() {
+        setGravity(Gravity.CENTER);
     }
 
     @NonNull

@@ -8,7 +8,8 @@
 
     <ImageView
         android:layout_width="56dp"
+        android:background="@color/colorPrimaryLight"
         android:layout_height="56dp"
-        android:src="@mipmap/ic_launcher_round" />
+        android:src="@mipmap/ic_launcher_foreground" />
 
 </androidx.cardview.widget.CardView>
