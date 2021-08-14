@@ -41,7 +41,7 @@ public class CupertinoNotificationLayer extends NotificationLayer {
     }
 
     private void init() {
-        setContentBlurSimple(8F);
+        setContentBlurSimple(10F);
         setContentBlurRadius(10F);
         setContentBlurColorRes(R.color.layer_design_cupertino_color_notification_blur_overlay);
         setContentBlurCornerRadiusPx(getActivity().getResources().getDimensionPixelSize(R.dimen.layer_design_cupertino_corner_radius_big));

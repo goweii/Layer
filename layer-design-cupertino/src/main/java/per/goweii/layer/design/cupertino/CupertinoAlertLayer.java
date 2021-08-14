@@ -41,7 +41,7 @@ public class CupertinoAlertLayer extends DialogLayer {
         setContentView(R.layout.layer_design_cupertino_alert);
         setBackgroundDimDefault();
         setContentBlurColorRes(R.color.layer_design_cupertino_color_alert_blur_overlay);
-        setContentBlurSimple(8F);
+        setContentBlurSimple(10F);
         setContentBlurRadius(10F);
         setContentBlurCornerRadiusPx(getActivity().getResources().getDimensionPixelSize(R.dimen.layer_design_cupertino_corner_radius_big));
     }
