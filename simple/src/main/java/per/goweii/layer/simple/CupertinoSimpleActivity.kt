@@ -4,10 +4,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import per.goweii.layer.design.cupertino.CupertinoAlertLayer
-import per.goweii.layer.design.cupertino.CupertinoNotificationLayer
-import per.goweii.layer.design.cupertino.CupertinoPopoverLayer
-import per.goweii.layer.design.cupertino.CupertinoToastLayer
+import per.goweii.actionbarex.common.ActionBarCommon
+import per.goweii.layer.core.ktx.onBindData
+import per.goweii.layer.core.ktx.onClickToDismiss
+import per.goweii.layer.design.cupertino.*
 import per.goweii.layer.dialog.ktx.contentView
 
 class CupertinoSimpleActivity : AppCompatActivity() {
@@ -42,6 +42,14 @@ class CupertinoSimpleActivity : AppCompatActivity() {
     }
 
     fun onBtnModalityClick(view: View) {
+        CupertinoModalityLayer(this)
+                .contentView(R.layout.dialog_fullscreen)
+                .onBindData {
+                    val actionBar = requireView<ActionBarCommon>(R.id.dialog_actionbar)
+                    actionBar.leftTextView.setOnClickListener { dismiss() }
+                    actionBar.rightTextView.setOnClickListener { dismiss() }
+                }
+                .show()
     }
 
     fun onBtnToastClick(view: View) {

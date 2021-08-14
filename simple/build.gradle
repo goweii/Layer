@@ -6,7 +6,7 @@ android {
     buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "per.goweii.layer.simple"
-        minSdkVersion 14
+        minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -31,7 +31,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.3.1"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.startup:startup-runtime:1.1.0"
-    implementation "com.github.goweii:StatusBarCompat:1.2.1"
+    implementation "com.github.goweii:ActionBarEx:3.3.0"
     implementation project(":layer-startup")
     implementation project(":layer-dialog-ktx")
     implementation project(":layer-popup-ktx")

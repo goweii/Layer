@@ -33,8 +33,8 @@ import per.goweii.layer.core.utils.Utils;
 import per.goweii.layer.core.widget.SwipeLayout;
 
 public class DialogLayer extends DecorLayer {
-    private static final long ANIM_DUR_DEF = 220L;
-    private static final float DIM_AMOUNT_DEF = 0.6F;
+    protected static final long ANIM_DUR_DEF = 220L;
+    protected static final float DIM_AMOUNT_DEF = 0.6F;
 
     private SoftInputCompat mSoftInputCompat = null;
 

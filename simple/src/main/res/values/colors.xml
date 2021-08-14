@@ -6,4 +6,5 @@
     <color name="textColor">#B3000000</color>
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="colorPopupBg">#222222</color>
+    <color name="colorDivider">#33000000</color>
 </resources>
