@@ -2,9 +2,13 @@ package per.goweii.layer.visualeffectview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Outline;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewOutlineProvider;
 
 import androidx.annotation.NonNull;
 
@@ -31,6 +35,17 @@ public class BackdropBlurView extends BackdropVisualEffectFrameLayout {
     public BackdropBlurView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setShowDebugInfo(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setClipToOutline(true);
+            setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                public void getOutline(View view, Outline outline) {
+                    float minSide = Math.min(view.getWidth(), view.getHeight());
+                    float radii = Math.min(mCornerRadius, minSide / 2F);
+                    outline.setRoundRect(0, 0, view.getWidth(), view.getHeight(), radii);
+                }
+            });
+        }
     }
 
     @Override
@@ -55,33 +70,40 @@ public class BackdropBlurView extends BackdropVisualEffectFrameLayout {
         if (!(getVisualEffect() instanceof BlurEffect) || ((BlurEffect) getVisualEffect()).getRadius() != radius) {
             setVisualEffect(new RSBlurEffect(getContext(), radius));
         }
-        canvas.save();
-        if (mCornerRadius > 0) {
-            if (mClipRect == null) {
-                mClipRect = new RectF();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            canvas.save();
+            if (mCornerRadius > 0) {
+                if (mClipRect == null) {
+                    mClipRect = new RectF();
+                }
+                mClipRect.set(0F, 0F, getWidth(), getHeight());
+                if (mClipPath == null) {
+                    mClipPath = new Path();
+                }
+                mClipPath.rewind();
+                mClipPath.reset();
+                float minSide = Math.min(mClipRect.width(), mClipRect.height());
+                float radii = Math.min(mCornerRadius, minSide / 2F);
+                mClipPath.addRoundRect(mClipRect, radii, radii, Path.Direction.CW);
+                canvas.clipPath(mClipPath);
+            } else {
+                mClipRect = null;
+                mClipPath = null;
             }
-            mClipRect.set(0F, 0F, getWidth(), getHeight());
-            if (mClipPath == null) {
-                mClipPath = new Path();
-            }
-            mClipPath.rewind();
-            mClipPath.reset();
-            float minSide = Math.min(mClipRect.width(), mClipRect.height());
-            float radii = Math.min(mCornerRadius, minSide / 2F);
-            mClipPath.addRoundRect(mClipRect, radii, radii, Path.Direction.CW);
-            canvas.clipPath(mClipPath);
+            super.draw(canvas);
+            canvas.restore();
         } else {
-            mClipRect = null;
-            mClipPath = null;
+            super.draw(canvas);
         }
-        super.draw(canvas);
-        canvas.restore();
     }
 
     public void setCornerRadius(float cornerRadius) {
         if (mCornerRadius != cornerRadius) {
             mCornerRadius = cornerRadius;
             invalidate();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                invalidateOutline();
+            }
         }
     }
 
