@@ -133,13 +133,13 @@ public class PopoverContainer extends FrameLayout {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            super.dispatchDraw(canvas);
-        } else {
+        if (mFitArrowInsetByChildren) {
             canvas.save();
             canvas.clipPath(mOutlinePath);
             super.dispatchDraw(canvas);
             canvas.restore();
+        } else {
+            super.dispatchDraw(canvas);
         }
     }
 
