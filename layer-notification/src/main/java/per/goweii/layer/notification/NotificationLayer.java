@@ -3,6 +3,7 @@ package per.goweii.layer.notification;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -249,8 +250,8 @@ public class NotificationLayer extends DecorLayer {
     }
 
     @Override
-    protected void fitDecorInsides() {
-        fitDecorInsidesToViewPadding(getViewHolder().getChild());
+    protected void fitDecorInsets(@NonNull Rect insets) {
+        Utils.setViewPadding(getViewHolder().getChild(), insets);
         getViewHolder().getChild().setClipToPadding(false);
     }
 

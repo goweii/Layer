@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Outline;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -119,11 +120,10 @@ public class CupertinoModalityLayer extends DialogLayer {
     }
 
     @Override
-    protected void fitDecorInsides() {
-        super.fitDecorInsides();
-        int paddingTop = getViewHolder().getContentWrapper().getPaddingTop();
+    protected void fitDecorInsets(@NonNull Rect insets) {
         int cornerRadius = (int) mDecorChildCornerRadius;
-        Utils.setViewPaddingTop(getViewHolder().getContentWrapper(), paddingTop + cornerRadius);
+        insets.top = insets.top + cornerRadius;
+        super.fitDecorInsets(insets);
     }
 
     @Override

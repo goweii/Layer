@@ -195,14 +195,8 @@ public class GuideLayer extends DecorLayer {
     }
 
     @Override
-    protected void fitDecorInsides() {
-        fitDecorInsidesToViewPadding(getViewHolder().getContentWrapper());
-        Utils.onViewLayout(getViewHolder().getChild(), new Runnable() {
-            @Override
-            public void run() {
-                updateLocation();
-            }
-        });
+    protected void fitDecorInsets(@NonNull Rect insets) {
+        Utils.setViewPadding(getViewHolder().getContentWrapper(), insets);
     }
 
     @Override

@@ -2,6 +2,7 @@ package per.goweii.layer.keyboard;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -104,9 +105,9 @@ public class KeyboardLayer extends DialogLayer {
     }
 
     @Override
-    protected void fitDecorInsides() {
-        fitDecorInsidesToViewPadding(getViewHolder().getContent());
-        Utils.setViewPaddingTop(getViewHolder().getContent(), 0);
+    protected void fitDecorInsets(@NonNull Rect insets) {
+        insets.top = 0;
+        Utils.setViewPadding(getViewHolder().getContent(), insets);
     }
 
     private void bindTextView() {

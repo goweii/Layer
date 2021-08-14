@@ -5,6 +5,7 @@ import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -324,11 +325,11 @@ public class DialogLayer extends DecorLayer {
     }
 
     @Override
-    protected void fitDecorInsides() {
-        fitDecorInsidesToViewPadding(getViewHolder().getContentWrapper());
+    protected void fitDecorInsets(@NonNull Rect insets) {
+        Utils.setViewPadding(getViewHolder().getContentWrapper(), insets);
         if (getConfig().mAvoidStatusBar) {
             int paddingTop = getViewHolder().getContentWrapper().getPaddingTop();
-            int statusBarHeight = Utils.getStatusBarHeight(getActivity());
+            int statusBarHeight = Utils.getStatusBarHeightIfVisible(getActivity());
             Utils.setViewPaddingTop(getViewHolder().getContentWrapper(), Math.max(paddingTop, statusBarHeight));
         }
         getViewHolder().getContentWrapper().setClipToPadding(false);

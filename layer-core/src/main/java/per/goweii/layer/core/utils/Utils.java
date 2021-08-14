@@ -15,6 +15,10 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 public final class Utils {
 
@@ -56,6 +60,27 @@ public final class Utils {
             return context.getResources().getDimensionPixelSize(resourceId);
         }
         return 0;
+    }
+
+    public static int getStatusBarHeightIfVisible(@NonNull Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int systemUiVisibility = activity.getWindow().getDecorView().getSystemUiVisibility();
+            if ((systemUiVisibility & View.SYSTEM_UI_FLAG_FULLSCREEN) != 0 ||
+                    (systemUiVisibility & View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN) != 0) {
+                return getStatusBarHeight(activity);
+            } else {
+                return 0;
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            int flags = activity.getWindow().getAttributes().flags;
+            if ((flags & WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS) != 0) {
+                return getStatusBarHeight(activity);
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
     }
 
     public static int getScreenWidth(@NonNull Context context) {
@@ -145,14 +170,6 @@ public final class Utils {
         onViewLayout(view, runnable);
     }
 
-    public static void getViewPadding(@NonNull View view, @NonNull Rect rect) {
-        rect.setEmpty();
-        rect.left = view.getPaddingLeft();
-        rect.top = view.getPaddingTop();
-        rect.right = view.getPaddingRight();
-        rect.bottom = view.getPaddingBottom();
-    }
-
     public static void getViewMargin(@NonNull View view, @NonNull Rect rect) {
         rect.setEmpty();
         if (!(view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) return;
@@ -187,20 +204,105 @@ public final class Utils {
         return params.bottomMargin;
     }
 
-    public static void setViewPaddingLeft(@NonNull View view, int padding) {
-        setViewPadding(view, padding, view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
+    public static void setViewMargin(@NonNull View view, int margin) {
+        setViewMargin(view, margin, margin, margin, margin);
     }
 
-    public static void setViewPaddingTop(@NonNull View view, int padding) {
-        setViewPadding(view, view.getPaddingLeft(), padding, view.getPaddingRight(), view.getPaddingBottom());
+    public static void setViewMargin(@NonNull View view, @NonNull Rect margin) {
+        setViewMargin(view, margin.left, margin.top, margin.right, margin.bottom);
     }
 
-    public static void setViewPaddingRight(@NonNull View view, int padding) {
-        setViewPadding(view, view.getPaddingLeft(), view.getPaddingTop(), padding, view.getPaddingBottom());
+    public static void setViewMargin(@NonNull View view, int l, int t, int r, int b) {
+        if (!(view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) return;
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        boolean changed = false;
+        if (params.leftMargin != l) {
+            params.leftMargin = t;
+            changed = true;
+        }
+        if (params.topMargin != t) {
+            params.topMargin = t;
+            changed = true;
+        }
+        if (params.rightMargin != r) {
+            params.rightMargin = r;
+            changed = true;
+        }
+        if (params.bottomMargin != b) {
+            params.bottomMargin = b;
+            changed = true;
+        }
+        if (changed) {
+            view.requestLayout();
+        }
     }
 
-    public static void setViewPaddingBottom(@NonNull View view, int padding) {
-        setViewPadding(view, view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), padding);
+    public static void setViewMarginLeft(@NonNull View view, int l) {
+        if (!(view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) return;
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        if (params.leftMargin != l) {
+            params.leftMargin = l;
+            view.requestLayout();
+        }
+    }
+
+    public static void setViewMarginRight(@NonNull View view, int r) {
+        if (!(view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) return;
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        if (params.rightMargin != r) {
+            params.rightMargin = r;
+            view.requestLayout();
+        }
+    }
+
+    public static void setViewMarginTop(@NonNull View view, int t) {
+        if (!(view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) return;
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        if (params.topMargin != t) {
+            params.topMargin = t;
+            view.requestLayout();
+        }
+    }
+
+    public static void setViewMarginBottom(@NonNull View view, int b) {
+        if (!(view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)) return;
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        if (params.bottomMargin != b) {
+            params.bottomMargin = b;
+            view.requestLayout();
+        }
+    }
+
+    public static void getViewPadding(@NonNull View view, @NonNull Rect rect) {
+        rect.setEmpty();
+        rect.left = view.getPaddingLeft();
+        rect.top = view.getPaddingTop();
+        rect.right = view.getPaddingRight();
+        rect.bottom = view.getPaddingBottom();
+    }
+
+    public static void setViewPaddingLeft(@NonNull View view, int l) {
+        if (view.getPaddingLeft() != l) {
+            view.setPadding(l, view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
+        }
+    }
+
+    public static void setViewPaddingTop(@NonNull View view, int t) {
+        if (view.getPaddingTop() != t) {
+            view.setPadding(view.getPaddingLeft(), t, view.getPaddingRight(), view.getPaddingBottom());
+        }
+    }
+
+    public static void setViewPaddingRight(@NonNull View view, int r) {
+        if (view.getPaddingRight() != r) {
+            view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), r, view.getPaddingBottom());
+        }
+    }
+
+    public static void setViewPaddingBottom(@NonNull View view, int b) {
+        if (view.getPaddingBottom() != b) {
+            view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), b);
+        }
     }
 
     public static void setViewPadding(@NonNull View view, int l, int t, int r, int b) {
@@ -212,6 +314,10 @@ public final class Utils {
 
     public static void setViewPadding(@NonNull View view, @NonNull Rect padding) {
         setViewPadding(view, padding.left, padding.top, padding.right, padding.bottom);
+    }
+
+    public static void setViewPadding(@NonNull View view, int padding) {
+        setViewPadding(view, padding, padding, padding, padding);
     }
 
     public static void removeViewParent(@NonNull View view) {

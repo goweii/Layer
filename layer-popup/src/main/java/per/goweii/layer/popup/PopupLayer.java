@@ -3,6 +3,7 @@ package per.goweii.layer.popup;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Build;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -204,8 +205,10 @@ public class PopupLayer extends DialogLayer {
     }
 
     @Override
-    protected void fitDecorInsides() {
-        fitDecorMarginTo(getViewHolder().getContainer());
+    protected void fitDecorInsets(@NonNull Rect insets) {
+        Utils.setViewPadding(getViewHolder().getContainer(), insets);
+        getViewHolder().getContainer().setClipToPadding(false);
+        getViewHolder().getContainer().setClipChildren(false);
         Utils.onViewLayout(getViewHolder().getDecor(), new Runnable() {
             @Override
             public void run() {
