@@ -29,7 +29,7 @@ import java.util.Locale;
 import per.goweii.layer.notification.NotificationLayer;
 import per.goweii.layer.visualeffectview.BackdropBlurView;
 import per.goweii.layer.visualeffectview.BackdropIgnoreView;
-import per.goweii.layer.visualeffectview.ShadowLayout;
+import per.goweii.layer.visualeffectview.RoundedShadowLayout;
 
 public class CupertinoNotificationLayer extends NotificationLayer {
     public CupertinoNotificationLayer(@NonNull Context context) {
@@ -99,7 +99,8 @@ public class CupertinoNotificationLayer extends NotificationLayer {
         backdropBlurView.setBlurPercent(getConfig().mContentBlurPercent);
         backdropBlurView.addView(content, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-        ShadowLayout shadowLayout = new ShadowLayout(getActivity());
+        RoundedShadowLayout shadowLayout = new RoundedShadowLayout(getActivity());
+        // shadowLayout.setSolidColor(getConfig().mContentBackgroundColor);
         shadowLayout.setCornerRadius(getConfig().mContentBlurCornerRadius);
         shadowLayout.setShadowColor(getActivity().getResources().getColor(R.color.layer_design_cupertino_color_shadow));
         shadowLayout.setShadowRadius(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_notification_shadow_radius));

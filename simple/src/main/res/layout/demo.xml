@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<per.goweii.layer.visualeffectview.RoundedShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cornerRadius="20dp"
+    app:shadowRadius="30dp"
+    app:solidColor="#ffffff"
+    app:shadowColor="#55000000"
+    app:shadowOffsetY="10dp">
+
+    <View
+        android:layout_width="160dp"
+        android:layout_height="160dp" />
+
+</per.goweii.layer.visualeffectview.RoundedShadowLayout>

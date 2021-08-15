@@ -26,7 +26,7 @@ import java.util.List;
 import per.goweii.layer.dialog.DialogLayer;
 import per.goweii.layer.visualeffectview.BackdropBlurView;
 import per.goweii.layer.visualeffectview.BackdropIgnoreView;
-import per.goweii.layer.visualeffectview.ShadowLayout;
+import per.goweii.layer.visualeffectview.RoundedShadowLayout;
 
 public class CupertinoAlertLayer extends DialogLayer {
     public CupertinoAlertLayer(@NonNull Context context) {
@@ -120,7 +120,7 @@ public class CupertinoAlertLayer extends DialogLayer {
 
         getViewHolder().setContentBackdropBlurView(backdropBlurView);
 
-        ShadowLayout shadowLayout = new ShadowLayout(getActivity());
+        RoundedShadowLayout shadowLayout = new RoundedShadowLayout(getActivity());
         shadowLayout.setCornerRadius(getConfig().mContentBlurCornerRadius);
         shadowLayout.setShadowColor(getActivity().getResources().getColor(R.color.layer_design_cupertino_color_shadow));
         shadowLayout.setShadowRadius(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_alert_shadow_radius));
