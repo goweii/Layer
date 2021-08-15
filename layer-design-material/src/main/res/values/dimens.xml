@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="layer_design_material_dialog_width">300dp</dimen>
+    <dimen name="layer_design_material_dialog_max_width">300dp</dimen>
+    <dimen name="layer_design_material_toast_max_width">300dp</dimen>
+
     <dimen name="layer_design_material_icon_size">20dp</dimen>
+
     <dimen name="layer_design_material_margin_big">24dp</dimen>
     <dimen name="layer_design_material_margin_default">16dp</dimen>
     <dimen name="layer_design_material_margin_small">8dp</dimen>

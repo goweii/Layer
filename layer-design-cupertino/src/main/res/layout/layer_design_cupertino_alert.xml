@@ -1,52 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<per.goweii.layer.core.widget.MaxSizeFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/layer_design_cupertino_alert_width"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/layer_design_res_margin_default">
-
-    <TextView
-        android:id="@+id/layer_design_cupertino_alert_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="@dimen/layer_design_res_margin_default"
-        android:layout_marginTop="@dimen/layer_design_cupertino_margin_thin"
-        android:layout_marginRight="@dimen/layer_design_res_margin_default"
-        android:textColor="@color/layer_design_res_color_on_surface"
-        android:textSize="@dimen/layer_design_cupertino_text_size_title"
-        android:textStyle="bold"
-        tools:text="@tools:sample/full_names" />
-
-    <TextView
-        android:id="@+id/layer_design_cupertino_alert_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="@dimen/layer_design_res_margin_default"
-        android:layout_marginTop="@dimen/layer_design_cupertino_margin_thin"
-        android:layout_marginRight="@dimen/layer_design_res_margin_default"
-        android:layout_marginBottom="@dimen/layer_design_cupertino_margin_big"
-        android:gravity="center"
-        android:textColor="@color/layer_design_res_color_on_surface"
-        android:textSize="@dimen/layer_design_cupertino_text_size_desc"
-        tools:text="A message should be a short, complete sentence." />
-
-    <View
-        android:id="@+id/layer_design_cupertino_alert_divider"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/layer_design_res_color_divider" />
+    android:layout_marginLeft="@dimen/layer_design_res_margin_default"
+    android:layout_marginTop="@dimen/layer_design_res_margin_default"
+    android:layout_marginRight="@dimen/layer_design_res_margin_default"
+    android:layout_marginBottom="@dimen/layer_design_res_margin_default"
+    android:maxWidth="@dimen/layer_design_cupertino_alert_max_width">
 
     <LinearLayout
-        android:id="@+id/layer_design_cupertino_alert_actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@drawable/layer_design_cupertino_divider_v"
-        android:dividerPadding="0dp"
-        android:orientation="horizontal"
-        android:showDividers="middle" />
+        android:orientation="vertical"
+        android:paddingTop="@dimen/layer_design_res_margin_default">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/layer_design_cupertino_alert_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/layer_design_res_margin_default"
+            android:layout_marginTop="@dimen/layer_design_cupertino_margin_thin"
+            android:layout_marginRight="@dimen/layer_design_res_margin_default"
+            android:textColor="@color/layer_design_res_color_on_surface"
+            android:textSize="@dimen/layer_design_cupertino_text_size_title"
+            android:textStyle="bold"
+            tools:text="@tools:sample/full_names" />
+
+        <TextView
+            android:id="@+id/layer_design_cupertino_alert_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="@dimen/layer_design_res_margin_default"
+            android:layout_marginTop="@dimen/layer_design_cupertino_margin_thin"
+            android:layout_marginRight="@dimen/layer_design_res_margin_default"
+            android:layout_marginBottom="@dimen/layer_design_cupertino_margin_big"
+            android:gravity="center"
+            android:textColor="@color/layer_design_res_color_on_surface"
+            android:textSize="@dimen/layer_design_cupertino_text_size_desc"
+            tools:text="A message should be a short, complete sentence." />
+
+        <View
+            android:id="@+id/layer_design_cupertino_alert_divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/layer_design_res_color_divider" />
+
+        <LinearLayout
+            android:id="@+id/layer_design_cupertino_alert_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/layer_design_cupertino_divider_v"
+            android:dividerPadding="0dp"
+            android:orientation="horizontal"
+            android:showDividers="middle" />
+
+    </LinearLayout>
+
+</per.goweii.layer.core.widget.MaxSizeFrameLayout>

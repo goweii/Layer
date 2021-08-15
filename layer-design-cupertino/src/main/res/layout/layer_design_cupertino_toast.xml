@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<per.goweii.layer.core.widget.MaxSizeFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layer_toast_content"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="@dimen/layer_design_res_margin_huge"
-    android:background="@drawable/layer_design_cupertino_toast_bg"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/layer_design_cupertino_margin_big"
-    android:paddingTop="@dimen/layer_design_cupertino_margin_big"
-    android:paddingRight="@dimen/layer_design_cupertino_margin_big"
-    android:paddingBottom="@dimen/layer_design_cupertino_margin_big"
-    tools:ignore="RtlHardcoded">
+    android:layout_marginLeft="@dimen/layer_design_res_margin_default"
+    android:layout_marginTop="@dimen/layer_design_res_margin_huge"
+    android:layout_marginRight="@dimen/layer_design_res_margin_default"
+    android:layout_marginBottom="@dimen/layer_design_res_margin_huge"
+    android:maxWidth="@dimen/layer_design_cupertino_toast_max_width">
 
-    <ImageView
-        android:id="@+id/layer_design_cupertino_toast_content_icon"
+    <LinearLayout
+        android:id="@+id/layer_toast_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/layer_design_cupertino_margin_default"
-        android:scaleType="fitCenter"
-        tools:ignore="ContentDescription"
-        tools:src="@tools:sample/avatars" />
+        android:background="@drawable/layer_design_cupertino_toast_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/layer_design_cupertino_margin_big"
+        android:paddingTop="@dimen/layer_design_cupertino_margin_big"
+        android:paddingRight="@dimen/layer_design_cupertino_margin_big"
+        android:paddingBottom="@dimen/layer_design_cupertino_margin_big"
+        tools:ignore="RtlHardcoded">
 
-    <TextView
-        android:id="@+id/layer_design_cupertino_toast_content_msg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/layer_design_res_color_toast_text"
-        android:textSize="@dimen/layer_design_cupertino_text_size_body"
-        tools:text="@tools:sample/full_names" />
+        <ImageView
+            android:id="@+id/layer_design_cupertino_toast_content_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/layer_design_cupertino_margin_default"
+            android:scaleType="fitCenter"
+            tools:ignore="ContentDescription"
+            tools:src="@tools:sample/avatars" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/layer_design_cupertino_toast_content_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/layer_design_res_color_toast_text"
+            android:textSize="@dimen/layer_design_cupertino_text_size_body"
+            tools:text="@tools:sample/full_names" />
+
+    </LinearLayout>
+
+</per.goweii.layer.core.widget.MaxSizeFrameLayout>
