@@ -4,10 +4,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_marginLeft="@dimen/layer_design_res_margin_default"
-    android:layout_marginTop="@dimen/layer_design_res_margin_default"
-    android:layout_marginRight="@dimen/layer_design_res_margin_default"
-    android:layout_marginBottom="@dimen/layer_design_res_margin_default"
     android:maxWidth="@dimen/layer_design_cupertino_alert_max_width">
 
     <LinearLayout

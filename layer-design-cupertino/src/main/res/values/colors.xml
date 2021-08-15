@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="layer_design_cupertino_color_alert_blur_overlay">#B3F2F2F2</color>
-    <color name="layer_design_cupertino_color_notification_blur_overlay">#B3F2F2F2</color>
-    <color name="layer_design_cupertino_color_toast_background">#F2EEEEEE</color>
+    <color name="layer_design_cupertino_color_alert_blur_overlay">#B3FFFFFF</color>
+    <color name="layer_design_cupertino_color_notification_blur_overlay">#B3FFFFFF</color>
+    <color name="layer_design_cupertino_color_toast_background">#D9FFFFFF</color>
+    <color name="layer_design_cupertino_color_shadow">#14000000</color>
 </resources>

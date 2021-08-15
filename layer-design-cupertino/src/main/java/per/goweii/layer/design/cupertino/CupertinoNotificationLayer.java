@@ -28,6 +28,8 @@ import java.util.Locale;
 
 import per.goweii.layer.notification.NotificationLayer;
 import per.goweii.layer.visualeffectview.BackdropBlurView;
+import per.goweii.layer.visualeffectview.BackdropIgnoreView;
+import per.goweii.layer.visualeffectview.ShadowLayout;
 
 public class CupertinoNotificationLayer extends NotificationLayer {
     public CupertinoNotificationLayer(@NonNull Context context) {
@@ -43,8 +45,9 @@ public class CupertinoNotificationLayer extends NotificationLayer {
     private void init() {
         setContentBlurSimple(10F);
         setContentBlurRadius(10F);
-        setContentBlurColorRes(R.color.layer_design_cupertino_color_notification_blur_overlay);
-        setContentBlurCornerRadiusPx(getActivity().getResources().getDimensionPixelSize(R.dimen.layer_design_cupertino_corner_radius_big));
+        setContentBackgroundColorRes(R.color.layer_design_cupertino_color_notification_blur_overlay);
+        setContentCornerRadiusPx(getActivity().getResources().getDimensionPixelSize(R.dimen.layer_design_cupertino_corner_radius_big));
+        setContentView(R.layout.layer_design_cupertino_notification);
     }
 
     @NonNull
@@ -85,26 +88,31 @@ public class CupertinoNotificationLayer extends NotificationLayer {
 
     @NonNull
     protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View content = inflater.inflate(R.layout.layer_design_cupertino_notification, parent, false);
-        if (getConfig().mContentBlurPercent > 0 || getConfig().mContentBlurRadius > 0) {
-            final BackdropBlurView backdropBlurView = new BackdropBlurView(getActivity());
-            backdropBlurView.setOverlayColor(getConfig().mContentBlurColor);
-            backdropBlurView.setCornerRadius(getConfig().mContentBlurCornerRadius);
-            backdropBlurView.setSimpleSize(getConfig().mContentBlurSimple);
-            backdropBlurView.setBlurRadius(getConfig().mContentBlurRadius);
-            backdropBlurView.setBlurPercent(getConfig().mContentBlurPercent);
-            backdropBlurView.setLayoutParams(content.getLayoutParams());
-            content.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-            ));
-            backdropBlurView.addView(content);
-            if (content.getBackground() != null) {
-                content.getBackground().setAlpha(0);
-            }
-            content = backdropBlurView;
-        }
-        return content;
+        View content = super.onCreateContent(inflater, parent);
+        ViewGroup.LayoutParams contentLayoutParams = content.getLayoutParams();
+
+        final BackdropBlurView backdropBlurView = new BackdropBlurView(getActivity());
+        backdropBlurView.setOverlayColor(getConfig().mContentBackgroundColor);
+        backdropBlurView.setCornerRadius(getConfig().mContentBlurCornerRadius);
+        backdropBlurView.setSimpleSize(getConfig().mContentBlurSimple);
+        backdropBlurView.setBlurRadius(getConfig().mContentBlurRadius);
+        backdropBlurView.setBlurPercent(getConfig().mContentBlurPercent);
+        backdropBlurView.addView(content, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        ShadowLayout shadowLayout = new ShadowLayout(getActivity());
+        shadowLayout.setCornerRadius(getConfig().mContentBlurCornerRadius);
+        shadowLayout.setShadowColor(getActivity().getResources().getColor(R.color.layer_design_cupertino_color_shadow));
+        shadowLayout.setShadowRadius(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_notification_shadow_radius));
+        shadowLayout.setShadowOffsetY(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_notification_shadow_offset_y));
+        shadowLayout.setShadowSymmetry(false);
+        shadowLayout.addView(backdropBlurView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        BackdropIgnoreView backdropIgnoreView = new BackdropIgnoreView(getActivity());
+        backdropIgnoreView.addBackdropBlurView(backdropBlurView);
+        backdropIgnoreView.addView(shadowLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        backdropIgnoreView.setLayoutParams(contentLayoutParams);
+        return backdropIgnoreView;
     }
 
     @Override
@@ -251,14 +259,14 @@ public class CupertinoNotificationLayer extends NotificationLayer {
     }
 
     @NonNull
-    public CupertinoNotificationLayer setContentBlurColorInt(@ColorInt int colorInt) {
-        getConfig().mContentBlurColor = colorInt;
+    public CupertinoNotificationLayer setContentBackgroundColorInt(@ColorInt int colorInt) {
+        getConfig().mContentBackgroundColor = colorInt;
         return this;
     }
 
     @NonNull
-    public CupertinoNotificationLayer setContentBlurColorRes(@ColorRes int colorRes) {
-        getConfig().mContentBlurColor = getActivity().getResources().getColor(colorRes);
+    public CupertinoNotificationLayer setContentBackgroundColorRes(@ColorRes int colorRes) {
+        getConfig().mContentBackgroundColor = getActivity().getResources().getColor(colorRes);
         return this;
     }
 
@@ -279,7 +287,7 @@ public class CupertinoNotificationLayer extends NotificationLayer {
     }
 
     @NonNull
-    public CupertinoNotificationLayer setContentBlurCornerRadiusPx(float radius) {
+    public CupertinoNotificationLayer setContentCornerRadiusPx(float radius) {
         getConfig().mContentBlurCornerRadius = radius;
         return this;
     }
@@ -288,9 +296,9 @@ public class CupertinoNotificationLayer extends NotificationLayer {
         protected float mContentBlurPercent = 0F;
         protected float mContentBlurRadius = 0F;
         protected float mContentBlurSimple = 8F;
-        @ColorInt
-        protected int mContentBlurColor = Color.TRANSPARENT;
         protected float mContentBlurCornerRadius = 0F;
+        @ColorInt
+        protected int mContentBackgroundColor = Color.TRANSPARENT;
 
         protected CharSequence mLabel = null;
         protected Drawable mIcon = null;

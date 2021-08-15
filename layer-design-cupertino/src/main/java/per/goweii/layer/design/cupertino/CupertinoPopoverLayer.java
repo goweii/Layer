@@ -34,7 +34,6 @@ public class CupertinoPopoverLayer extends PopupLayer {
     }
 
     private void init() {
-        setContentView(R.layout.layer_design_cupertino_popover);
     }
 
     @NonNull

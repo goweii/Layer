@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="320dp"
+<per.goweii.layer.visualeffectview.ShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    app:cardCornerRadius="6dp"
-    app:cardElevation="0dp"
-    app:cardUseCompatPadding="false">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cornerRadius="@dimen/layer_design_res_corner_radius"
+    app:cornerRadiusTopLeft="@dimen/layer_design_res_corner_radius"
+    app:cornerRadiusTopRight="@dimen/layer_design_res_corner_radius"
+    app:cornerRadiusBottomRight="@dimen/layer_design_res_corner_radius"
+    app:cornerRadiusBottomLeft="@dimen/layer_design_res_corner_radius"
+    app:shadowColor="#11000000"
+    app:solidColor="@color/layer_design_res_color_surface"
+    app:shadowSymmetry="true"
+    app:shadowOffsetY="10dp"
+    app:shadowRadius="30dp"
+    android:layout_gravity="center">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -17,11 +24,11 @@
             android:id="@+id/tv_dialog_title"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textStyle="bold"
             android:gravity="center"
             android:text="@string/dialog_title"
             android:textColor="@color/textColor"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_dialog_content"
@@ -91,4 +98,4 @@
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</per.goweii.layer.visualeffectview.ShadowLayout>

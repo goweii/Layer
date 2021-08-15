@@ -3,4 +3,5 @@
     <color name="layer_design_cupertino_color_alert_blur_overlay">#B31E1E1E</color>
     <color name="layer_design_cupertino_color_notification_blur_overlay">#B31E1E1E</color>
     <color name="layer_design_cupertino_color_toast_background">#F2333333</color>
+    <color name="layer_design_cupertino_color_shadow">#14000000</color>
 </resources>

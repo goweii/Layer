@@ -9,9 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class BackdropIgnoreView extends FrameLayout {
-    private WeakReference<BackdropBlurView> mBackdropBlurViewRef = null;
+    private List<WeakReference<BackdropBlurView>> mBackdropBlurViews = new LinkedList<>();
 
     public BackdropIgnoreView(@NonNull Context context) {
         super(context);
@@ -25,31 +28,51 @@ public class BackdropIgnoreView extends FrameLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setBackdropBlurView(@Nullable BackdropBlurView backdropBlurView) {
-        if (backdropBlurView == null) {
-            if (mBackdropBlurViewRef != null) {
-                mBackdropBlurViewRef.clear();
-                mBackdropBlurViewRef = null;
-            }
-        } else {
-            if (mBackdropBlurViewRef == null) {
-                mBackdropBlurViewRef = new WeakReference<>(backdropBlurView);
+    public void clearBackdropBlurViews() {
+        mBackdropBlurViews.clear();
+    }
+
+    public boolean containBackdropBlurView(@Nullable BackdropBlurView backdropBlurView) {
+        Iterator<WeakReference<BackdropBlurView>> iterator = mBackdropBlurViews.iterator();
+        boolean contain = false;
+        while (iterator.hasNext()) {
+            WeakReference<BackdropBlurView> reference = iterator.next();
+            if (reference.get() == null) {
+                iterator.remove();
             } else {
-                if (mBackdropBlurViewRef.get() != backdropBlurView) {
-                    mBackdropBlurViewRef.clear();
-                    mBackdropBlurViewRef = new WeakReference<>(backdropBlurView);
+                if (reference.get() == backdropBlurView) {
+                    contain = true;
                 }
             }
+        }
+        return contain;
+    }
+
+    public void addBackdropBlurView(@Nullable BackdropBlurView backdropBlurView) {
+        if (containBackdropBlurView(backdropBlurView)) {
+            return;
+        }
+        if (backdropBlurView != null) {
+            mBackdropBlurViews.add(new WeakReference<>(backdropBlurView));
         }
     }
 
     @Override
     public void draw(Canvas canvas) {
-        if (mBackdropBlurViewRef != null
-                && mBackdropBlurViewRef.get() != null
-                && mBackdropBlurViewRef.get().isRendering()) {
-            return;
+        boolean hasRendering = false;
+        Iterator<WeakReference<BackdropBlurView>> iterator = mBackdropBlurViews.iterator();
+        while (iterator.hasNext()) {
+            WeakReference<BackdropBlurView> reference = iterator.next();
+            if (reference.get() == null) {
+                iterator.remove();
+            } else {
+                if (!hasRendering && reference.get().isRendering()) {
+                    hasRendering = true;
+                }
+            }
         }
-        super.draw(canvas);
+        if (!hasRendering) {
+            super.draw(canvas);
+        }
     }
 }

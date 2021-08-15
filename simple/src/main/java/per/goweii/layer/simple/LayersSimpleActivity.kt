@@ -14,6 +14,7 @@ import per.goweii.layer.core.ktx.onClickToDismiss
 import per.goweii.layer.core.ktx.onPreDismiss
 import per.goweii.layer.core.ktx.onPreShow
 import per.goweii.layer.core.widget.SwipeLayout
+import per.goweii.layer.design.cupertino.CupertinoNotificationLayer
 import per.goweii.layer.design.material.MaterialNotificationLayer
 import per.goweii.layer.design.material.MaterialToastLayer
 import per.goweii.layer.dialog.DialogLayer
@@ -24,6 +25,7 @@ import per.goweii.layer.keyboard.KeyboardLayer
 import per.goweii.layer.overlay.OverlayLayer
 import per.goweii.layer.overlay.ktx.*
 import per.goweii.layer.popup.PopupLayer
+import per.goweii.layer.toast.ToastLayer
 
 class LayersSimpleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,14 +104,13 @@ class LayersSimpleActivity : AppCompatActivity() {
     }
 
     fun onBtnToastClick(view: View) {
-        MaterialToastLayer(this)
-                .setBackgroundColorRes(R.color.colorPrimary)
-                .setMessage(R.string.toast_msg)
+        ToastLayer(this)
+                .setContentView(R.layout.toast)
                 .show()
     }
 
     fun onBtnNotificationClick(view: View) {
-        MaterialNotificationLayer(this)
+        CupertinoNotificationLayer(this)
                 .setIcon(R.drawable.ic_notification)
                 .setLabel(R.string.app_name)
                 .setTitle(R.string.notification_title)

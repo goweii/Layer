@@ -3,6 +3,7 @@ package per.goweii.layer.visualeffectview;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Outline;
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
@@ -17,12 +18,15 @@ import per.goweii.visualeffect.blur.RSBlurEffect;
 import per.goweii.visualeffect.view.BackdropVisualEffectFrameLayout;
 
 public class BackdropBlurView extends BackdropVisualEffectFrameLayout {
-    private Path mClipPath = null;
-    private RectF mClipRect = null;
+    private final RectF mClipRect = new RectF();
+    private final Path mClipPath = new Path();
+    private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private float mCornerRadius = 0F;
     private float mBlurRadius = 8F;
     private float mBlurPercent = 0F;
+
+    private boolean mClipPathDirty = true;
 
     public BackdropBlurView(Context context) {
         this(context, null);
@@ -49,7 +53,22 @@ public class BackdropBlurView extends BackdropVisualEffectFrameLayout {
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        mClipPathDirty = true;
+    }
+
+    @Override
     public void draw(@NonNull Canvas canvas) {
+        if (mClipPathDirty) {
+            mClipRect.set(0F, 0F, getWidth(), getHeight());
+            mClipPath.rewind();
+            mClipPath.reset();
+            float minSide = Math.min(mClipRect.width(), mClipRect.height());
+            float radii = Math.min(mCornerRadius, minSide / 2F);
+            mClipPath.addRoundRect(mClipRect, radii, radii, Path.Direction.CW);
+        }
+
         float simple = getSimpleSize();
         float radius;
         if (mBlurPercent > 0) {
@@ -67,29 +86,22 @@ public class BackdropBlurView extends BackdropVisualEffectFrameLayout {
         if (getSimpleSize() != simple) {
             setSimpleSize(simple);
         }
-        if (!(getVisualEffect() instanceof BlurEffect) || ((BlurEffect) getVisualEffect()).getRadius() != radius) {
-            setVisualEffect(new RSBlurEffect(getContext(), radius));
+        if (radius == 0) {
+            if (getVisualEffect() != null) {
+                setVisualEffect(null);
+            }
+            mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setColor(getOverlayColor());
+            canvas.drawPath(mClipPath, mPaint);
+        } else {
+            if (!(getVisualEffect() instanceof BlurEffect) || ((BlurEffect) getVisualEffect()).getRadius() != radius) {
+                setVisualEffect(new RSBlurEffect(getContext(), radius));
+            }
         }
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             canvas.save();
-            if (mCornerRadius > 0) {
-                if (mClipRect == null) {
-                    mClipRect = new RectF();
-                }
-                mClipRect.set(0F, 0F, getWidth(), getHeight());
-                if (mClipPath == null) {
-                    mClipPath = new Path();
-                }
-                mClipPath.rewind();
-                mClipPath.reset();
-                float minSide = Math.min(mClipRect.width(), mClipRect.height());
-                float radii = Math.min(mCornerRadius, minSide / 2F);
-                mClipPath.addRoundRect(mClipRect, radii, radii, Path.Direction.CW);
-                canvas.clipPath(mClipPath);
-            } else {
-                mClipRect = null;
-                mClipPath = null;
-            }
+            canvas.clipPath(mClipPath);
             super.draw(canvas);
             canvas.restore();
         } else {
@@ -99,6 +111,7 @@ public class BackdropBlurView extends BackdropVisualEffectFrameLayout {
 
     public void setCornerRadius(float cornerRadius) {
         if (mCornerRadius != cornerRadius) {
+            mClipPathDirty = true;
             mCornerRadius = cornerRadius;
             invalidate();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

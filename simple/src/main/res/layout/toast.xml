@@ -1,27 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<per.goweii.layer.visualeffectview.ShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_toast_bg"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingLeft="16dp"
-    android:paddingTop="16dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="16dp">
+    android:layout_gravity="center"
+    app:cornerRadius="@dimen/layer_design_res_corner_radius"
+    app:cornerRadiusBottomLeft="@dimen/layer_design_res_corner_radius"
+    app:cornerRadiusBottomRight="@dimen/layer_design_res_corner_radius"
+    app:cornerRadiusTopLeft="@dimen/layer_design_res_corner_radius"
+    app:cornerRadiusTopRight="@dimen/layer_design_res_corner_radius"
+    app:shadowColor="#11000000"
+    app:shadowOffsetY="10dp"
+    app:shadowRadius="30dp"
+    app:shadowSymmetry="true"
+    app:solidColor="@color/layer_design_res_color_toast_background">
 
-    <ImageView
-        android:id="@+id/toast_iv_icon"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_success" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp">
 
-    <TextView
-        android:id="@+id/toast_tv_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:text="@string/toast_msg"
-        android:textColor="@color/textColorPrimary" />
+        <ImageView
+            android:id="@+id/toast_iv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tint="@color/textColor"
+            android:src="@drawable/ic_success"
+            tools:ignore="UseAppTint" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/toast_tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="@string/toast_msg"
+            android:textColor="@color/textColor" />
+
+    </LinearLayout>
+
+</per.goweii.layer.visualeffectview.ShadowLayout>

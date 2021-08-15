@@ -17,6 +17,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.List;
 import per.goweii.layer.dialog.DialogLayer;
 import per.goweii.layer.visualeffectview.BackdropBlurView;
 import per.goweii.layer.visualeffectview.BackdropIgnoreView;
+import per.goweii.layer.visualeffectview.ShadowLayout;
 
 public class CupertinoAlertLayer extends DialogLayer {
     public CupertinoAlertLayer(@NonNull Context context) {
@@ -40,7 +42,7 @@ public class CupertinoAlertLayer extends DialogLayer {
     private void init() {
         setContentView(R.layout.layer_design_cupertino_alert);
         setBackgroundDimDefault();
-        setContentBlurColorRes(R.color.layer_design_cupertino_color_alert_blur_overlay);
+        setContentBackgroundColorRes(R.color.layer_design_cupertino_color_alert_blur_overlay);
         setContentBlurSimple(10F);
         setContentBlurRadius(10F);
         setContentBlurCornerRadiusPx(getActivity().getResources().getDimensionPixelSize(R.dimen.layer_design_cupertino_corner_radius_big));
@@ -96,6 +98,7 @@ public class CupertinoAlertLayer extends DialogLayer {
             backdropBlurView.setSimpleSize(getConfig().mBackgroundBlurSimple);
             backdropBlurView.setBlurRadius(getConfig().mBackgroundBlurRadius);
             backdropBlurView.setBlurPercent(getConfig().mBackgroundBlurPercent);
+            getViewHolder().setBackgroundBackdropBlurView(backdropBlurView);
             return backdropBlurView;
         }
         return super.onCreateBackground(inflater, parent);
@@ -105,36 +108,48 @@ public class CupertinoAlertLayer extends DialogLayer {
     @Override
     protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         View content = super.onCreateContent(inflater, parent);
-        if (getConfig().mContentBlurPercent > 0 || getConfig().mContentBlurRadius > 0) {
-            final BackdropBlurView backdropBlurView = new BackdropBlurView(getActivity());
-            backdropBlurView.setOverlayColor(getConfig().mContentBlurColor);
-            backdropBlurView.setCornerRadius(getConfig().mContentBlurCornerRadius);
-            backdropBlurView.setSimpleSize(getConfig().mContentBlurSimple);
-            backdropBlurView.setBlurRadius(getConfig().mContentBlurRadius);
-            backdropBlurView.setBlurPercent(getConfig().mContentBlurPercent);
-            backdropBlurView.setLayoutParams(content.getLayoutParams());
-            content.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-            ));
-            backdropBlurView.addView(content);
-            if (content.getBackground() != null) {
-                content.getBackground().setAlpha(0);
-            }
-            content = backdropBlurView;
-        }
-        return content;
+        ViewGroup.LayoutParams contentLayoutParams = content.getLayoutParams();
+
+        final BackdropBlurView backdropBlurView = new BackdropBlurView(getActivity());
+        backdropBlurView.setOverlayColor(getConfig().mContentBackgroundColor);
+        backdropBlurView.setSimpleSize(getConfig().mContentBlurSimple);
+        backdropBlurView.setBlurRadius(getConfig().mContentBlurRadius);
+        backdropBlurView.setBlurPercent(getConfig().mContentBlurPercent);
+        backdropBlurView.setCornerRadius(getConfig().mContentBlurCornerRadius);
+        backdropBlurView.addView(content, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        getViewHolder().setContentBackdropBlurView(backdropBlurView);
+
+        ShadowLayout shadowLayout = new ShadowLayout(getActivity());
+        shadowLayout.setCornerRadius(getConfig().mContentBlurCornerRadius);
+        shadowLayout.setShadowColor(getActivity().getResources().getColor(R.color.layer_design_cupertino_color_shadow));
+        shadowLayout.setShadowRadius(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_alert_shadow_radius));
+        shadowLayout.setShadowOffsetY(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_alert_shadow_offset_y));
+        shadowLayout.setShadowSymmetry(true);
+        shadowLayout.addView(backdropBlurView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        BackdropIgnoreView backdropIgnoreView = new BackdropIgnoreView(getActivity());
+        backdropIgnoreView.addView(shadowLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        backdropIgnoreView.setLayoutParams(contentLayoutParams);
+        return backdropIgnoreView;
     }
 
     @Override
-    protected void onInitBackground() {
-        super.onInitBackground();
+    protected void onAttach() {
+        super.onAttach();
         View background = getViewHolder().getBackground();
         View content = getViewHolder().getContent();
-        if (background instanceof BackdropIgnoreView && content instanceof BackdropBlurView) {
+        BackdropBlurView backgroundBackdropBlurView = getViewHolder().getBackgroundBackdropBlurView();
+        BackdropBlurView contentBackdropBlurView = getViewHolder().getContentBackdropBlurView();
+        if (content instanceof BackdropIgnoreView) {
+            BackdropIgnoreView backdropIgnoreView = (BackdropIgnoreView) content;
+            backdropIgnoreView.addBackdropBlurView(contentBackdropBlurView);
+        }
+        if (background instanceof BackdropIgnoreView) {
             BackdropIgnoreView backdropIgnoreView = (BackdropIgnoreView) background;
-            BackdropBlurView backdropBlurView = (BackdropBlurView) content;
-            backdropIgnoreView.setBackdropBlurView(backdropBlurView);
+            backdropIgnoreView.addBackdropBlurView(contentBackdropBlurView);
+            backdropIgnoreView.addBackdropBlurView(backgroundBackdropBlurView);
         }
     }
 
@@ -244,7 +259,7 @@ public class CupertinoAlertLayer extends DialogLayer {
         View background = getViewHolder().getBackground();
         if (background instanceof BackdropIgnoreView) {
             BackdropIgnoreView backdropIgnoreView = (BackdropIgnoreView) background;
-            backdropIgnoreView.setBackdropBlurView(null);
+            backdropIgnoreView.addBackdropBlurView(null);
         }
     }
 
@@ -328,14 +343,14 @@ public class CupertinoAlertLayer extends DialogLayer {
     }
 
     @NonNull
-    public CupertinoAlertLayer setContentBlurColorInt(@ColorInt int colorInt) {
-        getConfig().mContentBlurColor = colorInt;
+    public CupertinoAlertLayer setContentBackgroundColorInt(@ColorInt int colorInt) {
+        getConfig().mContentBackgroundColor = colorInt;
         return this;
     }
 
     @NonNull
-    public CupertinoAlertLayer setContentBlurColorRes(@ColorRes int colorRes) {
-        getConfig().mContentBlurColor = getActivity().getResources().getColor(colorRes);
+    public CupertinoAlertLayer setContentBackgroundColorRes(@ColorRes int colorRes) {
+        getConfig().mContentBackgroundColor = getActivity().getResources().getColor(colorRes);
         return this;
     }
 
@@ -394,7 +409,7 @@ public class CupertinoAlertLayer extends DialogLayer {
         protected float mContentBlurRadius = 0F;
         protected float mContentBlurSimple = 8F;
         @ColorInt
-        protected int mContentBlurColor = Color.TRANSPARENT;
+        protected int mContentBackgroundColor = Color.TRANSPARENT;
         protected float mContentBlurCornerRadius = 0F;
 
         @ColorInt
@@ -408,6 +423,27 @@ public class CupertinoAlertLayer extends DialogLayer {
         private TextView mDesc;
         private View mDivider;
         private LinearLayout mActions;
+
+        private BackdropBlurView mContentBackdropBlurView = null;
+        private BackdropBlurView mBackgroundBackdropBlurView = null;
+
+        public void setContentBackdropBlurView(BackdropBlurView contentBackdropBlurView) {
+            mContentBackdropBlurView = contentBackdropBlurView;
+        }
+
+        @Nullable
+        public BackdropBlurView getContentBackdropBlurView() {
+            return mContentBackdropBlurView;
+        }
+
+        public void setBackgroundBackdropBlurView(BackdropBlurView backgroundBackdropBlurView) {
+            mBackgroundBackdropBlurView = backgroundBackdropBlurView;
+        }
+
+        @Nullable
+        public BackdropBlurView getBackgroundBackdropBlurView() {
+            return mBackgroundBackdropBlurView;
+        }
 
         @Override
         protected void setContent(@NonNull View content) {
