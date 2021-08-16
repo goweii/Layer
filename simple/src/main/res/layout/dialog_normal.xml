@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<per.goweii.layer.visualeffectview.ShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<per.goweii.layer.visualeffectview.RoundedShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
     app:cornerRadius="@dimen/layer_design_res_corner_radius"
-    app:cornerRadiusTopLeft="@dimen/layer_design_res_corner_radius"
-    app:cornerRadiusTopRight="@dimen/layer_design_res_corner_radius"
-    app:cornerRadiusBottomRight="@dimen/layer_design_res_corner_radius"
-    app:cornerRadiusBottomLeft="@dimen/layer_design_res_corner_radius"
     app:shadowColor="#11000000"
-    app:solidColor="@color/layer_design_res_color_surface"
-    app:shadowSymmetry="true"
     app:shadowOffsetY="10dp"
     app:shadowRadius="30dp"
-    android:layout_gravity="center">
+    app:shadowSymmetry="true"
+    app:solidColor="@color/layer_design_res_color_surface">
 
     <LinearLayout
         android:layout_width="320dp"
@@ -98,4 +94,4 @@
 
     </LinearLayout>
 
-</per.goweii.layer.visualeffectview.ShadowLayout>
+</per.goweii.layer.visualeffectview.RoundedShadowLayout>
