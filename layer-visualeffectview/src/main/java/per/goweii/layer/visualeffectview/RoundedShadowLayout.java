@@ -2,9 +2,6 @@ package per.goweii.layer.visualeffectview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -12,9 +9,7 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 
 public class RoundedShadowLayout extends ShadowLayout {
-    private final Paint mSolidPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final RoundedShadowOutlineProvider mRoundedShadowOutlineProvider = new RoundedShadowOutlineProvider();
-    private int mSolidColor = Color.TRANSPARENT;
 
     public RoundedShadowLayout(Context context) {
         this(context, null);
@@ -30,7 +25,6 @@ public class RoundedShadowLayout extends ShadowLayout {
         setClipToShadowOutline(true);
         setClipToPadding(false);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RoundedShadowLayout);
-        mSolidColor = typedArray.getColor(R.styleable.RoundedShadowLayout_solidColor, mSolidColor);
         float cornerRadius = typedArray.getDimension(R.styleable.RoundedShadowLayout_cornerRadius, 0F);
         float cornerRadiusTopLeft = typedArray.getDimension(R.styleable.RoundedShadowLayout_cornerRadiusTopLeft, cornerRadius);
         float cornerRadiusTopRight = typedArray.getDimension(R.styleable.RoundedShadowLayout_cornerRadiusTopRight, cornerRadius);
@@ -52,22 +46,6 @@ public class RoundedShadowLayout extends ShadowLayout {
         int radiusTop = (int) Math.max(getTopLeftCornerRadius(), getTopRightCornerRadius());
         int radiusBottom = (int) Math.max(getBottomLeftCornerRadius(), getBottomRightCornerRadius());
         return radiusTop + radiusBottom + super.getSuggestedMinimumHeight();
-    }
-
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        Path path = getShadowOutline();
-        mSolidPaint.setStyle(Paint.Style.FILL);
-        mSolidPaint.setColor(mSolidColor);
-        canvas.drawPath(path, mSolidPaint);
-    }
-
-    public void setSolidColor(int solidColor) {
-        if (mSolidColor != solidColor) {
-            mSolidColor = solidColor;
-            invalidate();
-        }
     }
 
     public float getTopLeftCornerRadius() {

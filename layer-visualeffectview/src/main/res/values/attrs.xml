@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ShadowLayout">
+        <attr name="solidColor" format="color" />
         <attr name="shadowColor" format="color" />
         <attr name="shadowSymmetry" format="boolean" />
         <attr name="shadowRadius" format="dimension" />
@@ -8,7 +9,6 @@
         <attr name="shadowOffsetY" format="dimension" />
     </declare-styleable>
     <declare-styleable name="RoundedShadowLayout">
-        <attr name="solidColor" format="color" />
         <attr name="cornerRadius" format="dimension" />
         <attr name="cornerRadiusTopLeft" format="dimension" />
         <attr name="cornerRadiusTopRight" format="dimension" />

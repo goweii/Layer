@@ -6,11 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.graphics.Region;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -21,6 +23,7 @@ public class ShadowLayout extends FrameLayout {
     private final Path mShadowOutline = new Path();
     private final RectF mShadowInsets = new RectF();
 
+    private int mSolidColor = Color.TRANSPARENT;
     private boolean mShadowSymmetry = true;
     private int mShadowColor = Color.argb(100, 0, 0, 0);
     private float mShadowRadius = 0F;
@@ -43,7 +46,9 @@ public class ShadowLayout extends FrameLayout {
     public ShadowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setWillNotDraw(false);
+        //setLayerType(LAYER_TYPE_SOFTWARE, null);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShadowLayout);
+        mSolidColor = typedArray.getColor(R.styleable.ShadowLayout_solidColor, mSolidColor);
         mShadowColor = typedArray.getColor(R.styleable.ShadowLayout_shadowColor, mShadowColor);
         mShadowSymmetry = typedArray.getBoolean(R.styleable.ShadowLayout_shadowSymmetry, mShadowSymmetry);
         mShadowRadius = typedArray.getDimension(R.styleable.ShadowLayout_shadowRadius, mShadowRadius);
@@ -84,6 +89,19 @@ public class ShadowLayout extends FrameLayout {
 
     public boolean isClipToShadowOutline() {
         return mClipToShadowOutline;
+    }
+
+    public void setSolidColor(@ColorInt int solidColor) {
+        if (mSolidColor != solidColor) {
+            mSolidColor = solidColor;
+            invalidate();
+        }
+    }
+
+    @Override
+    @ColorInt
+    public int getSolidColor() {
+        return mSolidColor;
     }
 
     public void setShadowColor(int shadowColor) {
@@ -190,22 +208,47 @@ public class ShadowLayout extends FrameLayout {
         super.draw(canvas);
     }
 
+    private final PorterDuffXfermode mXfermodeDstOut = new PorterDuffXfermode(PorterDuff.Mode.DST_OUT);
+
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.save();
-        canvas.clipPath(mShadowOutline, Region.Op.DIFFERENCE);
+        int saveLayerId = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
+        mShadowPaint.setStyle(Paint.Style.FILL);
+
+        mShadowPaint.setShadowLayer(mShadowRadius * 0.75F, mShadowOffsetX, mShadowOffsetY, mShadowColor);
+        mShadowPaint.setColor(Color.TRANSPARENT);
+        mShadowPaint.setXfermode(null);
         canvas.drawPath(mShadowOutline, mShadowPaint);
-        canvas.restore();
+
+        mShadowPaint.clearShadowLayer();
+        mShadowPaint.setColor(Color.BLACK);
+        mShadowPaint.setXfermode(mXfermodeDstOut);
+        canvas.drawPath(mShadowOutline, mShadowPaint);
+
+        canvas.restoreToCount(saveLayerId);
+
+        mShadowPaint.setXfermode(null);
+        mShadowPaint.setColor(mSolidColor);
+        canvas.drawPath(mShadowOutline, mShadowPaint);
         super.onDraw(canvas);
     }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
         if (mClipToShadowOutline) {
-            canvas.save();
-            canvas.clipPath(mShadowOutline);
+            int saveLayerId = canvas.saveLayer(0, 0, getWidth(), getHeight(), null, Canvas.ALL_SAVE_FLAG);
             super.dispatchDraw(canvas);
-            canvas.restore();
+
+            mShadowOutline.toggleInverseFillType();
+            mShadowPaint.setStyle(Paint.Style.FILL);
+            mShadowPaint.clearShadowLayer();
+            mShadowPaint.setColor(Color.BLACK);
+            mShadowPaint.setXfermode(mXfermodeDstOut);
+            canvas.drawPath(mShadowOutline, mShadowPaint);
+            mShadowPaint.setXfermode(null);
+            mShadowOutline.toggleInverseFillType();
+
+            canvas.restoreToCount(saveLayerId);
         } else {
             super.dispatchDraw(canvas);
         }
@@ -250,9 +293,6 @@ public class ShadowLayout extends FrameLayout {
     }
 
     private void resetShadowPaint() {
-        mShadowPaint.setColor(mShadowColor);
-        mShadowPaint.setShadowLayer(mShadowRadius, mShadowOffsetX, mShadowOffsetY, mShadowColor);
-        mShadowPaint.setStyle(Paint.Style.FILL);
         invalidate();
     }
 

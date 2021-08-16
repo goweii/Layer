@@ -4,13 +4,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:cornerRadius="20dp"
-    app:shadowRadius="30dp"
-    app:solidColor="#ffffff"
-    app:shadowColor="#55000000"
-    app:shadowOffsetY="10dp">
+    app:shadowColor="#99ff0000"
+    app:shadowOffsetY="10dp"
+    app:shadowRadius="30dp">
 
     <View
         android:layout_width="160dp"
-        android:layout_height="160dp" />
+        android:layout_height="160dp"
+        android:background="#00ff00" />
 
 </per.goweii.layer.visualeffectview.RoundedShadowLayout>
