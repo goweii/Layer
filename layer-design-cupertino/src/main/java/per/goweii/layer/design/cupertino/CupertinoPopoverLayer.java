@@ -14,8 +14,8 @@ import androidx.annotation.Px;
 import androidx.core.content.ContextCompat;
 
 import per.goweii.layer.core.anim.AnimatorHelper;
-import per.goweii.layer.design.cupertino.widget.PopoverContainer;
 import per.goweii.layer.popup.PopupLayer;
+import per.goweii.layer.visualeffectview.PopupShadowLayout;
 
 public class CupertinoPopoverLayer extends PopupLayer {
     public CupertinoPopoverLayer(@NonNull Context context) {
@@ -76,7 +76,7 @@ public class CupertinoPopoverLayer extends PopupLayer {
     @Override
     protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         View content = super.onCreateContent(inflater, parent);
-        PopoverContainer popoverContainer = new PopoverContainer(getActivity());
+        PopupShadowLayout popupShadowLayout = new PopupShadowLayout(getActivity());
         ViewGroup.LayoutParams contentLayoutParams = content.getLayoutParams();
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
@@ -88,15 +88,15 @@ public class CupertinoPopoverLayer extends PopupLayer {
             layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         }
         content.setLayoutParams(layoutParams);
-        popoverContainer.setLayoutParams(contentLayoutParams);
-        popoverContainer.addView(content);
-        return popoverContainer;
+        popupShadowLayout.setLayoutParams(contentLayoutParams);
+        popupShadowLayout.addView(content);
+        return popupShadowLayout;
     }
 
     @Override
     protected void onInitContent() {
         super.onInitContent();
-        PopoverContainer content = getViewHolder().getContent();
+        PopupShadowLayout content = getViewHolder().getContent();
         content.setArrowSide(getConfig().mArrowSide);
         content.setArrowRadius(getConfig().mArrowRadius);
         content.setArrowOffset(getConfig().mArrowOffset);
@@ -104,29 +104,32 @@ public class CupertinoPopoverLayer extends PopupLayer {
         content.setArrowHeight(getConfig().mArrowHeight);
         content.setCornerRadius(getConfig().mCornerRadius);
         content.setSolidColor(getConfig().mSolidColor);
-        content.setFitArrowInsetByChildren(getConfig().mFitArrowInsetByContent);
+        content.setShadowColor(getActivity().getResources().getColor(R.color.layer_design_cupertino_color_shadow));
+        content.setShadowRadius(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_alert_shadow_radius));
+        content.setShadowOffsetY(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_alert_shadow_offset_y));
+        content.setShadowSymmetry(true);
     }
 
     @NonNull
     @Override
     protected Animator onCreateDefContentInAnimator(@NonNull View view) {
         switch (getConfig().mArrowSide) {
-            case PopoverContainer.ARROW_SIDE_TOP:
+            case PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_TOP:
                 return AnimatorHelper.createZoomAlphaInAnim(view,
                         (int) getViewHolder().getContent().getRealArrowOffset(), 0,
                         0.618F
                 );
-            case PopoverContainer.ARROW_SIDE_BOTTOM:
+            case PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_BOTTOM:
                 return AnimatorHelper.createZoomAlphaInAnim(view,
                         (int) getViewHolder().getContent().getRealArrowOffset(), view.getHeight(),
                         0.618F
                 );
-            case PopoverContainer.ARROW_SIDE_LEFT:
+            case PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_LEFT:
                 return AnimatorHelper.createZoomAlphaInAnim(view,
                         0, (int) getViewHolder().getContent().getRealArrowOffset(),
                         0.618F
                 );
-            case PopoverContainer.ARROW_SIDE_RIGHT:
+            case PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_RIGHT:
                 return AnimatorHelper.createZoomAlphaInAnim(view,
                         view.getWidth(), (int) getViewHolder().getContent().getRealArrowOffset(),
                         0.618F
@@ -140,22 +143,22 @@ public class CupertinoPopoverLayer extends PopupLayer {
     @Override
     protected Animator onCreateDefContentOutAnimator(@NonNull View view) {
         switch (getConfig().mArrowSide) {
-            case PopoverContainer.ARROW_SIDE_TOP:
+            case PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_TOP:
                 return AnimatorHelper.createZoomAlphaOutAnim(view,
                         (int) getViewHolder().getContent().getRealArrowOffset(), 0,
                         0.618F
                 );
-            case PopoverContainer.ARROW_SIDE_BOTTOM:
+            case PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_BOTTOM:
                 return AnimatorHelper.createZoomAlphaOutAnim(view,
                         (int) getViewHolder().getContent().getRealArrowOffset(), view.getHeight(),
                         0.618F
                 );
-            case PopoverContainer.ARROW_SIDE_LEFT:
+            case PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_LEFT:
                 return AnimatorHelper.createZoomAlphaOutAnim(view,
                         0, (int) getViewHolder().getContent().getRealArrowOffset(),
                         0.618F
                 );
-            case PopoverContainer.ARROW_SIDE_RIGHT:
+            case PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_RIGHT:
                 return AnimatorHelper.createZoomAlphaOutAnim(view,
                         view.getWidth(), (int) getViewHolder().getContent().getRealArrowOffset(),
                         0.618F
@@ -170,9 +173,8 @@ public class CupertinoPopoverLayer extends PopupLayer {
         setHorizontal(Align.Horizontal.CENTER);
         setVertical(Align.Vertical.BELOW);
         setInside(true);
-        setFitArrowInsetByContent(false);
-        setArrowSide(PopoverContainer.ARROW_SIDE_TOP);
-        setArrowOffset(PopoverContainer.ARROW_CENTER);
+        setArrowSide(PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_TOP);
+        setArrowOffset(PopupShadowLayout.PopupShadowOutlineProvider.ARROW_CENTER);
         setArrowRadius(getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_corner_radius));
         setArrowWidth(getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_width));
         setArrowHeight(getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_height));
@@ -188,7 +190,7 @@ public class CupertinoPopoverLayer extends PopupLayer {
 
     /**
      * 箭头距离左或上的偏移量
-     * 居中可以使用{@link PopoverContainer#ARROW_CENTER}
+     * 居中可以使用{@link PopupShadowLayout.PopupShadowOutlineProvider#ARROW_CENTER}
      *
      * @param arrowOffset 偏移量
      */
@@ -217,25 +219,19 @@ public class CupertinoPopoverLayer extends PopupLayer {
         return this;
     }
 
-    public CupertinoPopoverLayer setArrowSide(@PopoverContainer.ArrowSide int arrowSide) {
+    public CupertinoPopoverLayer setArrowSide(@PopupShadowLayout.PopupShadowOutlineProvider.ArrowSide int arrowSide) {
         getConfig().mArrowSide = arrowSide;
         return this;
     }
 
-    public CupertinoPopoverLayer setFitArrowInsetByContent(boolean fitArrowInsetByContent) {
-        getConfig().mFitArrowInsetByContent = fitArrowInsetByContent;
-        return this;
-    }
-
     public static class Config extends PopupLayer.Config {
-        protected int mArrowSide = PopoverContainer.ARROW_SIDE_NONE;
-        protected int mArrowOffset = PopoverContainer.ARROW_CENTER;
+        protected int mArrowSide = PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_NONE;
+        protected int mArrowOffset = PopupShadowLayout.PopupShadowOutlineProvider.ARROW_CENTER;
         protected int mArrowRadius = 0;
         protected int mArrowWidth = 0;
         protected int mArrowHeight = 0;
         protected int mCornerRadius = 0;
         protected int mSolidColor = Color.TRANSPARENT;
-        private boolean mFitArrowInsetByContent = false;
     }
 
     public static class ViewHolder extends PopupLayer.ViewHolder {
@@ -246,8 +242,8 @@ public class CupertinoPopoverLayer extends PopupLayer {
 
         @NonNull
         @Override
-        public PopoverContainer getContent() {
-            return (PopoverContainer) super.getContent();
+        public PopupShadowLayout getContent() {
+            return (PopupShadowLayout) super.getContent();
         }
     }
 

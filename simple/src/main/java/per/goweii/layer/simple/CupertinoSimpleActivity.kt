@@ -36,8 +36,7 @@ class CupertinoSimpleActivity : AppCompatActivity() {
         CupertinoPopoverLayer(view)
                 .contentView(R.layout.popup_meun)
                 .setUseDefaultConfig()
-                .setSolidColor(Color.BLACK)
-                .setFitArrowInsetByContent(true)
+                .setSolidColor(resources.getColor(R.color.colorPopupBg))
                 .show()
     }
 

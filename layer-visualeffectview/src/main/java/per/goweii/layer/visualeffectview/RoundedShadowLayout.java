@@ -25,11 +25,11 @@ public class RoundedShadowLayout extends ShadowLayout {
         setClipToShadowOutline(true);
         setClipToPadding(false);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RoundedShadowLayout);
-        float cornerRadius = typedArray.getDimension(R.styleable.RoundedShadowLayout_cornerRadius, 0F);
-        float cornerRadiusTopLeft = typedArray.getDimension(R.styleable.RoundedShadowLayout_cornerRadiusTopLeft, cornerRadius);
-        float cornerRadiusTopRight = typedArray.getDimension(R.styleable.RoundedShadowLayout_cornerRadiusTopRight, cornerRadius);
-        float cornerRadiusBottomRight = typedArray.getDimension(R.styleable.RoundedShadowLayout_cornerRadiusBottomRight, cornerRadius);
-        float cornerRadiusBottomLeft = typedArray.getDimension(R.styleable.RoundedShadowLayout_cornerRadiusBottomLeft, cornerRadius);
+        float cornerRadius = typedArray.getDimension(R.styleable.RoundedShadowLayout_roundedCornerRadius, 0F);
+        float cornerRadiusTopLeft = typedArray.getDimension(R.styleable.RoundedShadowLayout_roundedCornerRadiusTopLeft, cornerRadius);
+        float cornerRadiusTopRight = typedArray.getDimension(R.styleable.RoundedShadowLayout_roundedCornerRadiusTopRight, cornerRadius);
+        float cornerRadiusBottomRight = typedArray.getDimension(R.styleable.RoundedShadowLayout_roundedCornerRadiusBottomRight, cornerRadius);
+        float cornerRadiusBottomLeft = typedArray.getDimension(R.styleable.RoundedShadowLayout_roundedCornerRadiusBottomLeft, cornerRadius);
         typedArray.recycle();
         setCornerRadius(cornerRadiusTopLeft, cornerRadiusTopRight, cornerRadiusBottomRight, cornerRadiusBottomLeft);
     }
