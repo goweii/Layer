@@ -107,7 +107,7 @@ public class CupertinoPopoverLayer extends PopupLayer {
         content.setShadowColor(getActivity().getResources().getColor(R.color.layer_design_cupertino_color_shadow));
         content.setShadowRadius(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_alert_shadow_radius));
         content.setShadowOffsetY(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_alert_shadow_offset_y));
-        content.setShadowSymmetry(true);
+        content.setShadowSymmetry(false);
     }
 
     @NonNull
