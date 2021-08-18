@@ -11,8 +11,8 @@
       "type": "SINGLE",
       "filters": [],
       "versionCode": 1,
-      "versionName": "1.0",
-      "outputFile": "simple-release.apk"
+      "versionName": "1.0.0",
+      "outputFile": "per.goweii.layer.simple-1.0.0-1-release.apk"
     }
   ]
 }

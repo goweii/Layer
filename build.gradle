@@ -7,6 +7,19 @@ buildscript {
         cardview_version = "1.0.0"
         visual_effect_version = "1.0.8"
     }
+    ext {
+        android_application_id = "per.goweii.layer.simple"
+        android_compile_sdk_version = 30
+        android_build_tools_version = "30.0.3"
+        android_min_sdk_version = 17
+        android_target_sdk_version = 30
+        android_version_code = 1
+        android_version_name = "1.0.0"
+    }
+    ext {
+        layer_group = "per.goweii.layer"
+        layer_version = "1.0.0"
+    }
     repositories {
         google()
         jcenter()
