@@ -4,8 +4,11 @@
     <color name="colorPrimary">#2949FB</color>
     <color name="colorPrimaryDark">#1F36B6</color>
     <color name="colorAccent">#F62343</color>
-    <color name="textColor">#B3000000</color>
-    <color name="textColorPrimary">#FFFFFF</color>
-    <color name="colorPopupBg">#222222</color>
-    <color name="colorDivider">#33000000</color>
+    <color name="colorOnSurface">#B3000000</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorSurfaceTop">#08000000</color>
+    <color name="colorDivider">#26000000</color>
+    <color name="colorShadow">#66000000</color>
+    <color name="colorShadowPrimary">#661F36B6</color>
 </resources>

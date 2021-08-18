@@ -5,11 +5,11 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     app:roundedCornerRadius="@dimen/layer_design_res_corner_radius"
-    app:shadowColor="#11000000"
+    app:shadowColor="@color/colorShadow"
     app:shadowOffsetY="10dp"
     app:shadowRadius="30dp"
-    app:shadowSymmetry="true"
-    app:shadowSolidColor="@color/layer_design_res_color_surface">
+    app:shadowSolidColor="@color/colorSurface"
+    app:shadowSymmetry="true">
 
     <LinearLayout
         android:layout_width="320dp"
@@ -19,10 +19,13 @@
         <TextView
             android:id="@+id/tv_dialog_title"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
             android:text="@string/dialog_title"
-            android:textColor="@color/textColor"
+            android:textColor="@color/colorOnSurface"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -31,17 +34,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="20dp"
-            android:paddingTop="28dp"
+            android:paddingTop="20dp"
             android:paddingRight="20dp"
-            android:paddingBottom="25dp"
+            android:paddingBottom="20dp"
             android:text="@string/dialog_msg"
-            android:textColor="@color/textColor"
+            android:textColor="@color/colorOnSurface"
             android:textSize="17sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#f3f3f3"
+            android:background="@color/colorSurfaceTop"
             android:orientation="horizontal">
 
             <FrameLayout
@@ -54,22 +57,20 @@
 
                 <TextView
                     android:id="@+id/tv_dialog_no"
+                    style="@style/TextStyleButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="@string/cancel"
-                    android:textColor="@color/textColor"
-                    android:textSize="16sp" />
+                    android:text="@string/cancel" />
 
             </FrameLayout>
 
             <View
                 android:id="@+id/view_line"
-                android:layout_width="1dp"
+                style="@style/DividerStyle_V_Normal"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#f3f3f3" />
+                android:layout_marginBottom="10dp" />
 
             <FrameLayout
                 android:id="@+id/fl_dialog_yes"
@@ -81,12 +82,11 @@
 
                 <TextView
                     android:id="@+id/tv_dialog_yes"
+                    style="@style/TextStyleButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="@string/i_know"
-                    android:textColor="@color/textColor"
-                    android:textSize="16sp" />
+                    android:text="@string/i_know" />
 
             </FrameLayout>
 

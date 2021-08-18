@@ -6,11 +6,11 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     app:roundedCornerRadius="@dimen/layer_design_res_corner_radius"
-    app:shadowColor="#11000000"
+    app:shadowColor="@color/colorShadow"
     app:shadowOffsetY="10dp"
     app:shadowRadius="30dp"
-    app:shadowSymmetry="true"
-    app:shadowSolidColor="@color/layer_design_res_color_toast_background">
+    app:shadowSolidColor="@color/layer_design_res_color_toast_background"
+    app:shadowSymmetry="true">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -26,8 +26,8 @@
             android:id="@+id/toast_iv_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:tint="@color/textColor"
             android:src="@drawable/ic_success"
+            android:tint="@color/colorOnSurface"
             tools:ignore="UseAppTint" />
 
         <TextView
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:text="@string/toast_msg"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/colorOnSurface" />
 
     </LinearLayout>
 

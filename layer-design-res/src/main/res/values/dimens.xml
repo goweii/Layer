@@ -9,6 +9,7 @@
     <dimen name="layer_design_res_divider">0.5dp</dimen>
 
     <dimen name="layer_design_res_corner_radius">8dp</dimen>
+    <dimen name="layer_design_res_corner_radius_big">12dp</dimen>
 
     <dimen name="layer_design_res_icon_size">24dp</dimen>
 

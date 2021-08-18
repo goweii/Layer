@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:background="@color/colorSurface"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingTop="8dp"
@@ -30,7 +30,7 @@
             android:lines="3"
             android:maxLines="5"
             android:padding="8dp"
-            android:textColor="@color/textColor"
+            android:textColor="@color/colorOnSurface"
             android:textSize="16sp" />
 
         <TextView
@@ -39,9 +39,9 @@
             android:layout_height="match_parent"
             android:background="@drawable/shape_send_bg"
             android:gravity="center"
-            android:padding="8dp"
+            android:padding="10dp"
             android:text="@string/send"
-            android:textColor="@color/textColorPrimary" />
+            android:textColor="@color/colorOnPrimary" />
 
     </LinearLayout>
 

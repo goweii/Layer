@@ -12,55 +12,55 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_dialog"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnDialogClick"
             android:text="Dialog" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_bottom_sheet"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnBottomSheetClick"
             android:text="Bottom Sheet" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_slide_panel"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnSlidePanelClick"
             android:text="Slide Panel" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_input"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnInputClick"
             android:text="Input" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_popup"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnPopupClick"
             android:text="Popup" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_toast"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnToastClick"
             android:text="Toast" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_notification"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnNotificationClick"
             android:text="Notification" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_guide"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnGuideClick"
             android:text="Guide" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_keyboard"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnKeyboardClick"
             android:text="Keyboard" />
 

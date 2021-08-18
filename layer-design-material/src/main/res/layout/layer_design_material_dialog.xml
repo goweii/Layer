@@ -55,9 +55,9 @@
                 android:layout_marginLeft="@dimen/layer_design_material_margin_default"
                 android:layout_marginRight="@dimen/layer_design_material_margin_default"
                 android:layout_marginBottom="@dimen/layer_design_material_margin_default"
-                android:orientation="horizontal">
-
-            </LinearLayout>
+                android:divider="@drawable/layer_design_material_dialog_actions_gap"
+                android:orientation="horizontal"
+                android:showDividers="middle" />
 
         </LinearLayout>
 

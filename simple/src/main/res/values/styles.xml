@@ -4,11 +4,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/textColor</item>
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+        <item name="android:textColorPrimary">@color/colorOnPrimary</item>
     </style>
 
-    <style name="ListBtnStyle">
+    <style name="ButtonStyleListItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">56dp</item>
         <item name="android:layout_marginLeft">16dp</item>
@@ -16,18 +16,62 @@
         <item name="android:backgroundTint" tools:ignore="NewApi">@color/colorPrimary</item>
         <item name="android:gravity">center</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:textColor">@color/colorOnPrimary</item>
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="ListTextStyle">
+    <style name="TextStyleListItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">56dp</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextStyleTitle">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextStyleButton">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="DividerStyle_H_Normal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/colorDivider</item>
+    </style>
+
+    <style name="DividerStyle_V_Normal">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/colorDivider</item>
+    </style>
+
+    <style name="ActionBarStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="ab_immersion">immersed</item>
+        <item name="ab_statusBarColor">@color/colorPrimaryDark</item>
+        <item name="ab_statusBarMode">light</item>
+        <item name="abc_leftIconClickToFinish">true</item>
+        <item name="abc_leftIconColor">@color/colorOnPrimary</item>
+        <item name="abc_leftIconPadding">10dp</item>
+        <item name="abc_leftIconRes">@drawable/ic_back</item>
+        <item name="abc_leftTextColor">@color/colorOnPrimary</item>
+        <item name="abc_rightIconColor">@color/colorOnPrimary</item>
+        <item name="abc_rightIconPadding">10dp</item>
+        <item name="abc_rightTextColor">@color/colorOnPrimary</item>
+        <item name="abc_titleTextColor">@color/colorOnPrimary</item>
     </style>
 </resources>

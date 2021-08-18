@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="300dp"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@color/colorSurface"
     android:orientation="vertical">
 
     <ImageView
@@ -14,107 +14,104 @@
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="80dp"
+                style="@style/TextStyleListItem"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:drawableTop="@mipmap/ic_launcher_round"
+                android:drawablePadding="16dp"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="@string/popup_menu_item"
-                android:textColor="#232323"
-                android:textSize="15sp" />
+                android:text="@string/popup_menu_item" />
 
             <TextView
-                android:layout_width="80dp"
+                style="@style/TextStyleListItem"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:drawableTop="@mipmap/ic_launcher_round"
+                android:drawablePadding="16dp"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="@string/popup_menu_item"
-                android:textColor="#232323"
-                android:textSize="15sp" />
+                android:text="@string/popup_menu_item" />
 
             <TextView
-                android:layout_width="80dp"
+                style="@style/TextStyleListItem"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:drawableTop="@mipmap/ic_launcher_round"
+                android:drawablePadding="16dp"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="@string/popup_menu_item"
-                android:textColor="#232323"
-                android:textSize="15sp" />
+                android:text="@string/popup_menu_item" />
 
             <TextView
-                android:layout_width="80dp"
+                style="@style/TextStyleListItem"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:drawableTop="@mipmap/ic_launcher_round"
+                android:drawablePadding="16dp"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="@string/popup_menu_item"
-                android:textColor="#232323"
-                android:textSize="15sp" />
+                android:text="@string/popup_menu_item" />
 
             <TextView
-                android:layout_width="80dp"
+                style="@style/TextStyleListItem"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:drawableTop="@mipmap/ic_launcher_round"
+                android:drawablePadding="16dp"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="@string/popup_menu_item"
-                android:textColor="#232323"
-                android:textSize="15sp" />
+                android:text="@string/popup_menu_item" />
 
             <TextView
-                android:layout_width="80dp"
+                style="@style/TextStyleListItem"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:drawableTop="@mipmap/ic_launcher_round"
+                android:drawablePadding="16dp"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="@string/popup_menu_item"
-                android:textColor="#232323"
-                android:textSize="15sp" />
+                android:text="@string/popup_menu_item" />
 
             <TextView
-                android:layout_width="80dp"
+                style="@style/TextStyleListItem"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:drawableTop="@mipmap/ic_launcher_round"
+                android:drawablePadding="16dp"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="@string/popup_menu_item"
-                android:textColor="#232323"
-                android:textSize="15sp" />
+                android:text="@string/popup_menu_item" />
 
             <TextView
-                android:layout_width="80dp"
+                style="@style/TextStyleListItem"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:drawableTop="@mipmap/ic_launcher_round"
+                android:drawablePadding="16dp"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="@string/popup_menu_item"
-                android:textColor="#232323"
-                android:textSize="15sp" />
+                android:text="@string/popup_menu_item" />
 
             <TextView
-                android:layout_width="80dp"
+                style="@style/TextStyleListItem"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:drawableTop="@mipmap/ic_launcher_round"
+                android:drawablePadding="16dp"
                 android:gravity="center"
                 android:padding="15dp"
-                android:text="@string/popup_menu_item"
-                android:textColor="#232323"
-                android:textSize="15sp" />
+                android:text="@string/popup_menu_item" />
 
         </LinearLayout>
 
@@ -127,122 +124,19 @@
         android:layout_weight="2"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-        </LinearLayout>
+        <include layout="@layout/layout_list_20" />
 
     </ScrollView>
 
+    <View style="@style/DividerStyle_H_Normal" />
+
     <TextView
         android:id="@+id/slide_panel_tv_close"
+        style="@style/TextStyleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="15dp"
-        android:text="@string/close"
-        android:textColor="#232323"
-        android:textSize="15sp" />
+        android:text="@string/close" />
 
 </LinearLayout>

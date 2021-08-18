@@ -6,17 +6,8 @@
     android:orientation="vertical">
 
     <per.goweii.actionbarex.common.ActionBarCommon
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:ab_immersion="immersed"
-        app:ab_statusBarColor="@color/colorPrimaryDark"
-        app:ab_statusBarMode="light"
-        app:abc_leftIconClickToFinish="true"
-        app:abc_leftIconPadding="10dp"
-        app:abc_leftIconRes="@drawable/ic_back"
-        app:abc_titleText="Cupertino Design"
-        app:abc_titleTextColor="#ffffffff" />
+        style="@style/ActionBarStyle"
+        app:abc_titleText="Cupertino Design" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -31,31 +22,31 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_alert"
-                style="@style/ListBtnStyle"
+                style="@style/ButtonStyleListItem"
                 android:onClick="onBtnDialogClick"
                 android:text="Dialog" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_popover"
-                style="@style/ListBtnStyle"
+                style="@style/ButtonStyleListItem"
                 android:onClick="onBtnPopoverClick"
                 android:text="Popover" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_modality"
-                style="@style/ListBtnStyle"
+                style="@style/ButtonStyleListItem"
                 android:onClick="onBtnModalityClick"
                 android:text="Modality" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_toast"
-                style="@style/ListBtnStyle"
+                style="@style/ButtonStyleListItem"
                 android:onClick="onBtnToastClick"
                 android:text="Toast" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_notification"
-                style="@style/ListBtnStyle"
+                style="@style/ButtonStyleListItem"
                 android:onClick="onBtnNotificationClick"
                 android:text="Notification" />
 

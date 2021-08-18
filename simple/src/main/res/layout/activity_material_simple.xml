@@ -12,25 +12,25 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_dialog"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnDialogClick"
             android:text="Dialog" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_popup"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnPopupClick"
             android:text="Popup" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_toast"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnToastClick"
             android:text="Toast" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_notification"
-            style="@style/ListBtnStyle"
+            style="@style/ButtonStyleListItem"
             android:onClick="onBtnNotificationClick"
             android:text="Notification" />
 

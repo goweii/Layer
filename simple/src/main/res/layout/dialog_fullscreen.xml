@@ -8,13 +8,13 @@
 
     <per.goweii.actionbarex.common.ActionBarCommon
         android:id="@+id/dialog_actionbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/ActionBarStyle"
+        android:background="@android:color/transparent"
         app:ab_bottomLineColor="@color/colorDivider"
         app:ab_bottomLineHeight="1dp"
-        app:ab_statusBarVisible="gone"
         app:ab_immersion="unchanged"
         app:ab_statusBarMode="unchanged"
+        app:ab_statusBarVisible="gone"
         app:abc_leftText="@string/close"
         app:abc_rightText="@string/conform"
         app:abc_titleText="@string/dialog_title" />
@@ -24,156 +24,7 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:padding="15dp"
-                android:text="@string/dialog_msg"
-                android:textColor="#232323"
-                android:textSize="15sp" />
-
-        </LinearLayout>
+        <include layout="@layout/layout_list_20" />
 
     </androidx.core.widget.NestedScrollView>
 

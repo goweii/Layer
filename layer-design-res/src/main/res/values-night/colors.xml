@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="layer_design_res_color_surface">#FF111111</color>
+    <color name="layer_design_res_color_surface">#FF222222</color>
     <color name="layer_design_res_color_divider">#99000000</color>
     <color name="layer_design_res_color_on_surface">#BFFFFFFF</color>
     <color name="layer_design_res_color_on_surface_secondary">#80FFFFFF</color>
     <color name="layer_design_res_color_on_surface_thirdly">#59FFFFFF</color>
     <color name="layer_design_res_color_on_surface_fourth">#33FFFFFF</color>
 
-    <color name="layer_design_res_color_toast_background">#F2111111</color>
-    <color name="layer_design_res_color_toast_text">@color/layer_design_res_color_on_surface</color>
+    <color name="layer_design_res_color_toast_background">#F2333333</color>
+    <color name="layer_design_res_color_toast_text">#BFFFFFFF</color>
 </resources>

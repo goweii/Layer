@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<per.goweii.layer.visualeffectview.RoundedShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="400dp"
     android:layout_gravity="bottom"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="0dp"
-    app:cardUseCompatPadding="false">
+    app:roundedCornerRadiusTopLeft="@dimen/layer_design_res_corner_radius"
+    app:roundedCornerRadiusTopRight="@dimen/layer_design_res_corner_radius"
+    app:shadowRadius="0dp"
+    app:shadowSolidColor="@color/colorSurface">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,18 +16,16 @@
 
         <TextView
             android:id="@+id/tv_dialog_title"
+            style="@style/TextStyleTitle"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
-            android:text="@string/dialog_title"
-            android:textColor="@color/textColor"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:text="@string/dialog_title" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#f5f5f5" />
+            android:layout_height="0.5dp"
+            android:background="@color/colorDivider" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -40,57 +39,58 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/ListTextStyle"
+                    style="@style/TextStyleListItem"
                     android:text="@string/dialog_msg" />
 
                 <TextView
-                    style="@style/ListTextStyle"
+                    style="@style/TextStyleListItem"
                     android:text="@string/dialog_msg" />
 
                 <TextView
-                    style="@style/ListTextStyle"
+                    style="@style/TextStyleListItem"
                     android:text="@string/dialog_msg" />
 
                 <TextView
-                    style="@style/ListTextStyle"
+                    style="@style/TextStyleListItem"
                     android:text="@string/dialog_msg" />
 
                 <TextView
-                    style="@style/ListTextStyle"
+                    style="@style/TextStyleListItem"
                     android:text="@string/dialog_msg" />
 
                 <TextView
-                    style="@style/ListTextStyle"
+                    style="@style/TextStyleListItem"
                     android:text="@string/dialog_msg" />
 
                 <TextView
-                    style="@style/ListTextStyle"
+                    style="@style/TextStyleListItem"
                     android:text="@string/dialog_msg" />
 
                 <TextView
-                    style="@style/ListTextStyle"
+                    style="@style/TextStyleListItem"
                     android:text="@string/dialog_msg" />
 
                 <TextView
-                    style="@style/ListTextStyle"
+                    style="@style/TextStyleListItem"
                     android:text="@string/dialog_msg" />
 
                 <TextView
-                    style="@style/ListTextStyle"
+                    style="@style/TextStyleListItem"
                     android:text="@string/dialog_msg" />
 
                 <TextView
-                    style="@style/ListTextStyle"
+                    style="@style/TextStyleListItem"
                     android:text="@string/dialog_msg" />
 
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
+        <View style="@style/DividerStyle_H_Normal" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#f3f3f3"
             android:orientation="horizontal">
 
             <FrameLayout
@@ -100,12 +100,11 @@
                 android:background="?android:attr/selectableItemBackground">
 
                 <TextView
+                    style="@style/TextStyleButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="@string/close"
-                    android:textColor="@color/textColor"
-                    android:textSize="16sp" />
+                    android:text="@string/close" />
 
             </FrameLayout>
 
@@ -113,4 +112,4 @@
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</per.goweii.layer.visualeffectview.RoundedShadowLayout>

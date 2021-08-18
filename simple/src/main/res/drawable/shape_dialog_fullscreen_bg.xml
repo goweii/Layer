@@ -3,7 +3,7 @@
     <corners
         android:bottomLeftRadius="0dp"
         android:bottomRightRadius="0dp"
-        android:topLeftRadius="@dimen/layer_design_cupertino_corner_radius_big"
-        android:topRightRadius="@dimen/layer_design_cupertino_corner_radius_big" />
-    <solid android:color="@color/layer_design_res_color_surface" />
+        android:topLeftRadius="@dimen/layer_design_res_corner_radius_big"
+        android:topRightRadius="@dimen/layer_design_res_corner_radius_big" />
+    <solid android:color="@color/colorSurface" />
 </shape>

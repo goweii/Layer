@@ -9,5 +9,5 @@
     <color name="layer_design_res_color_on_surface_fourth">#33000000</color>
 
     <color name="layer_design_res_color_toast_background">#F2F5F5F5</color>
-    <color name="layer_design_res_color_toast_text">@color/layer_design_res_color_on_surface</color>
+    <color name="layer_design_res_color_toast_text">#BF000000</color>
 </resources>

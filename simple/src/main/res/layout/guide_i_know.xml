@@ -6,10 +6,9 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/guide_btn_i_know"
+        style="@style/ButtonStyleListItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/i_know"
-        android:textColor="@color/textColor"
-        android:textSize="18sp" />
+        android:text="@string/i_know" />
 
 </LinearLayout>

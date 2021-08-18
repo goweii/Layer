@@ -42,11 +42,11 @@ public class PopupShadowLayout extends ShadowLayout {
         }
         int arrowSide = typedArray.getInt(R.styleable.PopupShadowLayout_popupArrowSide, PopupShadowOutlineProvider.ARROW_SIDE_NONE);
         mPopupShadowOutlineProvider.setArrowSide(arrowSide);
-        int arrowWidth = typedArray.getInt(R.styleable.PopupShadowLayout_popupArrowWidth, 0);
+        int arrowWidth = typedArray.getDimensionPixelOffset(R.styleable.PopupShadowLayout_popupArrowWidth, 0);
         mPopupShadowOutlineProvider.setArrowWidth(arrowWidth);
-        int arrowHeight = typedArray.getInt(R.styleable.PopupShadowLayout_popupArrowHeight, 0);
+        int arrowHeight = typedArray.getDimensionPixelOffset(R.styleable.PopupShadowLayout_popupArrowHeight, 0);
         mPopupShadowOutlineProvider.setArrowHeight(arrowHeight);
-        int arrowRadius = typedArray.getInt(R.styleable.PopupShadowLayout_popupArrowRadius, 0);
+        int arrowRadius = typedArray.getDimensionPixelOffset(R.styleable.PopupShadowLayout_popupArrowRadius, 0);
         mPopupShadowOutlineProvider.setArrowRadius(arrowRadius);
         typedArray.recycle();
     }
@@ -440,9 +440,9 @@ public class PopupShadowLayout extends ShadowLayout {
             );
             shadowOutline.quadTo(
                     realArrowOffset,
-                    shadowLayout.getHeight() - (shadowInsets.right - mArrowHeight),
+                    shadowLayout.getHeight() - (shadowInsets.bottom - mArrowHeight),
                     realArrowOffset + a2,
-                    shadowLayout.getHeight() - b2 - (shadowInsets.right - mArrowHeight)
+                    shadowLayout.getHeight() - b2 - (shadowInsets.bottom - mArrowHeight)
             );
             shadowOutline.lineTo(
                     realArrowOffset + realHalfArrowWidth - b1,

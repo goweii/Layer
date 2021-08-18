@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/popup_bg"
-    android:orientation="vertical">
+    android:divider="@drawable/shape_divider_h"
+    android:orientation="vertical"
+    android:showDividers="middle">
 
     <LinearLayout
         android:layout_width="120dp"
@@ -13,17 +15,12 @@
 
         <TextView
             android:id="@+id/tv_dialog_menu_1"
+            style="@style/TextStyleListItem"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="44dp"
             android:gravity="center"
             android:text="@string/popup_menu_item"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="15sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#666" />
+            android:textColor="@color/colorOnSurface" />
 
     </LinearLayout>
 
@@ -34,17 +31,12 @@
 
         <TextView
             android:id="@+id/tv_dialog_menu_2"
+            style="@style/TextStyleListItem"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="44dp"
             android:gravity="center"
             android:text="@string/popup_menu_item"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="15sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#666" />
+            android:textColor="@color/colorOnSurface" />
 
     </LinearLayout>
 
@@ -55,17 +47,12 @@
 
         <TextView
             android:id="@+id/tv_dialog_menu_3"
+            style="@style/TextStyleListItem"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="44dp"
             android:gravity="center"
             android:text="@string/popup_menu_item"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="15sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#666" />
+            android:textColor="@color/colorOnSurface" />
 
     </LinearLayout>
 
@@ -76,17 +63,12 @@
 
         <TextView
             android:id="@+id/tv_dialog_menu_4"
+            style="@style/TextStyleListItem"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="44dp"
             android:gravity="center"
             android:text="@string/popup_menu_item"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="15sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#666" />
+            android:textColor="@color/colorOnSurface" />
 
     </LinearLayout>
 
@@ -97,12 +79,12 @@
 
         <TextView
             android:id="@+id/tv_dialog_menu_5"
+            style="@style/TextStyleListItem"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="44dp"
             android:gravity="center"
             android:text="@string/popup_menu_item"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="15sp" />
+            android:textColor="@color/colorOnSurface" />
 
     </LinearLayout>
 

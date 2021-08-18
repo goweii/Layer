@@ -1,12 +1,10 @@
 package per.goweii.layer.simple
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import per.goweii.actionbarex.common.ActionBarCommon
 import per.goweii.layer.core.ktx.onBindData
-import per.goweii.layer.core.ktx.onClickToDismiss
 import per.goweii.layer.design.cupertino.*
 import per.goweii.layer.dialog.ktx.contentView
 
@@ -36,7 +34,7 @@ class CupertinoSimpleActivity : AppCompatActivity() {
         CupertinoPopoverLayer(view)
                 .contentView(R.layout.popup_meun)
                 .setUseDefaultConfig()
-                .setSolidColor(resources.getColor(R.color.colorPopupBg))
+                .setSolidColor(resources.getColor(R.color.colorSurface))
                 .show()
     }
 
