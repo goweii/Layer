@@ -93,14 +93,12 @@ public class CupertinoNotificationLayer extends NotificationLayer {
 
         final BackdropBlurView backdropBlurView = new BackdropBlurView(getActivity());
         backdropBlurView.setOverlayColor(getConfig().mContentBackgroundColor);
-        backdropBlurView.setCornerRadius(getConfig().mContentBlurCornerRadius);
         backdropBlurView.setSimpleSize(getConfig().mContentBlurSimple);
         backdropBlurView.setBlurRadius(getConfig().mContentBlurRadius);
         backdropBlurView.setBlurPercent(getConfig().mContentBlurPercent);
         backdropBlurView.addView(content, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         RoundedShadowLayout shadowLayout = new RoundedShadowLayout(getActivity());
-        // shadowLayout.setSolidColor(getConfig().mContentBackgroundColor);
         shadowLayout.setCornerRadius(getConfig().mContentBlurCornerRadius);
         shadowLayout.setShadowColor(getActivity().getResources().getColor(R.color.layer_design_cupertino_color_shadow));
         shadowLayout.setShadowRadius(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_notification_shadow_radius));

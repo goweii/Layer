@@ -5,7 +5,7 @@ buildscript {
         androidx_core_ktx_version = "1.6.0"
         androidx_startup_version = "1.0.0"
         cardview_version = "1.0.0"
-        visual_effect_version = "1.0.8"
+        visual_effect_version = "1.0.10"
     }
     ext {
         android_application_id = "per.goweii.layer.simple"

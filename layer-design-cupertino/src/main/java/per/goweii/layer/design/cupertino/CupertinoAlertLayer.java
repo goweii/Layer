@@ -115,7 +115,6 @@ public class CupertinoAlertLayer extends DialogLayer {
         backdropBlurView.setSimpleSize(getConfig().mContentBlurSimple);
         backdropBlurView.setBlurRadius(getConfig().mContentBlurRadius);
         backdropBlurView.setBlurPercent(getConfig().mContentBlurPercent);
-        backdropBlurView.setCornerRadius(getConfig().mContentBlurCornerRadius);
         backdropBlurView.addView(content, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         getViewHolder().setContentBackdropBlurView(backdropBlurView);

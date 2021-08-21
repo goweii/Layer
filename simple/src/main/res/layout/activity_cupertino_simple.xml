@@ -7,6 +7,10 @@
 
     <per.goweii.actionbarex.common.ActionBarCommon
         style="@style/ActionBarStyle"
+        app:ab_immersion="unchanged"
+        app:ab_statusBarMode="unchanged"
+        app:ab_statusBarVisible="gone"
+        app:abc_leftIconRes="@drawable/ic_back"
         app:abc_titleText="Cupertino Design" />
 
     <androidx.core.widget.NestedScrollView

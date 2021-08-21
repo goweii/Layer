@@ -67,7 +67,6 @@
         <item name="abc_leftIconClickToFinish">true</item>
         <item name="abc_leftIconColor">@color/colorOnPrimary</item>
         <item name="abc_leftIconPadding">10dp</item>
-        <item name="abc_leftIconRes">@drawable/ic_back</item>
         <item name="abc_leftTextColor">@color/colorOnPrimary</item>
         <item name="abc_rightIconColor">@color/colorOnPrimary</item>
         <item name="abc_rightIconPadding">10dp</item>

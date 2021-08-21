@@ -9,6 +9,6 @@
     <color name="colorSurface">#333333</color>
     <color name="colorSurfaceTop">#08FFFFFF</color>
     <color name="colorDivider">#33000000</color>
-    <color name="colorShadow">#66000000</color>
+    <color name="colorShadow">#99000000</color>
     <color name="colorShadowPrimary">#662E44BC</color>
 </resources>

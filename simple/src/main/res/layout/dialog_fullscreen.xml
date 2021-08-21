@@ -16,8 +16,11 @@
         app:ab_statusBarMode="unchanged"
         app:ab_statusBarVisible="gone"
         app:abc_leftText="@string/close"
+        app:abc_leftTextColor="@color/colorOnSurface"
         app:abc_rightText="@string/conform"
-        app:abc_titleText="@string/dialog_title" />
+        app:abc_rightTextColor="@color/colorOnSurface"
+        app:abc_titleText="@string/dialog_title"
+        app:abc_titleTextColor="@color/colorOnSurface" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
