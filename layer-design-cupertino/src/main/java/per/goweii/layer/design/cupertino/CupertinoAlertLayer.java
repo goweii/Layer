@@ -159,30 +159,30 @@ public class CupertinoAlertLayer extends DialogLayer {
         final Config config = getConfig();
         final ViewHolder viewHolder = getViewHolder();
         if (!TextUtils.isEmpty(config.mTitle)) {
-            viewHolder.mTitle.setVisibility(View.VISIBLE);
-            viewHolder.mTitle.setText(config.mTitle);
+            viewHolder.getTitle().setVisibility(View.VISIBLE);
+            viewHolder.getTitle().setText(config.mTitle);
         } else {
-            viewHolder.mTitle.setVisibility(View.GONE);
+            viewHolder.getTitle().setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(config.mDesc)) {
-            viewHolder.mDesc.setVisibility(View.VISIBLE);
-            viewHolder.mDesc.setText(config.mDesc);
+            viewHolder.getDesc().setVisibility(View.VISIBLE);
+            viewHolder.getDesc().setText(config.mDesc);
         } else {
-            viewHolder.mDesc.setVisibility(View.GONE);
+            viewHolder.getDesc().setVisibility(View.GONE);
         }
-        viewHolder.mActions.removeAllViews();
+        viewHolder.getActions().removeAllViews();
         if (config.mActions.isEmpty()) {
-            viewHolder.mDivider.setVisibility(View.GONE);
-            viewHolder.mActions.setVisibility(View.GONE);
+            viewHolder.getDivider().setVisibility(View.GONE);
+            viewHolder.getActions().setVisibility(View.GONE);
         } else {
-            viewHolder.mDivider.setVisibility(View.VISIBLE);
-            viewHolder.mActions.setVisibility(View.VISIBLE);
+            viewHolder.getDivider().setVisibility(View.VISIBLE);
+            viewHolder.getActions().setVisibility(View.VISIBLE);
             LayoutInflater inflater = getLayoutInflater();
             if (config.mActions.size() == 1) {
-                viewHolder.mActions.setOrientation(LinearLayout.HORIZONTAL);
-                viewHolder.mActions.setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
-                viewHolder.mActions.setDividerDrawable(null);
-                TextView textView = onCreateAction(inflater, viewHolder.mActions);
+                viewHolder.getActions().setOrientation(LinearLayout.HORIZONTAL);
+                viewHolder.getActions().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
+                viewHolder.getActions().setDividerDrawable(null);
+                TextView textView = onCreateAction(inflater, viewHolder.getActions());
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) textView.getLayoutParams();
                 params.width = LinearLayout.LayoutParams.MATCH_PARENT;
                 params.weight = 0F;
@@ -193,12 +193,12 @@ public class CupertinoAlertLayer extends DialogLayer {
                         config.mActions.get(0).mOnClickListener.onClick(CupertinoAlertLayer.this, v);
                     }
                 });
-                viewHolder.mActions.addView(textView);
+                viewHolder.getActions().addView(textView);
             } else if (config.mActions.size() == 2) {
-                viewHolder.mActions.setOrientation(LinearLayout.HORIZONTAL);
-                viewHolder.mActions.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
-                viewHolder.mActions.setDividerDrawable(getActivity().getResources().getDrawable(R.drawable.layer_design_cupertino_divider_v));
-                TextView textView0 = onCreateAction(inflater, viewHolder.mActions);
+                viewHolder.getActions().setOrientation(LinearLayout.HORIZONTAL);
+                viewHolder.getActions().setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+                viewHolder.getActions().setDividerDrawable(getActivity().getResources().getDrawable(R.drawable.layer_design_cupertino_divider_v));
+                TextView textView0 = onCreateAction(inflater, viewHolder.getActions());
                 textView0.setTypeface(null, Typeface.BOLD);
                 LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) textView0.getLayoutParams();
                 params2.width = 0;
@@ -210,7 +210,7 @@ public class CupertinoAlertLayer extends DialogLayer {
                         config.mActions.get(0).mOnClickListener.onClick(CupertinoAlertLayer.this, v);
                     }
                 });
-                TextView textView1 = onCreateAction(inflater, viewHolder.mActions);
+                TextView textView1 = onCreateAction(inflater, viewHolder.getActions());
                 textView1.setTypeface(null, Typeface.NORMAL);
                 LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) textView1.getLayoutParams();
                 params1.width = 0;
@@ -222,15 +222,15 @@ public class CupertinoAlertLayer extends DialogLayer {
                         config.mActions.get(1).mOnClickListener.onClick(CupertinoAlertLayer.this, v);
                     }
                 });
-                viewHolder.mActions.addView(textView1);
-                viewHolder.mActions.addView(textView0);
+                viewHolder.getActions().addView(textView1);
+                viewHolder.getActions().addView(textView0);
             } else {
-                viewHolder.mActions.setOrientation(LinearLayout.VERTICAL);
-                viewHolder.mActions.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
-                viewHolder.mActions.setDividerDrawable(getActivity().getResources().getDrawable(R.drawable.layer_design_cupertino_divider_h));
+                viewHolder.getActions().setOrientation(LinearLayout.VERTICAL);
+                viewHolder.getActions().setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+                viewHolder.getActions().setDividerDrawable(getActivity().getResources().getDrawable(R.drawable.layer_design_cupertino_divider_h));
                 for (int i = 0; i < config.mActions.size(); i++) {
                     final Action action = config.mActions.get(i);
-                    TextView textView = onCreateAction(inflater, viewHolder.mActions);
+                    TextView textView = onCreateAction(inflater, viewHolder.getActions());
                     if (i == 0) {
                         textView.setTypeface(null, Typeface.BOLD);
                     } else {
@@ -246,7 +246,7 @@ public class CupertinoAlertLayer extends DialogLayer {
                             action.mOnClickListener.onClick(CupertinoAlertLayer.this, v);
                         }
                     });
-                    viewHolder.mActions.addView(textView);
+                    viewHolder.getActions().addView(textView);
                 }
             }
         }
@@ -418,11 +418,6 @@ public class CupertinoAlertLayer extends DialogLayer {
     }
 
     public static class ViewHolder extends DialogLayer.ViewHolder {
-        private TextView mTitle;
-        private TextView mDesc;
-        private View mDivider;
-        private LinearLayout mActions;
-
         private BackdropBlurView mContentBackdropBlurView = null;
         private BackdropBlurView mBackgroundBackdropBlurView = null;
 
@@ -444,13 +439,20 @@ public class CupertinoAlertLayer extends DialogLayer {
             return mBackgroundBackdropBlurView;
         }
 
-        @Override
-        protected void setContent(@NonNull View content) {
-            super.setContent(content);
-            mTitle = content.findViewById(R.id.layer_design_cupertino_alert_title);
-            mDesc = content.findViewById(R.id.layer_design_cupertino_alert_desc);
-            mDivider = content.findViewById(R.id.layer_design_cupertino_alert_divider);
-            mActions = content.findViewById(R.id.layer_design_cupertino_alert_actions);
+        public TextView getTitle() {
+            return getContent().findViewById(R.id.layer_design_cupertino_alert_title);
+        }
+
+        public TextView getDesc() {
+            return getContent().findViewById(R.id.layer_design_cupertino_alert_desc);
+        }
+
+        public View getDivider() {
+            return getContent().findViewById(R.id.layer_design_cupertino_alert_divider);
+        }
+
+        public LinearLayout getActions() {
+            return getContent().findViewById(R.id.layer_design_cupertino_alert_actions);
         }
     }
 

@@ -4,18 +4,22 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
@@ -29,15 +33,15 @@ import java.util.List;
 import per.goweii.layer.core.DecorLayer;
 import per.goweii.layer.core.Layers;
 import per.goweii.layer.core.anim.AnimatorHelper;
-import per.goweii.layer.core.utils.SoftInputCompat;
+import per.goweii.layer.core.utils.InputMethodCompat;
 import per.goweii.layer.core.utils.Utils;
 import per.goweii.layer.core.widget.SwipeLayout;
 
 public class DialogLayer extends DecorLayer {
-    protected static final long ANIM_DUR_DEF = 220L;
-    protected static final float DIM_AMOUNT_DEF = 0.6F;
+    protected static final long DEFAULT_ANIMATOR_DURATION = 220L;
+    protected static final float DEFAULT_BACKGROUND_DIM_AMOUNT = 0.6F;
 
-    private SoftInputCompat mSoftInputCompat = null;
+    private InputMethodCompat mInputMethodCompat = null;
 
     public static void create(@NonNull DialogLayerActivity.OnLayerCreatedCallback callback) {
         DialogLayerActivity.start(Layers.getApplication(), callback);
@@ -53,6 +57,7 @@ public class DialogLayer extends DecorLayer {
 
     public DialogLayer(@NonNull Activity activity) {
         super(activity);
+        setInterceptKeyEvent(true);
         setCancelableOnKeyBack(true);
     }
 
@@ -98,79 +103,125 @@ public class DialogLayer extends DecorLayer {
         return (ListenerHolder) super.getListenerHolder();
     }
 
+    @CallSuper
+    @Override
+    protected void onAttach() {
+        onInitContent();
+        onInitBackground();
+        onInitContainer();
+        super.onAttach();
+        registerInputMethodCompat();
+    }
+
+    @CallSuper
+    @Override
+    protected void onDetach() {
+        super.onDetach();
+        unregisterInputMethodCompat();
+    }
+
     @NonNull
     @Override
     protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        Context context = getActivity();
+        final Context context = getActivity();
+
         ContainerLayout container = new ContainerLayout(context);
-        if (getViewHolder().getBackgroundNullable() == null) {
-            getViewHolder().setBackground(onCreateBackground(inflater, container));
+
+        View background = onCreateBackground(inflater, container);
+        if (background != null) {
+            getViewHolder().setBackground(background);
+            ViewGroup.LayoutParams backgroundLayoutParams = background.getLayoutParams();
+            if (backgroundLayoutParams == null) {
+                backgroundLayoutParams = generateBackgroundDefaultLayoutParams();
+            }
+            background.setLayoutParams(backgroundLayoutParams);
+            container.addView(background);
         }
-        View background = getViewHolder().getBackground();
-        Utils.removeViewParent(background);
-        container.addView(background, new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
-        SwipeLayout contentWrapper = new SwipeLayout(context);
+
+        SwipeLayout contentWrapper = new SwipeLayout(getActivity());
         getViewHolder().setContentWrapper(contentWrapper);
-        if (getViewHolder().getContentNullable() == null) {
-            getViewHolder().setContent(onCreateContent(inflater, contentWrapper));
+        contentWrapper.setLayoutParams(generateContentWrapperDefaultLayoutParams());
+        container.addView(contentWrapper);
+
+        View content = onCreateContent(inflater, contentWrapper);
+        getViewHolder().setContent(content);
+        ViewGroup.LayoutParams contentLayoutParams = content.getLayoutParams();
+        FrameLayout.LayoutParams newContentLayoutParams;
+        if (contentLayoutParams == null) {
+            newContentLayoutParams = generateContentDefaultLayoutParams();
+        } else if (contentLayoutParams instanceof FrameLayout.LayoutParams) {
+            newContentLayoutParams = (FrameLayout.LayoutParams) contentLayoutParams;
+        } else {
+            newContentLayoutParams = new FrameLayout.LayoutParams(contentLayoutParams.width, contentLayoutParams.height);
         }
-        View content = getViewHolder().getContent();
-        Utils.removeViewParent(content);
+        content.setLayoutParams(newContentLayoutParams);
         contentWrapper.addView(content);
-        container.addView(contentWrapper, new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
+
         return container;
     }
 
     @NonNull
     protected View onCreateBackground(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View background;
         if (getConfig().mBackgroundView != null) {
-            background = getConfig().mBackgroundView;
-        } else if (getConfig().mBackgroundViewId > 0) {
-            background = inflater.inflate(getConfig().mBackgroundViewId, parent, false);
-        } else {
+            ViewGroup backgroundParent = (ViewGroup) getConfig().mBackgroundView.getParent();
+            if (backgroundParent != null) {
+                backgroundParent.removeView(getConfig().mBackgroundView);
+            }
+            return getConfig().mBackgroundView;
+        }
+        if (getConfig().mBackgroundViewId > 0) {
+            return inflater.inflate(getConfig().mBackgroundViewId, parent, false);
+        }
+        if (getConfig().mBackgroundBitmap != null) {
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setImageBitmap(getConfig().mBackgroundBitmap);
+            if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
+                imageView.setColorFilter(getConfig().mBackgroundColor);
+            }
+            return imageView;
+        }
+        if (getConfig().mBackgroundDrawable != null) {
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setImageDrawable(getConfig().mBackgroundDrawable);
+            if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
+                imageView.setColorFilter(getConfig().mBackgroundColor);
+            }
+            return imageView;
+        }
+        if (getConfig().mBackgroundResource != -1) {
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setImageResource(getConfig().mBackgroundResource);
+            if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
+                imageView.setColorFilter(getConfig().mBackgroundColor);
+            }
+        }
+        if (getConfig().mBackgroundColor != Color.TRANSPARENT) {
             View view = new View(getActivity());
             view.setBackgroundColor(getConfig().mBackgroundColor);
-            background = view;
+            return view;
         }
-        return background;
+        return null;
     }
 
     @NonNull
     protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View content;
         if (getConfig().mContentView != null) {
-            content = getConfig().mContentView;
-        } else {
-            content = inflater.inflate(getConfig().mContentViewId, parent, false);
+            Utils.removeViewParent(getConfig().mContentView);
+            return getConfig().mContentView;
         }
-        Utils.removeViewParent(content);
-        ViewGroup.LayoutParams layoutParams = content.getLayoutParams();
-        FrameLayout.LayoutParams contentParams;
-        if (layoutParams == null) {
-            contentParams = generateContentDefaultLayoutParams();
-        } else if (layoutParams instanceof FrameLayout.LayoutParams) {
-            contentParams = (FrameLayout.LayoutParams) layoutParams;
-        } else {
-            contentParams = new FrameLayout.LayoutParams(layoutParams.width, layoutParams.height);
+        if (getConfig().mContentViewId != View.NO_ID) {
+            return inflater.inflate(getConfig().mContentViewId, parent, false);
         }
-        if (getConfig().mGravity != Gravity.NO_GRAVITY) {
-            contentParams.gravity = getConfig().mGravity;
-        }
-        content.setLayoutParams(contentParams);
-        return content;
+        throw new IllegalStateException("未设置contentView");
     }
 
     @Nullable
     @Override
     protected Animator onCreateInAnimator(@NonNull View view) {
-        Animator backgroundAnimator = onCreateBackgroundInAnimator(getViewHolder().getBackground());
+        Animator backgroundAnimator = null;
+        if (getViewHolder().getBackground() != null) {
+            backgroundAnimator = onCreateBackgroundInAnimator(getViewHolder().getBackground());
+        }
         Animator contentAnimator = onCreateContentInAnimator(getViewHolder().getContent());
         if (backgroundAnimator == null && contentAnimator == null) return null;
         if (backgroundAnimator == null) return contentAnimator;
@@ -194,7 +245,7 @@ public class DialogLayer extends DecorLayer {
     @NonNull
     protected Animator onCreateDefBackgroundInAnimator(@NonNull View view) {
         Animator animator = AnimatorHelper.createAlphaInAnim(view);
-        animator.setDuration(ANIM_DUR_DEF);
+        animator.setDuration(DEFAULT_ANIMATOR_DURATION);
         return animator;
     }
 
@@ -212,14 +263,17 @@ public class DialogLayer extends DecorLayer {
     @NonNull
     protected Animator onCreateDefContentInAnimator(@NonNull View view) {
         Animator animator = AnimatorHelper.createZoomAlphaInAnim(view);
-        animator.setDuration(ANIM_DUR_DEF);
+        animator.setDuration(DEFAULT_ANIMATOR_DURATION);
         return animator;
     }
 
     @Nullable
     @Override
     protected Animator onCreateOutAnimator(@NonNull View view) {
-        Animator backgroundAnimator = onCreateBackgroundOutAnimator(getViewHolder().getBackground());
+        Animator backgroundAnimator = null;
+        if (getViewHolder().getBackground() != null) {
+            backgroundAnimator = onCreateBackgroundOutAnimator(getViewHolder().getBackground());
+        }
         Animator contentAnimator = onCreateContentOutAnimator(getViewHolder().getContent());
         if (backgroundAnimator == null && contentAnimator == null) return null;
         if (backgroundAnimator == null) return contentAnimator;
@@ -243,7 +297,7 @@ public class DialogLayer extends DecorLayer {
     @NonNull
     protected Animator onCreateDefBackgroundOutAnimator(@NonNull View view) {
         Animator animator = AnimatorHelper.createAlphaOutAnim(view);
-        animator.setDuration(ANIM_DUR_DEF);
+        animator.setDuration(DEFAULT_ANIMATOR_DURATION);
         return animator;
     }
 
@@ -261,67 +315,33 @@ public class DialogLayer extends DecorLayer {
     @NonNull
     protected Animator onCreateDefContentOutAnimator(@NonNull View view) {
         Animator animator = AnimatorHelper.createZoomAlphaOutAnim(view);
-        animator.setDuration(ANIM_DUR_DEF);
+        animator.setDuration(DEFAULT_ANIMATOR_DURATION);
         return animator;
+    }
+
+    @NonNull
+    @Override
+    protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
+        return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    @NonNull
+    protected FrameLayout.LayoutParams generateBackgroundDefaultLayoutParams() {
+        return new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT);
+    }
+
+    @NonNull
+    protected FrameLayout.LayoutParams generateContentWrapperDefaultLayoutParams() {
+        return new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT);
     }
 
     @NonNull
     protected FrameLayout.LayoutParams generateContentDefaultLayoutParams() {
         return new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT);
-    }
-
-    @CallSuper
-    @Override
-    protected void onCreate() {
-        super.onCreate();
-    }
-
-    @CallSuper
-    @Override
-    protected void onAttach() {
-        onInitContent();
-        onInitBackground();
-        onInitContainer();
-        super.onAttach();
-        registerSoftInputCompat();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPreShow() {
-        super.onPreShow();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPostShow() {
-        super.onPostShow();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPreDismiss() {
-        super.onPreDismiss();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPostDismiss() {
-        super.onPostDismiss();
-    }
-
-    @CallSuper
-    @Override
-    protected void onDetach() {
-        super.onDetach();
-        unregisterSoftInputCompat();
-    }
-
-    @CallSuper
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -338,6 +358,11 @@ public class DialogLayer extends DecorLayer {
 
     protected void onInitContent() {
         getViewHolder().getContent().setClickable(true);
+        FrameLayout.LayoutParams contentParams = (FrameLayout.LayoutParams) getViewHolder().getContent().getLayoutParams();
+        if (getConfig().mGravity != Gravity.NO_GRAVITY) {
+            contentParams.gravity = getConfig().mGravity;
+        }
+        getViewHolder().getContent().setLayoutParams(contentParams);
     }
 
     protected void onInitBackground() {
@@ -345,7 +370,7 @@ public class DialogLayer extends DecorLayer {
 
     protected void onInitContainer() {
         if (getConfig().mOutsideInterceptTouchEvent) {
-            getViewHolder().getContainer().setFocusInside(true);
+            getViewHolder().getContainer().setForceFocusInside(true);
             getViewHolder().getContainer().setHandleTouchEvent(true);
             if (getConfig().mCancelableOnTouchOutside) {
                 getViewHolder().getContainer().setOnTappedListener(new ContainerLayout.OnTappedListener() {
@@ -357,7 +382,7 @@ public class DialogLayer extends DecorLayer {
             }
         } else {
             getViewHolder().getContainer().setOnTappedListener(null);
-            getViewHolder().getContainer().setFocusInside(false);
+            getViewHolder().getContainer().setForceFocusInside(false);
             getViewHolder().getContainer().setHandleTouchEvent(false);
         }
         if (getConfig().mOutsideTouchedToDismiss || getConfig().mOnOutsideTouchListener != null) {
@@ -368,7 +393,7 @@ public class DialogLayer extends DecorLayer {
                         dismiss();
                     }
                     if (getConfig().mOnOutsideTouchListener != null) {
-                        getConfig().mOnOutsideTouchListener.outsideTouched();
+                        getConfig().mOnOutsideTouchListener.onOutsideTouched();
                     }
                 }
             });
@@ -385,7 +410,9 @@ public class DialogLayer extends DecorLayer {
                     getConfig().mSwipeTransformer = new SwipeTransformer() {
                         @Override
                         public void onSwiping(@NonNull DialogLayer layer, @SwipeLayout.Direction int direction, @FloatRange(from = 0F, to = 1F) float fraction) {
-                            layer.getViewHolder().getBackground().setAlpha(1F - fraction);
+                            if (getViewHolder().getBackground() != null) {
+                                getViewHolder().getBackground().setAlpha(1F - fraction);
+                            }
                         }
                     };
                 }
@@ -419,17 +446,17 @@ public class DialogLayer extends DecorLayer {
         getViewHolder().getContentWrapper().setVisibility(View.VISIBLE);
     }
 
-    private void registerSoftInputCompat() {
-        final SparseBooleanArray mapping = getConfig().mSoftInputMapping;
+    private void registerInputMethodCompat() {
+        final SparseBooleanArray mapping = getConfig().mInputMethodMapping;
         if (mapping == null || mapping.size() == 0) {
             return;
         }
-        if (mSoftInputCompat == null) {
-            mSoftInputCompat = SoftInputCompat.attach(getActivity());
+        if (mInputMethodCompat == null) {
+            mInputMethodCompat = InputMethodCompat.attach(getActivity());
         } else {
-            mSoftInputCompat.clear();
+            mInputMethodCompat.clear();
         }
-        mSoftInputCompat.setListener(new SoftInputCompat.OnSoftInputListener() {
+        mInputMethodCompat.setListener(new InputMethodCompat.InputMethodListener() {
             @Override
             public void onOpen(int height) {
                 getListenerHolder().notifyOnSoftInputOpen(DialogLayer.this, height);
@@ -445,30 +472,30 @@ public class DialogLayer extends DecorLayer {
                 getListenerHolder().notifyOnSoftInputHeightChange(DialogLayer.this, height);
             }
         });
-        mSoftInputCompat.setMoveView(getViewHolder().getContentWrapper());
+        mInputMethodCompat.setMoveView(getViewHolder().getContentWrapper());
         for (int i = 0; i < mapping.size(); i++) {
             boolean alignToContentOrFocus = mapping.valueAt(i);
             int focusId = mapping.keyAt(i);
             if (focusId == View.NO_ID) {
                 if (alignToContentOrFocus) {
-                    mSoftInputCompat.setFollowViews(getViewHolder().getContent());
+                    mInputMethodCompat.setFollowViews(getViewHolder().getContent());
                 }
             } else {
                 if (alignToContentOrFocus) {
-                    mSoftInputCompat.setFollowViews(getViewHolder().getContent(), findView(focusId));
+                    mInputMethodCompat.setFollowViews(getViewHolder().getContent(), findViewById(focusId));
                 } else {
-                    mSoftInputCompat.setFollowViews(null, findView(focusId));
+                    mInputMethodCompat.setFollowViews(null, findViewById(focusId));
                 }
             }
         }
     }
 
-    private void unregisterSoftInputCompat() {
-        if (mSoftInputCompat != null) {
-            mSoftInputCompat.setListener(null);
-            mSoftInputCompat.clear();
-            mSoftInputCompat.detach();
-            mSoftInputCompat = null;
+    private void unregisterInputMethodCompat() {
+        if (mInputMethodCompat != null) {
+            mInputMethodCompat.setListener(null);
+            mInputMethodCompat.clear();
+            mInputMethodCompat.detach();
+            mInputMethodCompat = null;
         }
     }
 
@@ -513,6 +540,81 @@ public class DialogLayer extends DecorLayer {
     @NonNull
     public DialogLayer setBackgroundView(@LayoutRes int backgroundViewId) {
         getConfig().mBackgroundViewId = backgroundViewId;
+        return this;
+    }
+
+    /**
+     * 设置背景资源
+     *
+     * @param resource 资源ID
+     */
+    @NonNull
+    public DialogLayer setBackgroundResource(@DrawableRes int resource) {
+        getConfig().mBackgroundResource = resource;
+        return this;
+    }
+
+    /**
+     * 设置背景Drawable
+     *
+     * @param drawable Drawable
+     */
+    @NonNull
+    public DialogLayer setBackgroundDrawable(@Nullable Drawable drawable) {
+        getConfig().mBackgroundDrawable = drawable;
+        return this;
+    }
+
+    /**
+     * 设置背景图片
+     *
+     * @param bitmap 图片
+     */
+    @NonNull
+    public DialogLayer setBackgroundBitmap(@Nullable Bitmap bitmap) {
+        getConfig().mBackgroundBitmap = bitmap;
+        return this;
+    }
+
+    /**
+     * 设置背景变暗程度
+     *
+     * @param dimAmount 变暗程度 0~1
+     */
+    @NonNull
+    public DialogLayer setBackgroundDimAmount(@FloatRange(from = 0F, to = 1F) float dimAmount) {
+        getConfig().mBackgroundColor = Color.argb((int) (dimAmount * 255), 0, 0, 0);
+        return this;
+    }
+
+    /**
+     * 设置背景变暗
+     */
+    @NonNull
+    public DialogLayer setBackgroundDimDefault() {
+        return setBackgroundDimAmount(DEFAULT_BACKGROUND_DIM_AMOUNT);
+    }
+
+
+    /**
+     * 设置背景颜色
+     *
+     * @param colorInt 颜色值
+     */
+    @NonNull
+    public DialogLayer setBackgroundColorInt(@ColorInt int colorInt) {
+        getConfig().mBackgroundColor = colorInt;
+        return this;
+    }
+
+    /**
+     * 设置背景颜色
+     *
+     * @param colorRes 颜色资源ID
+     */
+    @NonNull
+    public DialogLayer setBackgroundColorRes(@ColorRes int colorRes) {
+        getConfig().mBackgroundColor = getActivity().getResources().getColor(colorRes);
         return this;
     }
 
@@ -597,48 +699,6 @@ public class DialogLayer extends DecorLayer {
     }
 
     /**
-     * 设置背景变暗程度
-     *
-     * @param dimAmount 变暗程度 0~1
-     */
-    @NonNull
-    public DialogLayer setBackgroundDimAmount(@FloatRange(from = 0F, to = 1F) float dimAmount) {
-        getConfig().mBackgroundColor = Color.argb((int) (dimAmount * 255), 0, 0, 0);
-        return this;
-    }
-
-    /**
-     * 设置背景变暗
-     */
-    @NonNull
-    public DialogLayer setBackgroundDimDefault() {
-        return setBackgroundDimAmount(DIM_AMOUNT_DEF);
-    }
-
-
-    /**
-     * 设置背景颜色
-     *
-     * @param colorInt 颜色值
-     */
-    @NonNull
-    public DialogLayer setBackgroundColorInt(@ColorInt int colorInt) {
-        getConfig().mBackgroundColor = colorInt;
-        return this;
-    }
-
-    /**
-     * 设置背景颜色
-     *
-     * @param colorRes 颜色资源ID
-     */
-    @NonNull
-    public DialogLayer setBackgroundColorRes(@ColorRes int colorRes) {
-        getConfig().mBackgroundColor = getActivity().getResources().getColor(colorRes);
-        return this;
-    }
-
-    /**
      * 设置点击浮层以外区域是否可关闭
      *
      * @param cancelable 是否可关闭
@@ -668,22 +728,22 @@ public class DialogLayer extends DecorLayer {
      * @param focusIds              焦点View
      */
     @NonNull
-    public DialogLayer addSoftInputCompat(boolean alignToContentOrFocus, @Nullable int... focusIds) {
-        if (getConfig().mSoftInputMapping == null) {
-            getConfig().mSoftInputMapping = new SparseBooleanArray(1);
+    public DialogLayer addInputMethodCompat(boolean alignToContentOrFocus, @Nullable int... focusIds) {
+        if (getConfig().mInputMethodMapping == null) {
+            getConfig().mInputMethodMapping = new SparseBooleanArray(1);
         }
         if (focusIds != null && focusIds.length > 0) {
             for (int focusId : focusIds) {
-                getConfig().mSoftInputMapping.append(focusId, alignToContentOrFocus);
+                getConfig().mInputMethodMapping.append(focusId, alignToContentOrFocus);
             }
         } else {
-            getConfig().mSoftInputMapping.append(View.NO_ID, alignToContentOrFocus);
+            getConfig().mInputMethodMapping.append(View.NO_ID, alignToContentOrFocus);
         }
         return this;
     }
 
-    public DialogLayer addOnSoftInputListener(@NonNull OnSoftInputListener onSoftInputListener) {
-        getListenerHolder().addOnSoftInputListener(onSoftInputListener);
+    public DialogLayer addOnInputMethodListener(@NonNull OnInputMethodListener onInputMethodListener) {
+        getListenerHolder().addOnInputMethodListener(onInputMethodListener);
         return this;
     }
 
@@ -712,41 +772,21 @@ public class DialogLayer extends DecorLayer {
     }
 
     public static class ViewHolder extends DecorLayer.ViewHolder {
-        private View mBackground;
         private SwipeLayout mContentWrapper;
+        private View mBackground;
         private View mContent;
-
-        public void setContentWrapper(@NonNull SwipeLayout contentWrapper) {
-            mContentWrapper = contentWrapper;
-        }
-
-        public void setBackground(@NonNull View background) {
-            mBackground = background;
-        }
 
         @NonNull
         public ContainerLayout getContainer() {
-            return getChild();
+            return (ContainerLayout) getChild();
         }
 
-        @NonNull
-        @Override
-        public ContainerLayout getChild() {
-            return (ContainerLayout) super.getChild();
-        }
-
-        @Nullable
-        @Override
-        protected ContainerLayout getChildNullable() {
-            return (ContainerLayout) super.getChildNullable();
-        }
-
-        protected void setContent(@NonNull View content) {
+        protected void setContent(@Nullable View content) {
             mContent = content;
         }
 
         @Nullable
-        protected View getContentNullable() {
+        protected View getContentOrNull() {
             return mContent;
         }
 
@@ -756,17 +796,21 @@ public class DialogLayer extends DecorLayer {
             return mContent;
         }
 
+        public void setContentWrapper(@Nullable SwipeLayout contentWrapper) {
+            mContentWrapper = contentWrapper;
+        }
+
         @NonNull
         public SwipeLayout getContentWrapper() {
+            Utils.requireNonNull(mContentWrapper, "必须在show方法后调用");
             return mContentWrapper;
         }
 
-        @Nullable
-        protected View getBackgroundNullable() {
-            return mBackground;
+        public void setBackground(@Nullable View background) {
+            mBackground = background;
         }
 
-        @NonNull
+        @Nullable
         public View getBackground() {
             return mBackground;
         }
@@ -783,11 +827,19 @@ public class DialogLayer extends DecorLayer {
         @Nullable
         protected AnimatorCreator mContentAnimatorCreator = null;
 
+        @Nullable
         protected View mContentView = null;
-        protected int mContentViewId = -1;
+        @LayoutRes
+        protected int mContentViewId = View.NO_ID;
 
         protected View mBackgroundView = null;
-        protected int mBackgroundViewId = -1;
+        protected int mBackgroundViewId = View.NO_ID;
+        @Nullable
+        protected Bitmap mBackgroundBitmap = null;
+        @Nullable
+        protected Drawable mBackgroundDrawable = null;
+        @DrawableRes
+        protected int mBackgroundResource = View.NO_ID;
         @ColorInt
         protected int mBackgroundColor = Color.TRANSPARENT;
 
@@ -801,12 +853,12 @@ public class DialogLayer extends DecorLayer {
         @Nullable
         protected SwipeTransformer mSwipeTransformer = null;
 
-        protected SparseBooleanArray mSoftInputMapping = null;
+        protected SparseBooleanArray mInputMethodMapping = null;
     }
 
     protected static class ListenerHolder extends DecorLayer.ListenerHolder {
         private List<OnSwipeListener> mOnSwipeListeners = null;
-        private List<OnSoftInputListener> mOnSoftInputListeners = null;
+        private List<OnInputMethodListener> mOnInputMethodListeners = null;
 
         private void addOnSwipeListener(@NonNull OnSwipeListener onSwipeListener) {
             if (mOnSwipeListeners == null) {
@@ -815,11 +867,11 @@ public class DialogLayer extends DecorLayer {
             mOnSwipeListeners.add(onSwipeListener);
         }
 
-        private void addOnSoftInputListener(@NonNull OnSoftInputListener onSoftInputListener) {
-            if (mOnSoftInputListeners == null) {
-                mOnSoftInputListeners = new ArrayList<>(1);
+        private void addOnInputMethodListener(@NonNull OnInputMethodListener onInputMethodListener) {
+            if (mOnInputMethodListeners == null) {
+                mOnInputMethodListeners = new ArrayList<>(1);
             }
-            mOnSoftInputListeners.add(onSoftInputListener);
+            mOnInputMethodListeners.add(onInputMethodListener);
         }
 
         private void notifyOnSwipeStart(@NonNull DialogLayer layer) {
@@ -850,32 +902,32 @@ public class DialogLayer extends DecorLayer {
         }
 
         private void notifyOnSoftInputOpen(@NonNull DialogLayer layer, @Px int height) {
-            if (mOnSoftInputListeners != null) {
-                for (OnSoftInputListener onSoftInputListener : mOnSoftInputListeners) {
-                    onSoftInputListener.onOpen(layer, height);
+            if (mOnInputMethodListeners != null) {
+                for (OnInputMethodListener onInputMethodListener : mOnInputMethodListeners) {
+                    onInputMethodListener.onOpen(layer, height);
                 }
             }
         }
 
         private void notifyOnSoftInputClose(@NonNull DialogLayer layer, @Px int height) {
-            if (mOnSoftInputListeners != null) {
-                for (OnSoftInputListener onSoftInputListener : mOnSoftInputListeners) {
-                    onSoftInputListener.onClose(layer, height);
+            if (mOnInputMethodListeners != null) {
+                for (OnInputMethodListener onInputMethodListener : mOnInputMethodListeners) {
+                    onInputMethodListener.onClose(layer, height);
                 }
             }
         }
 
         private void notifyOnSoftInputHeightChange(@NonNull DialogLayer layer, @Px int height) {
-            if (mOnSoftInputListeners != null) {
-                for (OnSoftInputListener onSoftInputListener : mOnSoftInputListeners) {
-                    onSoftInputListener.onHeightChange(layer, height);
+            if (mOnInputMethodListeners != null) {
+                for (OnInputMethodListener onInputMethodListener : mOnInputMethodListeners) {
+                    onInputMethodListener.onHeightChange(layer, height);
                 }
             }
         }
     }
 
     public interface OnOutsideTouchListener {
-        void outsideTouched();
+        void onOutsideTouched();
     }
 
     public interface SwipeTransformer {
@@ -895,7 +947,7 @@ public class DialogLayer extends DecorLayer {
                    @SwipeLayout.Direction int direction);
     }
 
-    public interface OnSoftInputListener {
+    public interface OnInputMethodListener {
         void onOpen(@NonNull DialogLayer layer, @Px int height);
 
         void onClose(@NonNull DialogLayer layer, @Px int height);

@@ -42,7 +42,7 @@ class CupertinoSimpleActivity : AppCompatActivity() {
         CupertinoModalityLayer(this)
                 .contentView(R.layout.dialog_fullscreen)
                 .onBindData {
-                    val actionBar = requireView<ActionBarCommon>(R.id.dialog_actionbar)
+                    val actionBar = requireViewById<ActionBarCommon>(R.id.dialog_actionbar)
                     actionBar.leftTextView.setOnClickListener { dismiss() }
                     actionBar.rightTextView.setOnClickListener { dismiss() }
                 }

@@ -3,6 +3,7 @@ package per.goweii.layer.core;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -19,7 +20,32 @@ import java.util.List;
 import per.goweii.layer.core.utils.Utils;
 
 public class FrameLayer extends Layer {
-    private final LayerRootLayout.OnConfigurationChangedListener mOnConfigurationChangedListener = new OnConfigurationChangedListenerImpl();
+
+    @Nullable
+    public static List<Layer> findLayers(@NonNull View view) {
+        LayerRootLayout layerRootLayout = findLayerRootLayout(view);
+        if (layerRootLayout == null) return null;
+        return layerRootLayout.getLayers();
+    }
+
+    @Nullable
+    public static LayerRootLayout findLayerRootLayout(@NonNull View view) {
+        while (true) {
+            if (view instanceof LayerRootLayout) {
+                return (LayerRootLayout) view;
+            }
+            ViewParent viewParent = view.getParent();
+            if (viewParent instanceof ViewGroup) {
+                view = (ViewGroup) viewParent;
+                continue;
+            }
+            return null;
+        }
+    }
+
+
+    private final LayerRootLayout.OnConfigurationChangedListener
+            mOnConfigurationChangedListener = new OnConfigurationChangedListenerImpl();
 
     public FrameLayer(@NonNull FrameLayout frameLayout) {
         super();
@@ -81,48 +107,9 @@ public class FrameLayer extends Layer {
         return installParent();
     }
 
-    @CallSuper
     @Override
-    protected void onAttach() {
-        super.onAttach();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPreShow() {
-        super.onPreShow();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPostShow() {
-        super.onPostShow();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPreDismiss() {
-        super.onPreDismiss();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPostDismiss() {
-        super.onPostDismiss();
-    }
-
-    @CallSuper
-    @Override
-    protected void onDetach() {
-        super.onDetach();
+    protected void onResetParent() {
         uninstallParent();
-    }
-
-    @CallSuper
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getViewHolder().setParent(null);
     }
 
     protected void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -157,6 +144,12 @@ public class FrameLayer extends Layer {
             }
         }
         return super.onKeyBack();
+    }
+
+    @NonNull
+    protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
+        return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     @NonNull
@@ -487,28 +480,6 @@ public class FrameLayer extends Layer {
                 }
             }
             return layers;
-        }
-    }
-
-    @Nullable
-    public static List<Layer> findLayers(@NonNull View view) {
-        LayerRootLayout layerRootLayout = findLayerRootLayout(view);
-        if (layerRootLayout == null) return null;
-        return layerRootLayout.getLayers();
-    }
-
-    @Nullable
-    public static LayerRootLayout findLayerRootLayout(@NonNull View view) {
-        while (true) {
-            if (view instanceof LayerRootLayout) {
-                return (LayerRootLayout) view;
-            }
-            ViewParent viewParent = view.getParent();
-            if (viewParent instanceof ViewGroup) {
-                view = (ViewGroup) viewParent;
-                continue;
-            }
-            return null;
         }
     }
 }

@@ -8,15 +8,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import per.goweii.layer.core.anim.AnimStyle
-import per.goweii.layer.core.anim.DelayedZoomAnimatorCreator
 import per.goweii.layer.core.anim.NullAnimatorCreator
 import per.goweii.layer.core.ktx.onClickToDismiss
 import per.goweii.layer.core.ktx.onPreDismiss
 import per.goweii.layer.core.ktx.onPreShow
 import per.goweii.layer.core.widget.SwipeLayout
 import per.goweii.layer.design.cupertino.CupertinoNotificationLayer
-import per.goweii.layer.design.material.MaterialNotificationLayer
-import per.goweii.layer.design.material.MaterialToastLayer
 import per.goweii.layer.dialog.DialogLayer
 import per.goweii.layer.dialog.ktx.*
 import per.goweii.layer.guide.GuideLayer
@@ -82,15 +79,15 @@ class LayersSimpleActivity : AppCompatActivity() {
                 .contentView(R.layout.dialog_input)
                 .contentAnimator(NullAnimatorCreator())
                 .backgroundDimDefault()
-                .addSoftInputCompat(true)
+                .addInputMethodCompat(true)
                 .onPreShow {
-                    val et = requireView<EditText>(R.id.et_input)
+                    val et = requireViewById<EditText>(R.id.et_input)
                     et.requestFocus()
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.showSoftInput(et, InputMethodManager.SHOW_FORCED)
                 }
                 .onPreDismiss {
-                    val et = requireView<EditText>(R.id.et_input)
+                    val et = requireViewById<EditText>(R.id.et_input)
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(et.windowToken, 0)
                 }

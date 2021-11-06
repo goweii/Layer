@@ -21,7 +21,8 @@ import per.goweii.layer.core.anim.AnimatorHelper;
 import per.goweii.layer.core.utils.Utils;
 
 public class ToastLayer extends DecorLayer {
-    private final long mAnimDurDef = 220L;
+    protected static final long DEFAULT_ANIMATOR_DURATION = 220L;
+
     private final Runnable mDismissRunnable = new DismissRunnable();
 
     @NonNull
@@ -79,72 +80,6 @@ public class ToastLayer extends DecorLayer {
         return (ListenerHolder) super.getListenerHolder();
     }
 
-    @NonNull
-    @Override
-    protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        FrameLayout container = new FrameLayout(getActivity());
-        container.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-        if (getViewHolder().getContentNullable() == null) {
-            getViewHolder().setContent(onCreateContent(inflater, container));
-        }
-        View content = getViewHolder().getContent();
-        container.addView(content);
-        return container;
-    }
-
-    @NonNull
-    protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view;
-        if (getConfig().mContentView != null) {
-            view = getConfig().mContentView;
-        } else {
-            view = inflater.inflate(getConfig().mContentViewId, parent, false);
-        }
-        Utils.removeViewParent(view);
-        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        FrameLayout.LayoutParams contentParams;
-        if (layoutParams == null) {
-            contentParams = generateContentDefaultLayoutParams();
-        } else if (layoutParams instanceof FrameLayout.LayoutParams) {
-            contentParams = (FrameLayout.LayoutParams) layoutParams;
-        } else {
-            contentParams = new FrameLayout.LayoutParams(layoutParams.width, layoutParams.height);
-        }
-        view.setLayoutParams(contentParams);
-        return view;
-    }
-
-    @NonNull
-    protected FrameLayout.LayoutParams generateContentDefaultLayoutParams() {
-        return new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT);
-    }
-
-    @NonNull
-    @Override
-    protected Animator onCreateInAnimator(@NonNull View view) {
-        Animator animator = super.onCreateInAnimator(view);
-        if (animator == null) {
-            animator = AnimatorHelper.createZoomAlphaInAnim(view);
-            animator.setDuration(mAnimDurDef);
-        }
-        return animator;
-    }
-
-    @NonNull
-    @Override
-    protected Animator onCreateOutAnimator(@NonNull View view) {
-        Animator animator = super.onCreateOutAnimator(view);
-        if (animator == null) {
-            animator = AnimatorHelper.createZoomAlphaOutAnim(view);
-            animator.setDuration(mAnimDurDef);
-        }
-        return animator;
-    }
-
     @CallSuper
     @Override
     protected void onAttach() {
@@ -173,12 +108,6 @@ public class ToastLayer extends DecorLayer {
 
     @CallSuper
     @Override
-    protected void onPreShow() {
-        super.onPreShow();
-    }
-
-    @CallSuper
-    @Override
     protected void onPostShow() {
         super.onPostShow();
         if (getConfig().mDuration > 0) {
@@ -195,21 +124,89 @@ public class ToastLayer extends DecorLayer {
 
     @CallSuper
     @Override
-    protected void onPostDismiss() {
-        super.onPostDismiss();
-    }
-
-    @CallSuper
-    @Override
     protected void onDetach() {
         getChild().setTag(R.id.layer_toast_tag, null);
         super.onDetach();
     }
 
-    @CallSuper
+    @NonNull
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        FrameLayout container = new FrameLayout(getActivity());
+
+        View content = onCreateContent(inflater, container);
+
+        ViewGroup.LayoutParams contentLayoutParams = content.getLayoutParams();
+        FrameLayout.LayoutParams newContentLayoutParams;
+        if (contentLayoutParams == null) {
+            newContentLayoutParams = generateContentDefaultLayoutParams();
+        } else if (contentLayoutParams instanceof FrameLayout.LayoutParams) {
+            newContentLayoutParams = (FrameLayout.LayoutParams) contentLayoutParams;
+        } else {
+            newContentLayoutParams = new FrameLayout.LayoutParams(contentLayoutParams.width, contentLayoutParams.height);
+        }
+        content.setLayoutParams(newContentLayoutParams);
+
+        getViewHolder().setContent(content);
+        container.addView(content);
+
+        return container;
+    }
+
+    @Override
+    protected void onDestroyChild() {
+        getViewHolder().getChild().removeAllViews();
+        if (!isViewCacheable()) {
+            getViewHolder().setContent(null);
+        }
+        super.onDestroyChild();
+    }
+
+    @NonNull
+    protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        if (getConfig().mContentView != null) {
+            Utils.removeViewParent(getConfig().mContentView);
+            return getConfig().mContentView;
+        }
+        if (getConfig().mContentViewId != View.NO_ID) {
+            return inflater.inflate(getConfig().mContentViewId, parent, false);
+        }
+        throw new IllegalStateException("未设置contentView");
+    }
+
+    @NonNull
+    @Override
+    protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
+        return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    @NonNull
+    protected FrameLayout.LayoutParams generateContentDefaultLayoutParams() {
+        return new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    @NonNull
+    @Override
+    protected Animator onCreateInAnimator(@NonNull View view) {
+        Animator animator = super.onCreateInAnimator(view);
+        if (animator == null) {
+            animator = AnimatorHelper.createZoomAlphaInAnim(view);
+            animator.setDuration(DEFAULT_ANIMATOR_DURATION);
+        }
+        return animator;
+    }
+
+    @NonNull
+    @Override
+    protected Animator onCreateOutAnimator(@NonNull View view) {
+        Animator animator = super.onCreateOutAnimator(view);
+        if (animator == null) {
+            animator = AnimatorHelper.createZoomAlphaOutAnim(view);
+            animator.setDuration(DEFAULT_ANIMATOR_DURATION);
+        }
+        return animator;
     }
 
     private void removeOthers() {
@@ -299,30 +296,14 @@ public class ToastLayer extends DecorLayer {
     public static class ViewHolder extends DecorLayer.ViewHolder {
         private View mContent;
 
-        @Override
-        public void setChild(@NonNull View child) {
-            super.setChild(child);
-        }
-
         @NonNull
         @Override
         public FrameLayout getChild() {
             return (FrameLayout) super.getChild();
         }
 
-        @Nullable
-        @Override
-        protected FrameLayout getChildNullable() {
-            return (FrameLayout) super.getChildNullable();
-        }
-
-        protected void setContent(@NonNull View content) {
+        protected void setContent(@Nullable View content) {
             mContent = content;
-        }
-
-        @Nullable
-        protected View getContentNullable() {
-            return mContent;
         }
 
         @NonNull

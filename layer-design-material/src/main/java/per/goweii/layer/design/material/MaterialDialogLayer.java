@@ -72,26 +72,26 @@ public class MaterialDialogLayer extends DialogLayer {
         final Config config = getConfig();
         final ViewHolder viewHolder = getViewHolder();
         if (!TextUtils.isEmpty(config.mTitle)) {
-            viewHolder.mTitle.setVisibility(View.VISIBLE);
-            viewHolder.mTitle.setText(config.mTitle);
+            viewHolder.getTitle().setVisibility(View.VISIBLE);
+            viewHolder.getTitle().setText(config.mTitle);
         } else {
-            viewHolder.mTitle.setVisibility(View.GONE);
+            viewHolder.getTitle().setVisibility(View.GONE);
         }
         if (!TextUtils.isEmpty(config.mDesc)) {
-            viewHolder.mDesc.setVisibility(View.VISIBLE);
-            viewHolder.mDesc.setText(config.mDesc);
+            viewHolder.getDesc().setVisibility(View.VISIBLE);
+            viewHolder.getDesc().setText(config.mDesc);
         } else {
-            viewHolder.mDesc.setVisibility(View.GONE);
+            viewHolder.getDesc().setVisibility(View.GONE);
         }
-        viewHolder.mActions.removeAllViews();
+        viewHolder.getActions().removeAllViews();
         if (config.mActions.isEmpty()) {
-            viewHolder.mActions.setVisibility(View.GONE);
+            viewHolder.getActions().setVisibility(View.GONE);
         } else {
-            viewHolder.mActions.setVisibility(View.VISIBLE);
+            viewHolder.getActions().setVisibility(View.VISIBLE);
             LayoutInflater inflater = getLayoutInflater();
             for (int i = 0; i < config.mActions.size(); i++) {
                 final Action action = config.mActions.get(i);
-                TextView textView = onCreateAction(inflater, viewHolder.mActions);
+                TextView textView = onCreateAction(inflater, viewHolder.getActions());
                 textView.setText(action.mName);
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -99,7 +99,7 @@ public class MaterialDialogLayer extends DialogLayer {
                         action.mOnClickListener.onClick(MaterialDialogLayer.this, v);
                     }
                 });
-                viewHolder.mActions.addView(textView);
+                viewHolder.getActions().addView(textView);
             }
         }
     }
@@ -160,16 +160,16 @@ public class MaterialDialogLayer extends DialogLayer {
     }
 
     public static class ViewHolder extends DialogLayer.ViewHolder {
-        private TextView mTitle;
-        private TextView mDesc;
-        private LinearLayout mActions;
+        public TextView getTitle() {
+            return getContent().findViewById(R.id.layer_design_material_dialog_title);
+        }
 
-        @Override
-        protected void setContent(@NonNull View content) {
-            super.setContent(content);
-            mTitle = content.findViewById(R.id.layer_design_material_dialog_title);
-            mDesc = content.findViewById(R.id.layer_design_material_dialog_desc);
-            mActions = content.findViewById(R.id.layer_design_material_dialog_actions);
+        public TextView getDesc() {
+            return getContent().findViewById(R.id.layer_design_material_dialog_desc);
+        }
+
+        public LinearLayout getActions() {
+            return getContent().findViewById(R.id.layer_design_material_dialog_actions);
         }
     }
 

@@ -74,57 +74,6 @@ public class OverlayLayer extends DecorLayer {
         return (ListenerHolder) super.getListenerHolder();
     }
 
-    @Override
-    public void show() {
-        super.show();
-    }
-
-    @NonNull
-    @Override
-    protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        DragLayout container = new DragLayout(getActivity());
-        if (getViewHolder().getOverlayNullable() == null) {
-            getViewHolder().setOverlay(onCreateOverlay(inflater, container));
-        }
-        View overlay = getViewHolder().getOverlay();
-        container.addView(overlay);
-        return container;
-    }
-
-    @NonNull
-    protected View onCreateOverlay(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view;
-        if (getConfig().mOverlayView != null) {
-            view = getConfig().mOverlayView;
-        } else {
-            view = inflater.inflate(getConfig().mOverlayViewId, parent, false);
-        }
-        Utils.removeViewParent(view);
-        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        FrameLayout.LayoutParams overlayParams;
-        if (layoutParams == null) {
-            overlayParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-        } else if (layoutParams instanceof FrameLayout.LayoutParams) {
-            overlayParams = (FrameLayout.LayoutParams) layoutParams;
-        } else {
-            overlayParams = new FrameLayout.LayoutParams(layoutParams.width, layoutParams.height);
-        }
-        view.setLayoutParams(overlayParams);
-        return view;
-    }
-
-    @Nullable
-    @Override
-    protected Animator onCreateInAnimator(@NonNull View view) {
-        return AnimatorHelper.createZoomAlphaInAnim(view);
-    }
-
-    @Nullable
-    @Override
-    protected Animator onCreateOutAnimator(@NonNull View view) {
-        return AnimatorHelper.createZoomAlphaOutAnim(view);
-    }
-
     @CallSuper
     @Override
     protected void onAttach() {
@@ -148,28 +97,64 @@ public class OverlayLayer extends DecorLayer {
         getViewHolder().getChild().goEdge(getViewHolder().getOverlay());
     }
 
-    @CallSuper
+    @NonNull
     @Override
-    protected void onPreDismiss() {
-        super.onPreDismiss();
+    protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        DragLayout container = new DragLayout(getActivity());
+
+        View overlay = onCreateOverlay(inflater, container);
+        ViewGroup.LayoutParams layoutParams = overlay.getLayoutParams();
+        FrameLayout.LayoutParams newLayoutParams;
+        if (layoutParams == null) {
+            newLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        } else if (layoutParams instanceof FrameLayout.LayoutParams) {
+            newLayoutParams = (FrameLayout.LayoutParams) layoutParams;
+        } else {
+            newLayoutParams = new FrameLayout.LayoutParams(layoutParams.width, layoutParams.height);
+        }
+        overlay.setLayoutParams(newLayoutParams);
+        getViewHolder().setOverlay(overlay);
+        container.addView(overlay);
+
+        return container;
     }
 
-    @CallSuper
     @Override
-    protected void onPostDismiss() {
-        super.onPostDismiss();
+    protected void onDestroyChild() {
+        getViewHolder().getChild().removeAllViews();
+        getViewHolder().setOverlay(null);
+        super.onDestroyChild();
     }
 
-    @CallSuper
-    @Override
-    protected void onDetach() {
-        super.onDetach();
+    @NonNull
+    protected View onCreateOverlay(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        if (getConfig().mOverlayView != null) {
+            Utils.removeViewParent(getConfig().mOverlayView);
+            return getConfig().mOverlayView;
+        }
+        if (getConfig().mOverlayViewId != View.NO_ID) {
+            return inflater.inflate(getConfig().mOverlayViewId, parent, false);
+        }
+        throw new IllegalStateException("未设置contentView");
     }
 
-    @CallSuper
+    @Nullable
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected Animator onCreateInAnimator(@NonNull View view) {
+        return AnimatorHelper.createZoomAlphaInAnim(view);
+    }
+
+    @Nullable
+    @Override
+    protected Animator onCreateOutAnimator(@NonNull View view) {
+        return AnimatorHelper.createZoomAlphaOutAnim(view);
+    }
+
+    @NonNull
+    @Override
+    protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
+        return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     private void initDragLayout() {
@@ -467,30 +452,14 @@ public class OverlayLayer extends DecorLayer {
     public static class ViewHolder extends DecorLayer.ViewHolder {
         private View mOverlayView;
 
-        @Override
-        public void setChild(@NonNull View child) {
-            super.setChild(child);
-        }
-
         @NonNull
         @Override
         public DragLayout getChild() {
             return (DragLayout) super.getChild();
         }
 
-        @Nullable
-        @Override
-        protected DragLayout getChildNullable() {
-            return (DragLayout) super.getChildNullable();
-        }
-
-        void setOverlay(@NonNull View overlayView) {
+        public void setOverlay(@Nullable View overlayView) {
             mOverlayView = overlayView;
-        }
-
-        @Nullable
-        protected View getOverlayNullable() {
-            return mOverlayView;
         }
 
         @NonNull

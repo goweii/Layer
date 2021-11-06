@@ -25,7 +25,7 @@ public class DecorLayer extends FrameLayer {
     private final Rect mTempRect = new Rect();
 
     private Runnable mShowRunnable = null;
-    private WindowInsetsChangedListener mWindowInsetsChangedListener;
+    private WindowInsetsChangedListener mWindowInsetsChangedListener = null;
 
     public DecorLayer(@NonNull Context context) {
         this(Utils.requireActivity(context));
@@ -43,18 +43,6 @@ public class DecorLayer extends FrameLayer {
 
     @NonNull
     @Override
-    protected ViewHolder onCreateViewHolder() {
-        return new ViewHolder();
-    }
-
-    @NonNull
-    @Override
-    public ViewHolder getViewHolder() {
-        return (ViewHolder) super.getViewHolder();
-    }
-
-    @NonNull
-    @Override
     protected Config onCreateConfig() {
         return new Config();
     }
@@ -63,6 +51,18 @@ public class DecorLayer extends FrameLayer {
     @Override
     public Config getConfig() {
         return (Config) super.getConfig();
+    }
+
+    @NonNull
+    @Override
+    protected ViewHolder onCreateViewHolder() {
+        return new ViewHolder();
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder getViewHolder() {
+        return (ViewHolder) super.getViewHolder();
     }
 
     @NonNull
@@ -102,30 +102,6 @@ public class DecorLayer extends FrameLayer {
 
     @CallSuper
     @Override
-    protected void onPreShow() {
-        super.onPreShow();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPostShow() {
-        super.onPostShow();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPreDismiss() {
-        super.onPreDismiss();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPostDismiss() {
-        super.onPostDismiss();
-    }
-
-    @CallSuper
-    @Override
     protected void onDetach() {
         super.onDetach();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -134,12 +110,6 @@ public class DecorLayer extends FrameLayer {
                 windowInsetsController.removeOnControllableInsetsChangedListener(mWindowInsetsChangedListener);
             }
         }
-    }
-
-    @CallSuper
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

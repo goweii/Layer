@@ -82,52 +82,31 @@ public class PopupLayer extends DialogLayer {
         return (ListenerHolder) super.getListenerHolder();
     }
 
-    @NonNull
-    @Override
-    protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        return super.onCreateChild(inflater, parent);
-    }
-
-    @NonNull
-    @Override
-    protected Animator onCreateDefContentInAnimator(@NonNull View view) {
-        return AnimatorHelper.createZoomAlphaInAnim(view);
-    }
-
-    @NonNull
-    @Override
-    protected Animator onCreateDefContentOutAnimator(@NonNull View view) {
-        return AnimatorHelper.createZoomAlphaOutAnim(view);
-    }
-
-    @CallSuper
     @Override
     protected void onAttach() {
         super.onAttach();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPreShow() {
-        super.onPreShow();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPostShow() {
-        super.onPostShow();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPreDismiss() {
-        super.onPreDismiss();
-    }
-
-    @CallSuper
-    @Override
-    protected void onPostDismiss() {
-        super.onPostDismiss();
+        Utils.getViewSize(getViewHolder().getContainer(), new Runnable() {
+            @Override
+            public void run() {
+                updateLocation();
+            }
+        });
+        ViewTreeObserver viewTreeObserver = getViewHolder().getParent().getViewTreeObserver();
+        if (viewTreeObserver.isAlive()) {
+            mOnScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
+                @Override
+                public void onScrollChanged() {
+                    if (getConfig().mViewTreeScrollChangedToDismiss) {
+                        dismiss();
+                    }
+                    if (getConfig().mOnViewTreeScrollChangedListener != null) {
+                        getConfig().mOnViewTreeScrollChangedListener.onScrollChanged();
+                    }
+                    updateLocation();
+                }
+            };
+            viewTreeObserver.addOnScrollChangedListener(mOnScrollChangedListener);
+        }
     }
 
     @CallSuper
@@ -141,12 +120,6 @@ public class PopupLayer extends DialogLayer {
             mOnScrollChangedListener = null;
         }
         super.onDetach();
-    }
-
-    @CallSuper
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -180,28 +153,18 @@ public class PopupLayer extends DialogLayer {
             contentWrapperParams.height = FrameLayout.LayoutParams.WRAP_CONTENT;
         }
         getViewHolder().getContentWrapper().setLayoutParams(contentWrapperParams);
-        Utils.getViewSize(getViewHolder().getContainer(), new Runnable() {
-            @Override
-            public void run() {
-                updateLocation();
-            }
-        });
-        ViewTreeObserver viewTreeObserver = getViewHolder().getParent().getViewTreeObserver();
-        if (viewTreeObserver.isAlive()) {
-            mOnScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
-                @Override
-                public void onScrollChanged() {
-                    if (getConfig().mViewTreeScrollChangedToDismiss) {
-                        dismiss();
-                    }
-                    if (getConfig().mOnViewTreeScrollChangedListener != null) {
-                        getConfig().mOnViewTreeScrollChangedListener.onScrollChanged();
-                    }
-                    updateLocation();
-                }
-            };
-            viewTreeObserver.addOnScrollChangedListener(mOnScrollChangedListener);
-        }
+    }
+
+    @NonNull
+    @Override
+    protected Animator onCreateDefContentInAnimator(@NonNull View view) {
+        return AnimatorHelper.createZoomAlphaInAnim(view);
+    }
+
+    @NonNull
+    @Override
+    protected Animator onCreateDefContentOutAnimator(@NonNull View view) {
+        return AnimatorHelper.createZoomAlphaOutAnim(view);
     }
 
     @Override
@@ -436,6 +399,9 @@ public class PopupLayer extends DialogLayer {
     }
 
     private void initBackgroundLocation() {
+        if (getViewHolder().getBackground()== null) {
+            return;
+        }
         if (!getConfig().mBackgroundAlign) {
             getViewHolder().getBackground().setX(0);
             getViewHolder().getBackground().setY(0);
@@ -526,6 +492,7 @@ public class PopupLayer extends DialogLayer {
     }
 
     public void updateLocation() {
+        if (!isShown()) return;
         final View target = getViewHolder().getTarget();
         resetLocationTemp();
         final int[] location = mLocationTemp;

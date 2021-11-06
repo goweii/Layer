@@ -30,6 +30,7 @@ import per.goweii.layer.core.widget.LayerContainer;
 public class GuideLayer extends DecorLayer {
 
     private final int[] mLocationTemp = new int[2];
+    private final Rect mTargetRect = new Rect();
 
     public GuideLayer(@NonNull Context context) {
         this(Utils.requireActivity(context));
@@ -81,53 +82,6 @@ public class GuideLayer extends DecorLayer {
         return (ListenerHolder) super.getListenerHolder();
     }
 
-    @NonNull
-    @Override
-    protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        Context context = getActivity();
-        LayerContainer container = new LayerContainer(context);
-        container.setFocusInside(true);
-        container.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
-        HoleView background = new HoleView(context);
-        background.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
-        getViewHolder().setBackground(background);
-        container.addView(background);
-        FrameLayout contentWrapper = new FrameLayout(context);
-        contentWrapper.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
-        getViewHolder().setContentWrapper(contentWrapper);
-        container.addView(contentWrapper);
-        return container;
-    }
-
-    @Nullable
-    @Override
-    protected Animator onCreateInAnimator(@NonNull View view) {
-        return AnimatorHelper.createAlphaInAnim(view);
-    }
-
-    @Nullable
-    @Override
-    protected Animator onCreateOutAnimator(@NonNull View view) {
-        return AnimatorHelper.createAlphaOutAnim(view);
-    }
-
-    @NonNull
-    protected FrameLayout.LayoutParams generateGuideDefaultLayoutParams() {
-        return new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-        );
-    }
-
     @CallSuper
     @Override
     protected void onAttach() {
@@ -158,40 +112,65 @@ public class GuideLayer extends DecorLayer {
         });
     }
 
-    @CallSuper
+    @NonNull
     @Override
-    protected void onPreShow() {
-        super.onPreShow();
+    protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        Context context = getActivity();
+        LayerContainer container = new LayerContainer(context);
+        container.setForceFocusInside(true);
+        container.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        ));
+        HoleView background = new HoleView(context);
+        background.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        ));
+        getViewHolder().setBackground(background);
+        container.addView(background);
+        FrameLayout contentWrapper = new FrameLayout(context);
+        contentWrapper.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        ));
+        getViewHolder().setContentWrapper(contentWrapper);
+        container.addView(contentWrapper);
+        return container;
     }
 
-    @CallSuper
     @Override
-    protected void onPostShow() {
-        super.onPostShow();
+    protected void onDestroyChild() {
+        getViewHolder().getBackground().clear();
+        getViewHolder().setBackground(null);
+        getViewHolder().getContentWrapper().removeAllViews();
+        getViewHolder().setContentWrapper(null);
+        super.onDestroyChild();
     }
 
-    @CallSuper
+    @NonNull
     @Override
-    protected void onPreDismiss() {
-        super.onPreDismiss();
+    protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
+        return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
-    @CallSuper
-    @Override
-    protected void onPostDismiss() {
-        super.onPostDismiss();
+    @NonNull
+    protected FrameLayout.LayoutParams generateGuideDefaultLayoutParams() {
+        return new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT);
     }
 
-    @CallSuper
+    @Nullable
     @Override
-    protected void onDetach() {
-        super.onDetach();
+    protected Animator onCreateInAnimator(@NonNull View view) {
+        return AnimatorHelper.createAlphaInAnim(view);
     }
 
-    @CallSuper
+    @Nullable
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected Animator onCreateOutAnimator(@NonNull View view) {
+        return AnimatorHelper.createAlphaOutAnim(view);
     }
 
     @Override
@@ -209,8 +188,6 @@ public class GuideLayer extends DecorLayer {
         mLocationTemp[0] = 0;
         mLocationTemp[1] = 0;
     }
-
-    private final Rect mTargetRect = new Rect();
 
     public void updateLocation() {
         resetLocationTemp();
@@ -343,25 +320,27 @@ public class GuideLayer extends DecorLayer {
 
         @Nullable
         @Override
-        protected FrameLayout getChildNullable() {
-            return (FrameLayout) super.getChildNullable();
+        protected FrameLayout getChildOrNull() {
+            return (FrameLayout) super.getChildOrNull();
         }
 
-        public void setBackground(@NonNull HoleView background) {
+        public void setBackground(@Nullable HoleView background) {
             mBackground = background;
         }
 
-        public void setContentWrapper(@NonNull FrameLayout contentWrapper) {
+        public void setContentWrapper(@Nullable FrameLayout contentWrapper) {
             mContentWrapper = contentWrapper;
         }
 
         @NonNull
         public FrameLayout getContentWrapper() {
+            Utils.requireNonNull(mContentWrapper, "必须在show方法后调用");
             return mContentWrapper;
         }
 
         @NonNull
         public HoleView getBackground() {
+            Utils.requireNonNull(mBackground, "必须在show方法后调用");
             return mBackground;
         }
     }

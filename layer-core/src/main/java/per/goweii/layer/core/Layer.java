@@ -1,6 +1,7 @@
 package per.goweii.layer.core;
 
 import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.util.SparseArray;
 import android.view.KeyEvent;
@@ -23,6 +24,34 @@ import per.goweii.layer.core.listener.DefaultAnimatorListener;
 import per.goweii.layer.core.utils.Utils;
 
 public class Layer {
+
+    @NonNull
+    public static <T extends Layer> T requireLayer(@NonNull View view) {
+        T layer = findLayer(view);
+        return Utils.requireNonNull(layer, "view不在Layer内部或还没有显示");
+    }
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public static <T extends Layer> T findLayer(@NonNull View view) {
+        while (true) {
+            Object tag = view.getTag(R.id.layer_tag);
+            if (tag != null) {
+                try {
+                    return (T) tag;
+                } catch (ClassCastException ignore) {
+                }
+            }
+            ViewParent viewParent = view.getParent();
+            if (viewParent instanceof ViewGroup) {
+                view = (ViewGroup) viewParent;
+                continue;
+            }
+            return null;
+        }
+    }
+
+
     private final ViewTreeObserver.OnPreDrawListener mOnGlobalPreDrawListener = new OnGlobalPreDrawListener();
     private final ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new OnGlobalLayoutListener();
     private final ViewManager.OnKeyListener mOnViewKeyListener = new OnViewKeyListener();
@@ -31,9 +60,10 @@ public class Layer {
     private final Runnable mOutAnimEndCallback = new OnOutAnimEndCallback();
 
     private final ViewManager mViewManager;
+
+    private final Config mConfig;
     private final ViewHolder mViewHolder;
     private final ListenerHolder mListenerHolder;
-    private final Config mConfig;
 
     private ViewTreeObserver.OnPreDrawListener mShowOnPreDrawListener = null;
 
@@ -44,6 +74,8 @@ public class Layer {
     private Animator mAnimatorOut = null;
 
     private boolean mInitialized = false;
+
+    private boolean mViewCacheable = false;
 
     public Layer() {
         mViewManager = new ViewManager();
@@ -58,8 +90,18 @@ public class Layer {
     }
 
     @NonNull
+    public Config getConfig() {
+        return mConfig;
+    }
+
+    @NonNull
     protected ViewHolder onCreateViewHolder() {
         return new ViewHolder();
+    }
+
+    @NonNull
+    public ViewHolder getViewHolder() {
+        return mViewHolder;
     }
 
     @NonNull
@@ -68,48 +110,30 @@ public class Layer {
     }
 
     @NonNull
-    protected ViewGroup onGetParent() {
-        return mConfig.mParent;
-    }
-
-    @NonNull
-    protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        if (getConfig().mChild != null) {
-            return getConfig().mChild;
-        }
-        return inflater.inflate(getConfig().mChildId, parent, false);
-    }
-
-    @Nullable
-    protected Animator onCreateInAnimator(@NonNull View view) {
-        if (getConfig().mAnimatorCreator != null) {
-            return getConfig().mAnimatorCreator.createInAnimator(view);
-        }
-        return null;
-    }
-
-    @Nullable
-    protected Animator onCreateOutAnimator(@NonNull View view) {
-        if (getConfig().mAnimatorCreator != null) {
-            return getConfig().mAnimatorCreator.createOutAnimator(view);
-        }
-        return null;
+    public ListenerHolder getListenerHolder() {
+        return mListenerHolder;
     }
 
     @CallSuper
     protected void onCreate() {
-        if (getViewHolder().getParentNullable() == null) {
-            getViewHolder().setParent(onGetParent());
+        if (mViewHolder.getParentOrNull() == null) {
+            ViewGroup parent = onGetParent();
+            mViewHolder.setParent(parent);
         }
-        if (getViewHolder().getChildNullable() == null) {
-            getViewHolder().setChild(onCreateChild(getLayoutInflater(), getViewHolder().getParent()));
+        if (mViewHolder.getChildOrNull() == null) {
+            View child = onCreateChild(getLayoutInflater(), mViewHolder.getParent());
+            mViewHolder.setChild(child);
         }
-        mViewManager.setParent(getViewHolder().getParent());
-        mViewManager.setChild(getViewHolder().getChild());
-        mViewManager.setOnKeyListener(getConfig().mInterceptKeyEvent ? mOnViewKeyListener : null);
+        ViewGroup.LayoutParams layoutParams = mViewHolder.getChild().getLayoutParams();
+        if (layoutParams == null) {
+            mViewHolder.getChild().setLayoutParams(generateDefaultLayoutParams());
+        }
+        mViewManager.setParent(mViewHolder.getParent());
+        mViewManager.setChild(mViewHolder.getChild());
+        mViewManager.setOnKeyListener(mConfig.mInterceptKeyEvent ? mOnViewKeyListener : null);
         if (!mInitialized) {
             mInitialized = true;
-            getListenerHolder().notifyOnInitialize(this);
+            mListenerHolder.notifyOnInitialize(this);
         }
     }
 
@@ -120,10 +144,10 @@ public class Layer {
             getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
             getViewTreeObserver().addOnPreDrawListener(mOnGlobalPreDrawListener);
         }
-        getListenerHolder().bindOnClickListeners(this);
-        getListenerHolder().bindOnLongClickListeners(this);
-        getListenerHolder().notifyOnVisibleChangeToShow(this);
-        getListenerHolder().notifyOnBindData(this);
+        mListenerHolder.bindOnClickListeners(this);
+        mListenerHolder.bindOnLongClickListeners(this);
+        mListenerHolder.notifyOnVisibleChangeToShow(this);
+        mListenerHolder.notifyOnBindData(this);
     }
 
     @CallSuper
@@ -146,6 +170,7 @@ public class Layer {
         mListenerHolder.notifyOnPostDismiss(this);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @CallSuper
     protected void onDetach() {
         getListenerHolder().notifyOnVisibleChangeToDismiss(this);
@@ -162,17 +187,62 @@ public class Layer {
 
     @CallSuper
     protected void onDestroy() {
+        if (!mViewCacheable) {
+            onResetParent();
+            mViewHolder.setParent(null);
+            onDestroyChild();
+            mViewHolder.setChild(null);
+        }
         mViewManager.setParent(null);
         mViewManager.setChild(null);
         mViewManager.setOnKeyListener(null);
     }
 
-    protected boolean onKeyBack() {
-        if (getConfig().mCancelableOnKeyBack) {
-            dismiss();
-            return true;
+    @NonNull
+    protected ViewGroup onGetParent() {
+        if (mConfig.mParentView != null) {
+            return mConfig.mParentView;
         }
-        return false;
+        throw new IllegalStateException("未设置父布局");
+    }
+
+    protected void onResetParent() {
+    }
+
+    @NonNull
+    protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        if (mConfig.mChildView != null) {
+            return mConfig.mChildView;
+        }
+        if (mConfig.mChildLayoutId != View.NO_ID) {
+            return inflater.inflate(mConfig.mChildLayoutId, parent, false);
+        }
+        throw new IllegalStateException("未设置子控件");
+    }
+
+    protected void onDestroyChild() {
+    }
+
+    @NonNull
+    protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
+        return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    @Nullable
+    protected Animator onCreateInAnimator(@NonNull View view) {
+        if (getConfig().mAnimatorCreator != null) {
+            return getConfig().mAnimatorCreator.createInAnimator(view);
+        }
+        return null;
+    }
+
+    @Nullable
+    protected Animator onCreateOutAnimator(@NonNull View view) {
+        if (getConfig().mAnimatorCreator != null) {
+            return getConfig().mAnimatorCreator.createOutAnimator(view);
+        }
+        return null;
     }
 
     protected boolean onKeyEvent(int keyCode, @NonNull KeyEvent event) {
@@ -182,6 +252,13 @@ public class Layer {
             }
         }
         return false;
+    }
+
+    protected boolean onKeyBack() {
+        if (getConfig().mCancelableOnKeyBack) {
+            dismiss();
+        }
+        return true;
     }
 
     protected void onGlobalLayout() {
@@ -356,23 +433,16 @@ public class Layer {
     }
 
     @NonNull
-    public ViewHolder getViewHolder() {
-        return mViewHolder;
-    }
-
-    @NonNull
-    public Config getConfig() {
-        return mConfig;
-    }
-
-    @NonNull
-    public ListenerHolder getListenerHolder() {
-        return mListenerHolder;
-    }
-
-    @NonNull
     public LayoutInflater getLayoutInflater() {
         return LayoutInflater.from(mViewHolder.getParent().getContext());
+    }
+
+    public boolean isViewCacheable() {
+        return mViewCacheable;
+    }
+
+    public void setViewCacheable(boolean viewCacheable) {
+        mViewCacheable = viewCacheable;
     }
 
     @NonNull
@@ -386,43 +456,43 @@ public class Layer {
     }
 
     @NonNull
-    public <V extends View> V requireView(@IdRes int id) {
-        V view = mViewHolder.findViewInChild(id);
+    public <V extends View> V requireViewById(@IdRes int id) {
+        V view = mViewHolder.findViewById(id);
         return Utils.requireNonNull(view);
     }
 
     @Nullable
-    public <V extends View> V findView(@IdRes int id) {
-        return mViewHolder.findViewInChild(id);
+    public <V extends View> V findViewById(@IdRes int id) {
+        return mViewHolder.findViewById(id);
     }
 
     @NonNull
     public Layer setParent(@NonNull ViewGroup parent) {
-        getConfig().mParent = parent;
+        mConfig.mParentView = parent;
         return this;
     }
 
     @NonNull
-    public Layer setChild(@NonNull View child) {
-        getConfig().mChild = child;
+    public Layer setChild(@Nullable View child) {
+        mConfig.mChildView = child;
         return this;
     }
 
     @NonNull
     public Layer setChild(@LayoutRes int child) {
-        getConfig().mChildId = child;
+        mConfig.mChildLayoutId = child;
         return this;
     }
 
     @NonNull
     public Layer setAnimator(@Nullable AnimatorCreator creator) {
-        getConfig().mAnimatorCreator = creator;
+        mConfig.mAnimatorCreator = creator;
         return this;
     }
 
     @NonNull
     public Layer setInterceptKeyEvent(boolean intercept) {
-        getConfig().mInterceptKeyEvent = intercept;
+        mConfig.mInterceptKeyEvent = intercept;
         return this;
     }
 
@@ -432,7 +502,7 @@ public class Layer {
 
     @NonNull
     public Layer setCancelableOnKeyBack(boolean cancelable) {
-        if (cancelable) setInterceptKeyEvent(true);
+        setInterceptKeyEvent(true);
         mConfig.mCancelableOnKeyBack = cancelable;
         return this;
     }
@@ -443,7 +513,7 @@ public class Layer {
 
     /**
      * 绑定数据
-     * 获取子控件ID为{@link #findView(int)}
+     * 获取子控件ID为{@link #findViewById(int)}
      *
      * @param onBindDataListener 实现该接口进行数据绑定
      */
@@ -455,7 +525,7 @@ public class Layer {
 
     /**
      * 初始化
-     * 获取子控件ID为{@link #findView(int)}
+     * 获取子控件ID为{@link #findViewById(int)}
      *
      * @param onInitializeListener 该接口仅在第一次加载时调用，可加载初始化数据
      */
@@ -592,9 +662,12 @@ public class Layer {
     }
 
     protected static class Config {
-        private ViewGroup mParent;
-        private View mChild;
-        private int mChildId;
+        @Nullable
+        private ViewGroup mParentView = null;
+        @Nullable
+        private View mChildView = null;
+        @LayoutRes
+        private int mChildLayoutId = View.NO_ID;
 
         private boolean mInterceptKeyEvent = false;
         private boolean mCancelableOnKeyBack = false;
@@ -618,7 +691,7 @@ public class Layer {
         }
 
         @Nullable
-        protected ViewGroup getParentNullable() {
+        protected ViewGroup getParentOrNull() {
             return mParent;
         }
 
@@ -632,7 +705,7 @@ public class Layer {
         }
 
         @Nullable
-        protected View getChildNullable() {
+        protected View getChildOrNull() {
             return mChild;
         }
 
@@ -643,7 +716,7 @@ public class Layer {
 
         @SuppressWarnings("unchecked")
         @Nullable
-        public final <V extends View> V findViewInChild(@IdRes int id) {
+        public final <V extends View> V findViewById(@IdRes int id) {
             if (mChild == null) {
                 return null;
             }
@@ -679,7 +752,7 @@ public class Layer {
                 if (viewId == View.NO_ID) {
                     view = layer.getViewHolder().getNoIdClickView();
                 } else {
-                    view = layer.findView(viewId);
+                    view = layer.findViewById(viewId);
                 }
                 if (view != null) {
                     view.setOnClickListener(new View.OnClickListener() {
@@ -701,7 +774,7 @@ public class Layer {
                 if (viewId == View.NO_ID) {
                     view = layer.getViewHolder().getNoIdClickView();
                 } else {
-                    view = layer.findView(viewId);
+                    view = layer.findViewById(viewId);
                 }
                 if (view != null) {
                     view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -955,31 +1028,5 @@ public class Layer {
          * 浮层隐藏，已被从父布局移除，隐藏动画已结束
          */
         void onDismiss(@NonNull Layer layer);
-    }
-
-    @NonNull
-    public static <T extends Layer> T requireLayer(@NonNull View view) {
-        T layer = findLayer(view);
-        return Utils.requireNonNull(layer, "view不在Layer内部或还没有显示");
-    }
-
-    @SuppressWarnings("unchecked")
-    @Nullable
-    public static <T extends Layer> T findLayer(@NonNull View view) {
-        while (true) {
-            Object tag = view.getTag(R.id.layer_tag);
-            if (tag != null) {
-                try {
-                    return (T) tag;
-                } catch (ClassCastException ignore) {
-                }
-            }
-            ViewParent viewParent = view.getParent();
-            if (viewParent instanceof ViewGroup) {
-                view = (ViewGroup) viewParent;
-                continue;
-            }
-            return null;
-        }
     }
 }

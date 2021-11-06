@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class LayerContainer extends FrameLayout {
-    private boolean mFocusInside = false;
+    private boolean mForceFocusInside = false;
 
     public LayerContainer(@NonNull Context context) {
         this(context, null);
@@ -25,9 +25,9 @@ public class LayerContainer extends FrameLayout {
         setFocusable(true);
     }
 
-    public void setFocusInside(boolean focusInside) {
-        mFocusInside = focusInside;
-        if (focusInside) {
+    public void setForceFocusInside(boolean forceFocusInside) {
+        mForceFocusInside = forceFocusInside;
+        if (forceFocusInside) {
             if (!hasFocus()) {
                 requestFocus();
             }
@@ -36,13 +36,19 @@ public class LayerContainer extends FrameLayout {
 
     @Override
     public View focusSearch(View focused, int direction) {
-        if (!mFocusInside) {
+        if (!mForceFocusInside) {
             return super.focusSearch(focused, direction);
         }
         FocusFinder focusFinder = FocusFinder.getInstance();
         View nextFocus = focusFinder.findNextFocus(this, focused, direction);
         if (nextFocus != null) {
             return nextFocus;
+        }
+        if (hasFocus()) {
+            return focused;
+        }
+        if (!isFocusable()) {
+            return focused;
         }
         return this;
     }

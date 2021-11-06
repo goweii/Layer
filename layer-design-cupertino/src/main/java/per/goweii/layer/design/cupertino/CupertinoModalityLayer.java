@@ -53,94 +53,6 @@ public class CupertinoModalityLayer extends DialogLayer {
         setSwipeDismiss(0);
     }
 
-    @NonNull
-    @Override
-    protected Animator onCreateDefContentInAnimator(@NonNull View view) {
-        return AnimatorHelper.createBottomInAnim(view);
-    }
-
-    @NonNull
-    @Override
-    protected Animator onCreateDefContentOutAnimator(@NonNull View view) {
-        return AnimatorHelper.createBottomOutAnim(view);
-    }
-
-    @NonNull
-    @Override
-    protected Animator onCreateDefBackgroundInAnimator(@NonNull View view) {
-        AnimatorSet animatorSet = new AnimatorSet();
-        Animator bgAnim = super.onCreateDefBackgroundInAnimator(view);
-        FrameLayout decor = getViewHolder().getDecor();
-        float statusBarHeight = Utils.getStatusBarHeight(getActivity());
-        float toScale = (decor.getHeight() - statusBarHeight * 2F) / decor.getHeight();
-        List<Animator> scaleAnimList = new ArrayList<>();
-        for (int i = 0; i < decor.getChildCount() - 1; i++) {
-            final View child = decor.getChildAt(i);
-            child.setPivotX(decor.getWidth() / 2F);
-            child.setPivotY(decor.getHeight() / 2F);
-            float fromScaleX = child.getScaleX();
-            float fromScaleY = child.getScaleY();
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(child, "scaleX", fromScaleX, toScale);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(child, "scaleY", fromScaleY, toScale);
-            scaleAnimList.add(scaleX);
-            scaleAnimList.add(scaleY);
-            scaleX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    mAnimationAnimatedFraction = animation.getAnimatedFraction();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        child.invalidateOutline();
-                    }
-                }
-            });
-        }
-        scaleAnimList.add(bgAnim);
-        animatorSet.playTogether(scaleAnimList);
-        return animatorSet;
-    }
-
-    @NonNull
-    @Override
-    protected Animator onCreateDefBackgroundOutAnimator(@NonNull View view) {
-        AnimatorSet animatorSet = new AnimatorSet();
-        Animator bgAnim = super.onCreateDefBackgroundOutAnimator(view);
-        FrameLayout decor = getViewHolder().getDecor();
-        float toScale = 1F;
-        List<Animator> scaleAnimList = new ArrayList<>();
-        for (int i = 0; i < decor.getChildCount() - 1; i++) {
-            final View child = decor.getChildAt(i);
-            if (child instanceof ViewStub) continue;
-            if (!child.isShown()) continue;
-            child.setPivotX(decor.getWidth() / 2F);
-            child.setPivotY(decor.getHeight() / 2F);
-            float fromScaleX = child.getScaleX();
-            float fromScaleY = child.getScaleY();
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(child, "scaleX", fromScaleX, toScale);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(child, "scaleY", fromScaleY, toScale);
-            scaleAnimList.add(scaleX);
-            scaleAnimList.add(scaleY);
-            scaleX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    mAnimationAnimatedFraction = 1F - animation.getAnimatedFraction();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        child.invalidateOutline();
-                    }
-                }
-            });
-        }
-        scaleAnimList.add(bgAnim);
-        animatorSet.playTogether(scaleAnimList);
-        return animatorSet;
-    }
-
-    @Override
-    protected void fitDecorInsets(@NonNull Rect insets) {
-        int cornerRadius = (int) mDecorChildCornerRadius;
-        insets.top = insets.top + cornerRadius;
-        super.fitDecorInsets(insets);
-    }
-
     @Override
     protected void onAttach() {
         super.onAttach();
@@ -225,6 +137,82 @@ public class CupertinoModalityLayer extends DialogLayer {
         View decorChild = getViewHolder().getDecorChild();
         decor.setBackground(mDecorBackgroundBackup);
         decorChild.setBackground(mDecorChildBackgroundBackup);
+    }
+
+    @NonNull
+    @Override
+    protected Animator onCreateDefContentInAnimator(@NonNull View view) {
+        AnimatorSet animatorSet = new AnimatorSet();
+        Animator contentInAnimator = AnimatorHelper.createBottomInAnim(view);
+        FrameLayout decor = getViewHolder().getDecor();
+        float statusBarHeight = Utils.getStatusBarHeight(getActivity());
+        float toScale = (decor.getHeight() - statusBarHeight * 2F) / decor.getHeight();
+        List<Animator> scaleAnimList = new ArrayList<>();
+        for (int i = 0; i < decor.getChildCount() - 1; i++) {
+            final View child = decor.getChildAt(i);
+            child.setPivotX(decor.getWidth() / 2F);
+            child.setPivotY(decor.getHeight() / 2F);
+            float fromScaleX = child.getScaleX();
+            float fromScaleY = child.getScaleY();
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(child, "scaleX", fromScaleX, toScale);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(child, "scaleY", fromScaleY, toScale);
+            scaleAnimList.add(scaleX);
+            scaleAnimList.add(scaleY);
+            scaleX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mAnimationAnimatedFraction = animation.getAnimatedFraction();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        child.invalidateOutline();
+                    }
+                }
+            });
+        }
+        scaleAnimList.add(contentInAnimator);
+        animatorSet.playTogether(scaleAnimList);
+        return animatorSet;
+    }
+
+    @NonNull
+    @Override
+    protected Animator onCreateDefContentOutAnimator(@NonNull View view) {
+        AnimatorSet animatorSet = new AnimatorSet();
+        Animator contentOutAnimator = AnimatorHelper.createBottomOutAnim(view);
+        FrameLayout decor = getViewHolder().getDecor();
+        float toScale = 1F;
+        List<Animator> scaleAnimList = new ArrayList<>();
+        for (int i = 0; i < decor.getChildCount() - 1; i++) {
+            final View child = decor.getChildAt(i);
+            if (child instanceof ViewStub) continue;
+            if (!child.isShown()) continue;
+            child.setPivotX(decor.getWidth() / 2F);
+            child.setPivotY(decor.getHeight() / 2F);
+            float fromScaleX = child.getScaleX();
+            float fromScaleY = child.getScaleY();
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(child, "scaleX", fromScaleX, toScale);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(child, "scaleY", fromScaleY, toScale);
+            scaleAnimList.add(scaleX);
+            scaleAnimList.add(scaleY);
+            scaleX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    mAnimationAnimatedFraction = 1F - animation.getAnimatedFraction();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        child.invalidateOutline();
+                    }
+                }
+            });
+        }
+        scaleAnimList.add(contentOutAnimator);
+        animatorSet.playTogether(scaleAnimList);
+        return animatorSet;
+    }
+
+    @Override
+    protected void fitDecorInsets(@NonNull Rect insets) {
+        int cornerRadius = (int) mDecorChildCornerRadius;
+        insets.top = insets.top + cornerRadius;
+        super.fitDecorInsets(insets);
     }
 
     private class OnSwipeListenerImpl implements OnSwipeListener {

@@ -42,6 +42,7 @@ public class BackdropBlurView extends BackdropVisualEffectFrameLayout {
         float radius;
         if (mBlurPercent > 0) {
             radius = Math.min(getWidth(), getHeight()) * mBlurPercent;
+            mBlurPercent = 0F;
         } else {
             radius = mBlurRadius;
         }
@@ -50,6 +51,9 @@ public class BackdropBlurView extends BackdropVisualEffectFrameLayout {
             radius = 25;
         } else if (radius < 0) {
             radius = 0;
+        }
+        if (mBlurRadius != radius) {
+            mBlurRadius = radius;
         }
         if (getSimpleSize() != simple) {
             setSimpleSize(simple);

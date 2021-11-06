@@ -2,10 +2,9 @@ package per.goweii.layer.core.utils;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.util.TypedValue;
 import android.view.View;
@@ -26,7 +25,7 @@ import java.util.Map;
  * 监听软键盘的打开和隐藏
  * 打开时滚动布局，可设置仅在某几个EditText获取焦点时开启
  */
-public final class SoftInputCompat implements ViewTreeObserver.OnGlobalLayoutListener, ViewTreeObserver.OnGlobalFocusChangeListener {
+public final class InputMethodCompat implements ViewTreeObserver.OnGlobalLayoutListener, ViewTreeObserver.OnGlobalFocusChangeListener {
 
     private final Window mActivityWindow;
     private final View mActivityDecorView;
@@ -45,7 +44,7 @@ public final class SoftInputCompat implements ViewTreeObserver.OnGlobalLayoutLis
     private View mMoveView = null;
     private final Map<View, View> mFocusBottomMap = new HashMap<>(0);
     private View mFocusBottomView = null;
-    private OnSoftInputListener mOnSoftInputListener = null;
+    private InputMethodListener mInputMethodListener = null;
 
     private Animator mMoveAnim = null;
 
@@ -56,11 +55,11 @@ public final class SoftInputCompat implements ViewTreeObserver.OnGlobalLayoutLis
         }
     };
 
-    public static SoftInputCompat attach(@NonNull Activity activity) {
-        return new SoftInputCompat(activity);
+    public static InputMethodCompat attach(@NonNull Activity activity) {
+        return new InputMethodCompat(activity);
     }
 
-    private SoftInputCompat(@NonNull Activity activity) {
+    private InputMethodCompat(@NonNull Activity activity) {
         mActivityWindow = activity.getWindow();
         mActivityDecorView = mActivityWindow.getDecorView();
         mKeyboardMinHeight = (int) TypedValue.applyDimension(
@@ -91,6 +90,7 @@ public final class SoftInputCompat implements ViewTreeObserver.OnGlobalLayoutLis
         }
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     public void detach() {
         if (mPopupRootView.getViewTreeObserver().isAlive()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -111,13 +111,13 @@ public final class SoftInputCompat implements ViewTreeObserver.OnGlobalLayoutLis
     }
 
     @NonNull
-    public SoftInputCompat setMoveView(@NonNull View moveView) {
+    public InputMethodCompat setMoveView(@NonNull View moveView) {
         this.mMoveView = moveView;
         return this;
     }
 
     @NonNull
-    public SoftInputCompat setFollowViews(@Nullable View bottomView, View... focusViews) {
+    public InputMethodCompat setFollowViews(@Nullable View bottomView, View... focusViews) {
         if (focusViews != null && focusViews.length > 0) {
             for (View focusView : focusViews) {
                 if (focusView != null) {
@@ -135,7 +135,7 @@ public final class SoftInputCompat implements ViewTreeObserver.OnGlobalLayoutLis
     }
 
     @NonNull
-    public SoftInputCompat clear() {
+    public InputMethodCompat clear() {
         this.mMoveView = null;
         this.mFocusBottomMap.clear();
         this.mFocusBottomView = null;
@@ -143,13 +143,13 @@ public final class SoftInputCompat implements ViewTreeObserver.OnGlobalLayoutLis
     }
 
     @NonNull
-    public SoftInputCompat setListener(@Nullable OnSoftInputListener onSoftInputListener) {
-        this.mOnSoftInputListener = onSoftInputListener;
+    public InputMethodCompat setListener(@Nullable InputMethodListener inputMethodListener) {
+        this.mInputMethodListener = inputMethodListener;
         return this;
     }
 
     @NonNull
-    public SoftInputCompat setDuration(long duration) {
+    public InputMethodCompat setDuration(long duration) {
         this.mDuration = duration;
         return this;
     }
@@ -176,18 +176,18 @@ public final class SoftInputCompat implements ViewTreeObserver.OnGlobalLayoutLis
     }
 
     private void notifyOpenOrClose() {
-        if (mOnSoftInputListener != null) {
+        if (mInputMethodListener != null) {
             if (isOpened()) {
-                mOnSoftInputListener.onOpen(mKeyBoardHeight);
+                mInputMethodListener.onOpen(mKeyBoardHeight);
             } else {
-                mOnSoftInputListener.onClose(mKeyBoardHeight);
+                mInputMethodListener.onClose(mKeyBoardHeight);
             }
         }
     }
 
     private void notifyHeightChanged() {
-        if (mOnSoftInputListener != null) {
-            mOnSoftInputListener.onHeightChange(mKeyBoardHeight);
+        if (mInputMethodListener != null) {
+            mInputMethodListener.onHeightChange(mKeyBoardHeight);
         }
     }
 
@@ -304,7 +304,7 @@ public final class SoftInputCompat implements ViewTreeObserver.OnGlobalLayoutLis
         return null;
     }
 
-    public interface OnSoftInputListener {
+    public interface InputMethodListener {
         void onOpen(@Px int height);
 
         void onClose(@Px int height);

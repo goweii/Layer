@@ -68,11 +68,6 @@ public class MaterialNotificationLayer extends NotificationLayer {
         return (ListenerHolder) super.getListenerHolder();
     }
 
-    @NonNull
-    protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        return inflater.inflate(R.layout.layer_design_material_notification, parent, false);
-    }
-
     @Override
     protected void onAttach() {
         super.onAttach();
@@ -136,6 +131,11 @@ public class MaterialNotificationLayer extends NotificationLayer {
                 getViewHolder().getDesc().setVisibility(View.GONE);
             }
         }
+    }
+
+    @NonNull
+    protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        return inflater.inflate(R.layout.layer_design_material_notification, parent, false);
     }
 
     @NonNull
@@ -210,7 +210,7 @@ public class MaterialNotificationLayer extends NotificationLayer {
     public static class ViewHolder extends NotificationLayer.ViewHolder {
         @Nullable
         public LinearLayout getTop() {
-            return findViewInChild(R.id.layer_design_material_notification_top);
+            return findViewById(R.id.layer_design_material_notification_top);
         }
 
         @Nullable

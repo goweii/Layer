@@ -82,75 +82,11 @@ public class NotificationLayer extends DecorLayer {
         return (ListenerHolder) super.getListenerHolder();
     }
 
-    @NonNull
-    @Override
-    protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        Context context = getActivity();
-        SwipeLayout container = new SwipeLayout(context);
-        container.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
-        MaxSizeFrameLayout contentWrapper = new MaxSizeFrameLayout(context);
-        contentWrapper.setMaxWidth(Math.min(Utils.getScreenWidth(context), Utils.getScreenHeight(context)));
-        FrameLayout.LayoutParams contentWrapperLayoutParams = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        contentWrapperLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        contentWrapper.setLayoutParams(contentWrapperLayoutParams);
-        getViewHolder().setContentWrapper(contentWrapper);
-        container.addView(contentWrapper);
-        if (getViewHolder().getContentNullable() == null) {
-            getViewHolder().setContent(onCreateContent(inflater, contentWrapper));
-        }
-        View content = getViewHolder().getContent();
-        contentWrapper.addView(content);
-        return container;
-    }
-
-    @NonNull
-    protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View content;
-        if (getConfig().mContentView != null) {
-            content = getConfig().mContentView;
-        } else {
-            content = inflater.inflate(getConfig().mContentViewId, parent, false);
-        }
-        Utils.removeViewParent(content);
-        if (content.getLayoutParams() == null) {
-            content.setLayoutParams(generateContentDefaultLayoutParams());
-        }
-        return content;
-    }
-
-    @NonNull
-    protected FrameLayout.LayoutParams generateContentDefaultLayoutParams() {
-        return new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-        );
-    }
-
-    @Nullable
-    @Override
-    protected Animator onCreateInAnimator(@NonNull View view) {
-        return AnimatorHelper.createTopInAnim(getViewHolder().getContentWrapper());
-    }
-
-    @Nullable
-    @Override
-    protected Animator onCreateOutAnimator(@NonNull View view) {
-        return AnimatorHelper.createTopOutAnim(getViewHolder().getContentWrapper());
-    }
-
     @CallSuper
     @Override
     protected void onAttach() {
         super.onAttach();
-        getViewHolder().getChild().setSwipeDirection(
-                SwipeLayout.Direction.TOP | SwipeLayout.Direction.LEFT | SwipeLayout.Direction.RIGHT
-        );
+        getViewHolder().getChild().setSwipeDirection(SwipeLayout.Direction.TOP | SwipeLayout.Direction.LEFT | SwipeLayout.Direction.RIGHT);
         getViewHolder().getChild().setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
             @Override
             public void onStart(@SwipeLayout.Direction int direction, @FloatRange(from = 0F, to = 1F) float fraction) {
@@ -161,6 +97,9 @@ public class NotificationLayer extends DecorLayer {
 
             @Override
             public void onSwiping(@SwipeLayout.Direction int direction, @FloatRange(from = 0F, to = 1F) float fraction) {
+                if (getConfig().mSwipeTransformer != null) {
+                    getConfig().mSwipeTransformer.onSwiping(NotificationLayer.this, direction, fraction);
+                }
                 getListenerHolder().notifyOnSwiping(NotificationLayer.this, direction, fraction);
             }
 
@@ -211,12 +150,6 @@ public class NotificationLayer extends DecorLayer {
 
     @CallSuper
     @Override
-    protected void onPreShow() {
-        super.onPreShow();
-    }
-
-    @CallSuper
-    @Override
     protected void onPostShow() {
         super.onPostShow();
         setAutoDismiss(true);
@@ -231,22 +164,86 @@ public class NotificationLayer extends DecorLayer {
         super.onPreDismiss();
     }
 
-    @CallSuper
+    @NonNull
     @Override
-    protected void onPostDismiss() {
-        super.onPostDismiss();
+    protected View onCreateChild(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        final Context context = getActivity();
+
+        SwipeLayout container = new SwipeLayout(context);
+        container.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        MaxSizeFrameLayout contentWrapper = new MaxSizeFrameLayout(context);
+        contentWrapper.setMaxWidth(Math.min(Utils.getScreenWidth(context), Utils.getScreenHeight(context)));
+        FrameLayout.LayoutParams contentWrapperLayoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        contentWrapperLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+        contentWrapper.setLayoutParams(contentWrapperLayoutParams);
+        getViewHolder().setContentWrapper(contentWrapper);
+        container.addView(contentWrapper);
+
+        View content = onCreateContent(inflater, container);
+        ViewGroup.LayoutParams contentLayoutParams = content.getLayoutParams();
+        FrameLayout.LayoutParams newContentLayoutParams;
+        if (contentLayoutParams == null) {
+            newContentLayoutParams = generateContentDefaultLayoutParams();
+        } else if (contentLayoutParams instanceof FrameLayout.LayoutParams) {
+            newContentLayoutParams = (FrameLayout.LayoutParams) contentLayoutParams;
+        } else {
+            newContentLayoutParams = new FrameLayout.LayoutParams(contentLayoutParams.width, contentLayoutParams.height);
+        }
+        content.setLayoutParams(newContentLayoutParams);
+        getViewHolder().setContent(content);
+        contentWrapper.addView(content);
+
+        return container;
     }
 
-    @CallSuper
     @Override
-    protected void onDetach() {
-        super.onDetach();
+    protected void onDestroyChild() {
+        getViewHolder().getContentWrapper().removeAllViews();
+        getViewHolder().setContentWrapper(null);
+        getViewHolder().setContent(null);
+        super.onDestroyChild();
     }
 
-    @CallSuper
+    @NonNull
+    protected View onCreateContent(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        View content;
+        if (getConfig().mContentView != null) {
+            content = getConfig().mContentView;
+        } else if (getConfig().mContentViewId != View.NO_ID) {
+            content = inflater.inflate(getConfig().mContentViewId, parent, false);
+        } else {
+            throw new IllegalStateException("未设置contentView");
+        }
+        Utils.removeViewParent(content);
+        return content;
+    }
+
+    @NonNull
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
+        return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    @NonNull
+    protected FrameLayout.LayoutParams generateContentDefaultLayoutParams() {
+        return new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+        );
+    }
+
+    @Nullable
+    @Override
+    protected Animator onCreateInAnimator(@NonNull View view) {
+        return AnimatorHelper.createTopInAnim(getViewHolder().getContentWrapper());
+    }
+
+    @Nullable
+    @Override
+    protected Animator onCreateOutAnimator(@NonNull View view) {
+        return AnimatorHelper.createTopOutAnim(getViewHolder().getContentWrapper());
     }
 
     @Override
@@ -314,13 +311,19 @@ public class NotificationLayer extends DecorLayer {
         return this;
     }
 
+    @NonNull
+    public NotificationLayer setSwipeTransformer(@Nullable SwipeTransformer swipeTransformer) {
+        getConfig().mSwipeTransformer = swipeTransformer;
+        return this;
+    }
+
     /**
      * 浮层拖拽事件监听
      *
      * @param swipeListener OnSwipeListener
      */
     @NonNull
-    public NotificationLayer addOnSwipeListener(@NonNull NotificationLayer.OnSwipeListener swipeListener) {
+    public NotificationLayer addOnSwipeListener(@NonNull OnSwipeListener swipeListener) {
         getListenerHolder().addOnSwipeListener(swipeListener);
         return this;
     }
@@ -335,13 +338,7 @@ public class NotificationLayer extends DecorLayer {
             return (SwipeLayout) super.getChild();
         }
 
-        @Nullable
-        @Override
-        protected SwipeLayout getChildNullable() {
-            return (SwipeLayout) super.getChildNullable();
-        }
-
-        public void setContentWrapper(@NonNull MaxSizeFrameLayout contentWrapper) {
+        public void setContentWrapper(@Nullable MaxSizeFrameLayout contentWrapper) {
             mContentWrapper = contentWrapper;
         }
 
@@ -350,13 +347,8 @@ public class NotificationLayer extends DecorLayer {
             return mContentWrapper;
         }
 
-        protected void setContent(@NonNull View content) {
+        protected void setContent(@Nullable View content) {
             mContent = content;
-        }
-
-        @Nullable
-        protected View getContentNullable() {
-            return mContent;
         }
 
         @NonNull
@@ -379,6 +371,9 @@ public class NotificationLayer extends DecorLayer {
         protected long mDuration = 5000L;
         protected int mMaxWidth = -1;
         protected int mMaxHeight = -1;
+
+        @Nullable
+        protected SwipeTransformer mSwipeTransformer = null;
     }
 
     protected static class ListenerHolder extends DecorLayer.ListenerHolder {
@@ -417,6 +412,12 @@ public class NotificationLayer extends DecorLayer {
                 }
             }
         }
+    }
+
+    public interface SwipeTransformer {
+        void onSwiping(@NonNull NotificationLayer layer,
+                       @SwipeLayout.Direction int direction,
+                       @FloatRange(from = 0F, to = 1F) float fraction);
     }
 
     public interface OnSwipeListener {

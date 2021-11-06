@@ -310,7 +310,7 @@ public class CupertinoNotificationLayer extends NotificationLayer {
     public static class ViewHolder extends NotificationLayer.ViewHolder {
         @Nullable
         public RelativeLayout getTop() {
-            return findViewInChild(R.id.layer_design_cupertino_notification_top);
+            return findViewById(R.id.layer_design_cupertino_notification_top);
         }
 
         @Nullable

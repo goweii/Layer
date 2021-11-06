@@ -369,7 +369,7 @@ public class KeyboardLayer extends DialogLayer {
                     views.add(view);
                 }
             }
-            V view = findViewInChild(id);
+            V view = findViewById(id);
             if (view != null && !views.contains(view)) {
                 views.add(view);
             }

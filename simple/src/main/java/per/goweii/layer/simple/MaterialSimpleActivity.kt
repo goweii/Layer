@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import per.goweii.layer.core.anim.DelayedZoomAnimatorCreator
+import per.goweii.layer.core.ktx.cancelableOnClickKeyBack
 import per.goweii.layer.design.material.MaterialDialogLayer
 import per.goweii.layer.design.material.MaterialNotificationLayer
 import per.goweii.layer.design.material.MaterialPopupLayer
@@ -21,15 +22,9 @@ class MaterialSimpleActivity : AppCompatActivity() {
         MaterialDialogLayer(this)
                 .setTitle(R.string.dialog_title)
                 .setDesc(R.string.dialog_msg)
-                .addAction(R.string.i_know) { layer, _ ->
-                    layer.dismiss()
-                }
-                .addAction(R.string.send) { layer, _ ->
-                    layer.dismiss()
-                }
-                .addAction(R.string.close) { layer, _ ->
-                    layer.dismiss()
-                }
+                .addAction(R.string.i_know) { layer, _ -> layer.dismiss() }
+                .addAction(R.string.send) { layer, _ -> layer.dismiss() }
+                .addAction(R.string.close) { layer, _ -> layer.dismiss() }
                 .show()
     }
 

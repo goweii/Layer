@@ -98,6 +98,7 @@ public class CupertinoPopoverLayer extends PopupLayer {
         super.onInitContent();
         PopupShadowLayout content = getViewHolder().getContent();
         content.setArrowSide(getConfig().mArrowSide);
+        content.setArrowAlign(getConfig().mArrowAlign);
         content.setArrowRadius(getConfig().mArrowRadius);
         content.setArrowOffset(getConfig().mArrowOffset);
         content.setArrowWidth(getConfig().mArrowWidth);
@@ -174,7 +175,7 @@ public class CupertinoPopoverLayer extends PopupLayer {
         setVertical(Align.Vertical.BELOW);
         setInside(true);
         setArrowSide(PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_TOP);
-        setArrowOffset(PopupShadowLayout.PopupShadowOutlineProvider.ARROW_CENTER);
+        setArrowAlign(PopupShadowLayout.PopupShadowOutlineProvider.ARROW_ALIGN_CENTER);
         setArrowRadius(getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_corner_radius));
         setArrowWidth(getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_width));
         setArrowHeight(getActivity().getResources().getDimensionPixelOffset(R.dimen.layer_design_cupertino_popover_arrow_height));
@@ -183,17 +184,21 @@ public class CupertinoPopoverLayer extends PopupLayer {
         return this;
     }
 
+    public CupertinoPopoverLayer setSolidColor(@ColorInt int solidColor) {
+        getConfig().mSolidColor = solidColor;
+        return this;
+    }
+
+    public CupertinoPopoverLayer setCornerRadius(@Px int cornerRadius) {
+        getConfig().mCornerRadius = cornerRadius;
+        return this;
+    }
+
     public CupertinoPopoverLayer setArrowRadius(@Px int arrowRadius) {
         getConfig().mArrowRadius = arrowRadius;
         return this;
     }
 
-    /**
-     * 箭头距离左或上的偏移量
-     * 居中可以使用{@link PopupShadowLayout.PopupShadowOutlineProvider#ARROW_CENTER}
-     *
-     * @param arrowOffset 偏移量
-     */
     public CupertinoPopoverLayer setArrowOffset(int arrowOffset) {
         getConfig().mArrowOffset = arrowOffset;
         return this;
@@ -204,18 +209,8 @@ public class CupertinoPopoverLayer extends PopupLayer {
         return this;
     }
 
-    public CupertinoPopoverLayer setSolidColor(@ColorInt int solidColor) {
-        getConfig().mSolidColor = solidColor;
-        return this;
-    }
-
     public CupertinoPopoverLayer setArrowWidth(@Px int arrowWidth) {
         getConfig().mArrowWidth = arrowWidth;
-        return this;
-    }
-
-    public CupertinoPopoverLayer setCornerRadius(@Px int cornerRadius) {
-        getConfig().mCornerRadius = cornerRadius;
         return this;
     }
 
@@ -224,9 +219,15 @@ public class CupertinoPopoverLayer extends PopupLayer {
         return this;
     }
 
+    public CupertinoPopoverLayer setArrowAlign(@PopupShadowLayout.PopupShadowOutlineProvider.ArrowAlign int arrowAlign) {
+        getConfig().mArrowAlign = arrowAlign;
+        return this;
+    }
+
     public static class Config extends PopupLayer.Config {
         protected int mArrowSide = PopupShadowLayout.PopupShadowOutlineProvider.ARROW_SIDE_NONE;
-        protected int mArrowOffset = PopupShadowLayout.PopupShadowOutlineProvider.ARROW_CENTER;
+        protected int mArrowAlign = PopupShadowLayout.PopupShadowOutlineProvider.ARROW_ALIGN_CENTER;
+        protected int mArrowOffset = 0;
         protected int mArrowRadius = 0;
         protected int mArrowWidth = 0;
         protected int mArrowHeight = 0;
@@ -235,11 +236,6 @@ public class CupertinoPopoverLayer extends PopupLayer {
     }
 
     public static class ViewHolder extends PopupLayer.ViewHolder {
-        @Override
-        protected void setContent(@NonNull View content) {
-            super.setContent(content);
-        }
-
         @NonNull
         @Override
         public PopupShadowLayout getContent() {
