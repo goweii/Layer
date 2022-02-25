@@ -18,7 +18,7 @@ buildscript {
     }
     ext {
         layer_group = "per.goweii.layer"
-        layer_version = "1.0.0"
+        layer_version = "1.1.0"
     }
     repositories {
         google()

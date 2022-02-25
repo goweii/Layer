@@ -6,8 +6,8 @@ version layer_version
 uploadArchives {
     repositories {
         mavenDeployer {
-            snapshotRepository(url: uri("C:/Users/goweii/AndroidStudioProjects/maven-repository/snapshots"))
-            repository(url: uri("C:/Users/goweii/AndroidStudioProjects/maven-repository/releases"))
+            snapshotRepository(url: uri("/Users/cuizhen/StudioProjects/maven-repository/snapshots"))
+            repository(url: uri("/Users/cuizhen/StudioProjects/maven-repository/releases"))
             pom.packaging = "aar"
         }
     }
