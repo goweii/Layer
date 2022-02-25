@@ -91,11 +91,9 @@ dependencies {
     
     // 按需引入
     // 基础库
-    // implementation "per.goweii.layer:layer:1.0.0"
+    // implementation "per.goweii.layer:layer-core:1.0.0"
     // 自动初始化（依赖基础库和Jetpack Startup）
     // implementation "per.goweii.layer:layer-startup:1.0.0"
-    // 扩展库（依赖基础库）
-    // implementation "per.goweii.layer:layer-ext:1.0.0"
     // Kotlin扩展库（依赖基础库和扩展库）
     // implementation "per.goweii.layer:layer-ktx:1.0.0"
 }
@@ -105,7 +103,7 @@ dependencies {
 
   - 建议按需引入
 
-  - layer-startup依赖于Jetpack Startup，需要自行引入。
+  - layer-startup依赖于Jetpack Startup（需要自行引入）。
 
 
 
