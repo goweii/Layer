@@ -44,6 +44,8 @@ Android稳定高效的浮层创建管理框架。
         - 支持自定义低姿态显示效果
     - NotificationLayer：通知
         - 支持滑动关闭
+    - KeyboardLayer：软键盘
+        - 支持大小写字母/数字/常用符号
 
 # 截图
 
@@ -65,7 +67,7 @@ Android稳定高效的浮层创建管理框架。
 // build.gradle(Project:)
 allprojects {
     repositories {
-        maven { url "https://gitee.com/goweii/maven-repository/raw/master/releases/" }
+        maven { url 'https://jitpack.io' }
     }
 }
 ```
@@ -77,24 +79,25 @@ allprojects {
 ```groovy
 // build.gradle(Module:)
 dependencies {
+    def version = "1.0.0"
+    
     // 完整引入
-    implementation "per.goweii.layer:Layer:1.0.0"
+    implementation "com.github.goweii:Layer:$version"
     
     // 按需引入
-    // 基础库
-    // implementation "per.goweii.layer:layer-core:1.0.0"
-    // 自动初始化（依赖基础库和Jetpack Startup）
-    // implementation "per.goweii.layer:layer-startup:1.0.0"
-    // Kotlin扩展库（依赖基础库和扩展库）
-    // implementation "per.goweii.layer:layer-ktx:1.0.0"
+    
+    // 核心功能
+    // implementation "com.github.goweii.Layer:layer-core:$version"
+    // 核心功能Kotlin扩展库
+    // implementation "com.github.goweii.Layer:layer-ktx:$version"
+    // 自动初始化
+    // implementation "com.github.goweii.Layer:layer-startup:$version"
+    
+    // 各个浮层效果（xxx为module名）
+    // implementation "com.github.goweii.Layer:layer-xxx:$version"
+    // implementation "com.github.goweii.Layer:layer-xxx-ktx:$version"
 }
 ```
-
-- ### 一些问题/建议
-
-    - 建议按需引入
-
-    - layer-startup依赖于Jetpack Startup（需要自行引入）。
 
 ## 更新说明
 
