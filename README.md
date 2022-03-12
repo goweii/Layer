@@ -2,13 +2,9 @@ Android稳定高效的浮层创建管理框架。
 
 可实现Dialog，PopupWindow，引导层，悬浮按钮，通知，吐司，安全键盘等效果。
 
-
-
 [GitHub主页](https://github.com/goweii/Layer)
 
 [Demo下载](https://gitee.com/goweii/Layer/raw/master/app/demo/demo.apk)
-
-
 
 # 简介
 
@@ -20,36 +16,34 @@ Android稳定高效的浮层创建管理框架。
 - 链式调用
 - 支持自由扩展
 - 实现几种常用效果
-  - DialogLayer：AlertDialog/BottomSheetDialog
-    - 占用区域不会超过当前Activity避免导航栏遮挡
-    - 支持自定义大小和显示位置
-    - 支持自定义数据绑定
-    - 支持自定义进出场动画
-    - 支持自定义背景颜色/图片/高斯模糊
-    - 支持在Activity的onCreate生命周期弹出
-    - 支持从ApplicationContext中弹出
-    - 支持拖拽关闭
-    - 支持不拦截外部事件
-  - PopupLayer：PopupWindow
-    - 拥有Dialog效果特性
-    - 支持跟随目标View移动
-  - ToastLayer：吐司
-    - 支持自定义图标和文字
-    - 支持自定义显示时长
-    - 支持自定义位置
-    - 支持自定义背景资源和颜色
-    - 支持自定义透明度
-    - 支持自定义进出场动画
-  - GuideLayer：引导层
-    - 支持自定义遮罩颜色和圆角半径
-  - OverlayLayer：悬浮按钮
-    - 支持自定义吸附边
-    - 支持自定义正常和低姿态2中模式
-    - 支持自定义低姿态显示效果
-  - NotificationLayer：通知
-    - 支持滑动关闭
-
-
+    - DialogLayer：AlertDialog/BottomSheetDialog
+        - 占用区域不会超过当前Activity避免导航栏遮挡
+        - 支持自定义大小和显示位置
+        - 支持自定义数据绑定
+        - 支持自定义进出场动画
+        - 支持自定义背景颜色/图片/高斯模糊
+        - 支持在Activity的onCreate生命周期弹出
+        - 支持从ApplicationContext中弹出
+        - 支持拖拽关闭
+        - 支持不拦截外部事件
+    - PopupLayer：PopupWindow
+        - 拥有Dialog效果特性
+        - 支持跟随目标View移动
+    - ToastLayer：吐司
+        - 支持自定义图标和文字
+        - 支持自定义显示时长
+        - 支持自定义位置
+        - 支持自定义背景资源和颜色
+        - 支持自定义透明度
+        - 支持自定义进出场动画
+    - GuideLayer：引导层
+        - 支持自定义遮罩颜色和圆角半径
+    - OverlayLayer：悬浮按钮
+        - 支持自定义吸附边
+        - 支持自定义正常和低姿态2中模式
+        - 支持自定义低姿态显示效果
+    - NotificationLayer：通知
+        - 支持滑动关闭
 
 # 截图
 
@@ -59,11 +53,7 @@ Android稳定高效的浮层创建管理框架。
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![20210610_190654.gif](https://i.loli.net/2021/06/10/aVoWBmGqtE1HkUP.gif) | ![20210610_190715.gif](https://i.loli.net/2021/06/10/npHzPjwdqfKBDQt.gif) |
 
-
-
 # 使用说明
-
-
 
 ## 集成
 
@@ -83,6 +73,7 @@ allprojects {
 - ### 添加依赖
 
   [点击查看最新版本号](https://github.com/goweii/Layer/releases)
+
 ```groovy
 // build.gradle(Module:)
 dependencies {
@@ -101,17 +92,13 @@ dependencies {
 
 - ### 一些问题/建议
 
-  - 建议按需引入
+    - 建议按需引入
 
-  - layer-startup依赖于Jetpack Startup（需要自行引入）。
-
-
+    - layer-startup依赖于Jetpack Startup（需要自行引入）。
 
 ## 更新说明
 
 [点击查看](https://github.com/goweii/Layer/releases)
-
-
 
 # 如果你觉得还不错，就请我喝杯咖啡吧~
 

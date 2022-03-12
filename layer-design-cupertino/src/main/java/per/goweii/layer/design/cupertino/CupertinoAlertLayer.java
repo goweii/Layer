@@ -26,7 +26,7 @@ import java.util.List;
 import per.goweii.layer.dialog.DialogLayer;
 import per.goweii.layer.visualeffectview.BackdropBlurView;
 import per.goweii.layer.visualeffectview.BackdropIgnoreView;
-import per.goweii.layer.visualeffectview.RoundedShadowLayout;
+import per.goweii.roundedshadowlayout.RoundedShadowLayout;
 
 public class CupertinoAlertLayer extends DialogLayer {
     public CupertinoAlertLayer(@NonNull Context context) {

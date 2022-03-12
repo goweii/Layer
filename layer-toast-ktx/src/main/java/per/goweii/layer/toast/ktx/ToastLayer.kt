@@ -1,7 +1,7 @@
 package per.goweii.layer.toast.ktx
 
 import android.view.View
-import androidx.annotation.*
+import androidx.annotation.LayoutRes
 import per.goweii.layer.toast.ToastLayer
 
 fun <T : ToastLayer> T.contentView(contentView: View) = this.apply {

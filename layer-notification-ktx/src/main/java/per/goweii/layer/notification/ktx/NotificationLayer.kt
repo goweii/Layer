@@ -1,10 +1,11 @@
 package per.goweii.layer.notification.ktx
 
 import android.view.View
-import androidx.annotation.*
-import per.goweii.layer.notification.NotificationLayer
+import androidx.annotation.FloatRange
+import androidx.annotation.LayoutRes
 import per.goweii.layer.core.widget.SwipeLayout
 import per.goweii.layer.notification.DefaultNotificationOnSwipeListener
+import per.goweii.layer.notification.NotificationLayer
 
 fun <T : NotificationLayer> T.contentView(contentView: View) = this.apply {
     this.setContentView(contentView)
@@ -26,13 +27,15 @@ fun <T : NotificationLayer> T.duration(duration: Long) = this.apply {
     this.setDuration(duration)
 }
 
-fun <T : NotificationLayer> T.onNotificationClick(onNotificationClick: T.(view: View) -> Unit) = this.apply {
-    this.setOnNotificationClickListener { _, view -> this.onNotificationClick(view) }
-}
+fun <T : NotificationLayer> T.onNotificationClick(onNotificationClick: T.(view: View) -> Unit) =
+    this.apply {
+        this.setOnNotificationClickListener { _, view -> this.onNotificationClick(view) }
+    }
 
-fun <T : NotificationLayer> T.onNotificationLongClick(onNotificationClick: T.(view: View) -> Boolean) = this.apply {
-    this.setOnNotificationLongClickListener { _, view -> this.onNotificationClick(view) }
-}
+fun <T : NotificationLayer> T.onNotificationLongClick(onNotificationClick: T.(view: View) -> Boolean) =
+    this.apply {
+        this.setOnNotificationLongClickListener { _, view -> this.onNotificationClick(view) }
+    }
 
 fun <T : NotificationLayer> T.autoDismiss(autoDismiss: Boolean) = this.apply {
     this.setAutoDismiss(autoDismiss)
@@ -46,15 +49,18 @@ fun <T : NotificationLayer> T.onSwipeStart(onStart: T.() -> Unit) = this.apply {
     })
 }
 
-fun <T : NotificationLayer> T.onSwiping(onSwiping: T.(direction: Int, fraction: Float) -> Unit) = this.apply {
-    this.addOnSwipeListener(object : DefaultNotificationOnSwipeListener() {
-        override fun onSwiping(layer: NotificationLayer,
-                               @SwipeLayout.Direction direction: Int,
-                               @FloatRange(from = 0.0, to = 1.0) fraction: Float) {
-            this@apply.onSwiping(direction, fraction)
-        }
-    })
-}
+fun <T : NotificationLayer> T.onSwiping(onSwiping: T.(direction: Int, fraction: Float) -> Unit) =
+    this.apply {
+        this.addOnSwipeListener(object : DefaultNotificationOnSwipeListener() {
+            override fun onSwiping(
+                layer: NotificationLayer,
+                @SwipeLayout.Direction direction: Int,
+                @FloatRange(from = 0.0, to = 1.0) fraction: Float
+            ) {
+                this@apply.onSwiping(direction, fraction)
+            }
+        })
+    }
 
 fun <T : NotificationLayer> T.onSwipeEnd(onEnd: T.(direction: Int) -> Unit) = this.apply {
     this.addOnSwipeListener(object : DefaultNotificationOnSwipeListener() {

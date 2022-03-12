@@ -29,116 +29,117 @@ class LayersSimpleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_layers_simple)
         OverlayLayer(this)
-                .overlayView(R.layout.overlay)
-                .snapEdge(OverlayLayer.Edge.ALL)
-                .normalAlpha(1F)
-                .normalScale(1F)
-                .defAlpha(0.95F)
-                .defPercentX(1F)
-                .defPercentY(0.618F)
-                .lowProfileAlpha(0.6F)
-                .lowProfileDelay(3000)
-                .lowProfileIndent(0.2F)
-                .lowProfileScale(0.9F)
-                .show()
+            .overlayView(R.layout.overlay)
+            .snapEdge(OverlayLayer.Edge.ALL)
+            .normalAlpha(1F)
+            .normalScale(1F)
+            .defAlpha(0.95F)
+            .defPercentX(1F)
+            .defPercentY(0.618F)
+            .lowProfileAlpha(0.6F)
+            .lowProfileDelay(3000)
+            .lowProfileIndent(0.2F)
+            .lowProfileScale(0.9F)
+            .show()
     }
 
     fun onBtnDialogClick(view: View) {
         DialogLayer(this)
-                .contentView(R.layout.dialog_normal)
-                .backgroundDimDefault()
-                .onClickToDismiss(R.id.fl_dialog_no)
-                .onClickToDismiss(R.id.fl_dialog_yes)
-                .show()
+            .contentView(R.layout.dialog_normal)
+            .backgroundDimDefault()
+            .onClickToDismiss(R.id.fl_dialog_no)
+            .onClickToDismiss(R.id.fl_dialog_yes)
+            .show()
     }
 
     fun onBtnBottomSheetClick(view: View) {
         DialogLayer(this)
-                .contentView(R.layout.bottom_sheet)
-                .gravity(Gravity.BOTTOM)
-                .swipeDismiss(SwipeLayout.Direction.BOTTOM)
-                .backgroundDimDefault()
-                .animStyle(AnimStyle.BOTTOM)
-                .onClickToDismiss(R.id.bottom_sheet_fl_close)
-                .show()
+            .contentView(R.layout.bottom_sheet)
+            .gravity(Gravity.BOTTOM)
+            .swipeDismiss(SwipeLayout.Direction.BOTTOM)
+            .backgroundDimDefault()
+            .animStyle(AnimStyle.BOTTOM)
+            .onClickToDismiss(R.id.bottom_sheet_fl_close)
+            .show()
     }
 
     fun onBtnSlidePanelClick(view: View) {
         DialogLayer(this)
-                .contentView(R.layout.slide_panel)
-                .gravity(Gravity.LEFT)
-                .swipeDismiss(SwipeLayout.Direction.LEFT)
-                .backgroundDimDefault()
-                .animStyle(AnimStyle.LEFT)
-                .onClickToDismiss(R.id.slide_panel_tv_close)
-                .show()
+            .contentView(R.layout.slide_panel)
+            .gravity(Gravity.LEFT)
+            .swipeDismiss(SwipeLayout.Direction.LEFT)
+            .backgroundDimDefault()
+            .animStyle(AnimStyle.LEFT)
+            .onClickToDismiss(R.id.slide_panel_tv_close)
+            .show()
     }
 
     fun onBtnInputClick(view: View) {
         DialogLayer(this)
-                .contentView(R.layout.dialog_input)
-                .contentAnimator(NullAnimatorCreator())
-                .backgroundDimDefault()
-                .addInputMethodCompat(true)
-                .onPreShow {
-                    val et = requireViewById<EditText>(R.id.et_input)
-                    et.requestFocus()
-                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.showSoftInput(et, InputMethodManager.SHOW_FORCED)
-                }
-                .onPreDismiss {
-                    val et = requireViewById<EditText>(R.id.et_input)
-                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(et.windowToken, 0)
-                }
-                .show()
+            .contentView(R.layout.dialog_input)
+            .contentAnimator(NullAnimatorCreator())
+            .backgroundDimDefault()
+            .addInputMethodCompat(true)
+            .onPreShow {
+                val et = requireViewById<EditText>(R.id.et_input)
+                et.requestFocus()
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(et, InputMethodManager.SHOW_FORCED)
+            }
+            .onPreDismiss {
+                val et = requireViewById<EditText>(R.id.et_input)
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(et.windowToken, 0)
+            }
+            .show()
     }
 
     fun onBtnPopupClick(view: View) {
         PopupLayer(view)
-                .contentView(R.layout.popup_meun)
-                .show()
+            .contentView(R.layout.popup_meun)
+            .show()
     }
 
     fun onBtnToastClick(view: View) {
         ToastLayer(this)
-                .setContentView(R.layout.toast)
-                .show()
+            .setContentView(R.layout.toast)
+            .show()
     }
 
     fun onBtnNotificationClick(view: View) {
         CupertinoNotificationLayer(this)
-                .setIcon(R.drawable.ic_notification)
-                .setLabel(R.string.app_name)
-                .setTitle(R.string.notification_title)
-                .setDesc(R.string.notification_desc)
-                .setTimePattern("yyyy-MM-dd")
-                .setOnNotificationClickListener { layer, _ -> layer.dismiss() }
-                .show()
+            .setIcon(R.drawable.ic_notification)
+            .setLabel(R.string.app_name)
+            .setTitle(R.string.notification_title)
+            .setDesc(R.string.notification_desc)
+            .setTimePattern("yyyy-MM-dd")
+            .setOnNotificationClickListener { layer, _ -> layer.dismiss() }
+            .show()
     }
 
     fun onBtnGuideClick(view: View) {
         GuideLayer(this)
-                .addMapping(GuideLayer.Mapping()
-                        .setTargetView(view)
-                        .setGuideView(R.layout.guide_content)
-                        .setHorizontalAlign(GuideLayer.Align.Horizontal.CENTER)
-                        .setVerticalAlign(GuideLayer.Align.Vertical.ABOVE)
-                        .setCornerRadius(24F)
-                )
-                .addMapping(GuideLayer.Mapping()
-                        .setGuideView(R.layout.guide_i_know)
-                        .setHorizontalAlign(GuideLayer.Align.Horizontal.CENTER_PARENT)
-                        .setVerticalAlign(GuideLayer.Align.Vertical.ALIGN_PARENT_BOTTOM)
-                        .onClick(R.id.guide_btn_i_know) { dismiss() }
-                        .setMarginBottom(30)
-                )
-                .show()
+            .addMapping(
+                GuideLayer.Mapping()
+                    .setTargetView(view)
+                    .setGuideView(R.layout.guide_content)
+                    .setHorizontalAlign(GuideLayer.Align.Horizontal.CENTER)
+                    .setVerticalAlign(GuideLayer.Align.Vertical.ABOVE)
+                    .setCornerRadius(24F)
+            )
+            .addMapping(GuideLayer.Mapping()
+                .setGuideView(R.layout.guide_i_know)
+                .setHorizontalAlign(GuideLayer.Align.Horizontal.CENTER_PARENT)
+                .setVerticalAlign(GuideLayer.Align.Vertical.ALIGN_PARENT_BOTTOM)
+                .onClick(R.id.guide_btn_i_know) { dismiss() }
+                .setMarginBottom(30)
+            )
+            .show()
     }
 
     fun onBtnKeyboardClick(view: View) {
         KeyboardLayer(this)
-                .setInputType(KeyboardLayer.InputType.LATTER)
-                .show()
+            .setInputType(KeyboardLayer.InputType.LATTER)
+            .show()
     }
 }

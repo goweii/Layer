@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import per.goweii.layer.core.anim.AnimatorHelper;
 import per.goweii.layer.popup.PopupLayer;
-import per.goweii.layer.visualeffectview.PopupShadowLayout;
+import per.goweii.popupshadowlayout.PopupShadowLayout;
 
 public class CupertinoPopoverLayer extends PopupLayer {
     public CupertinoPopoverLayer(@NonNull Context context) {
@@ -104,7 +104,7 @@ public class CupertinoPopoverLayer extends PopupLayer {
         content.setArrowWidth(getConfig().mArrowWidth);
         content.setArrowHeight(getConfig().mArrowHeight);
         content.setCornerRadius(getConfig().mCornerRadius);
-        content.setSolidColor(getConfig().mSolidColor);
+        content.setBackgroundColor(getConfig().mSolidColor);
         content.setShadowColor(getActivity().getResources().getColor(R.color.layer_design_cupertino_color_shadow));
         content.setShadowRadius(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_alert_shadow_radius));
         content.setShadowOffsetY(getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_alert_shadow_offset_y));

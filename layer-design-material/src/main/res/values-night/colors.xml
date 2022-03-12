@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="layer_design_material_dialog_btn_bg_normal">@color/layer_design_res_color_surface</color>
+    <color name="layer_design_material_dialog_btn_bg_normal">@color/layer_design_res_color_surface
+    </color>
     <color name="layer_design_material_dialog_btn_bg_pressed">#14ffffff</color>
 </resources>

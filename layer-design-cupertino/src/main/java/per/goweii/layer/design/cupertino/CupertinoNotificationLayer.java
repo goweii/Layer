@@ -29,7 +29,7 @@ import java.util.Locale;
 import per.goweii.layer.notification.NotificationLayer;
 import per.goweii.layer.visualeffectview.BackdropBlurView;
 import per.goweii.layer.visualeffectview.BackdropIgnoreView;
-import per.goweii.layer.visualeffectview.RoundedShadowLayout;
+import per.goweii.roundedshadowlayout.RoundedShadowLayout;
 
 public class CupertinoNotificationLayer extends NotificationLayer {
     public CupertinoNotificationLayer(@NonNull Context context) {

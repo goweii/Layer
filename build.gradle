@@ -5,7 +5,8 @@ buildscript {
         androidx_core_ktx_version = "1.6.0"
         androidx_startup_version = "1.0.0"
         cardview_version = "1.0.0"
-        visual_effect_version = "1.0.10"
+        visual_effect_version = "1.0.0"
+        shadowlayout_version = "1.0.0"
     }
     ext {
         android_application_id = "per.goweii.layer.simple"
@@ -37,7 +38,6 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        maven { url "https://gitee.com/goweii/maven-repository/raw/master/releases/" }
     }
 }
 

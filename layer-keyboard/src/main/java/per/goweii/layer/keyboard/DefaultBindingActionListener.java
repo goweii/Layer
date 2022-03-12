@@ -36,7 +36,7 @@ public class DefaultBindingActionListener extends BindingActionListener {
         if (text instanceof Editable) {
             Editable editable = (Editable) text;
             editable.delete(text.length() - 1, text.length());
-        } else  {
+        } else {
             view.setText(text.subSequence(0, text.length() - 1));
         }
         return true;

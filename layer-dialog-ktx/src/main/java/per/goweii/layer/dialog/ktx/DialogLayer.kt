@@ -44,9 +44,10 @@ fun <T : DialogLayer> T.swipeDismiss(@SwipeLayout.Direction swipeDirection: Int)
     this.setSwipeDismiss(swipeDirection)
 }
 
-fun <T : DialogLayer> T.swipeTransformer(swipeTransformer: DialogLayer.SwipeTransformer) = this.apply {
-    this.setSwipeTransformer(swipeTransformer)
-}
+fun <T : DialogLayer> T.swipeTransformer(swipeTransformer: DialogLayer.SwipeTransformer) =
+    this.apply {
+        this.setSwipeTransformer(swipeTransformer)
+    }
 
 fun <T : DialogLayer> T.onSwipeStart(onStart: T.() -> Unit) = this.apply {
     this.addOnSwipeListener(object : DefaultDialogOnSwipeListener() {
@@ -56,15 +57,18 @@ fun <T : DialogLayer> T.onSwipeStart(onStart: T.() -> Unit) = this.apply {
     })
 }
 
-fun <T : DialogLayer> T.onSwiping(onSwiping: T.(direction: Int, fraction: Float) -> Unit) = this.apply {
-    this.addOnSwipeListener(object : DefaultDialogOnSwipeListener() {
-        override fun onSwiping(layer: DialogLayer,
-                               @SwipeLayout.Direction direction: Int,
-                               @FloatRange(from = 0.0, to = 1.0) fraction: Float) {
-            this@apply.onSwiping(direction, fraction)
-        }
-    })
-}
+fun <T : DialogLayer> T.onSwiping(onSwiping: T.(direction: Int, fraction: Float) -> Unit) =
+    this.apply {
+        this.addOnSwipeListener(object : DefaultDialogOnSwipeListener() {
+            override fun onSwiping(
+                layer: DialogLayer,
+                @SwipeLayout.Direction direction: Int,
+                @FloatRange(from = 0.0, to = 1.0) fraction: Float
+            ) {
+                this@apply.onSwiping(direction, fraction)
+            }
+        })
+    }
 
 fun <T : DialogLayer> T.onSwipeEnd(onEnd: T.(direction: Int) -> Unit) = this.apply {
     this.addOnSwipeListener(object : DefaultDialogOnSwipeListener() {
@@ -79,8 +83,8 @@ fun <T : DialogLayer> T.animStyle(animStyle: AnimStyle?) = this.apply {
 }
 
 fun <T : DialogLayer, R : Animator?> T.contentAnimator(
-        onIn: T.(target: View) -> R,
-        onOut: T.(target: View) -> R
+    onIn: T.(target: View) -> R,
+    onOut: T.(target: View) -> R
 ) = this.apply {
     this.setContentAnimator(object : Layer.AnimatorCreator {
         override fun createInAnimator(target: View): Animator? {
@@ -98,8 +102,8 @@ fun <T : DialogLayer> T.contentAnimator(creator: Layer.AnimatorCreator) = this.a
 }
 
 fun <T : DialogLayer, R : Animator?> T.backgroundAnimator(
-        onIn: T.(target: View) -> R,
-        onOut: T.(target: View) -> R
+    onIn: T.(target: View) -> R,
+    onOut: T.(target: View) -> R
 ) = this.apply {
     this.setBackgroundAnimator(object : Layer.AnimatorCreator {
         override fun createInAnimator(target: View): Animator? {
@@ -116,9 +120,10 @@ fun <T : DialogLayer> T.backgroundAnimator(creator: Layer.AnimatorCreator) = thi
     this.setBackgroundAnimator(creator)
 }
 
-fun <T : DialogLayer> T.backgroundDimAmount(@FloatRange(from = 0.0, to = 1.0) dimAmount: Float) = this.apply {
-    this.setBackgroundDimAmount(dimAmount)
-}
+fun <T : DialogLayer> T.backgroundDimAmount(@FloatRange(from = 0.0, to = 1.0) dimAmount: Float) =
+    this.apply {
+        this.setBackgroundDimAmount(dimAmount)
+    }
 
 fun <T : DialogLayer> T.backgroundDimDefault() = this.apply {
     this.setBackgroundDimDefault()

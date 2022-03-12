@@ -6,9 +6,7 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
@@ -17,9 +15,9 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import per.goweii.layer.dialog.DialogLayer;
 import per.goweii.layer.core.anim.AnimatorHelper;
 import per.goweii.layer.core.utils.Utils;
+import per.goweii.layer.dialog.DialogLayer;
 
 public class PopupLayer extends DialogLayer {
 
@@ -399,7 +397,7 @@ public class PopupLayer extends DialogLayer {
     }
 
     private void initBackgroundLocation() {
-        if (getViewHolder().getBackground()== null) {
+        if (getViewHolder().getBackground() == null) {
             return;
         }
         if (!getConfig().mBackgroundAlign) {

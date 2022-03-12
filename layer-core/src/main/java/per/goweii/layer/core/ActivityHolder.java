@@ -74,7 +74,7 @@ public final class ActivityHolder {
         return stack.get(stack.size() - 1).get();
     }
 
-    private class ActivityLifecycleCallbacksImpl implements Application.ActivityLifecycleCallbacks{
+    private class ActivityLifecycleCallbacksImpl implements Application.ActivityLifecycleCallbacks {
         @Override
         public void onActivityCreated(@NonNull Activity activity, Bundle savedInstanceState) {
             mActivityStack.add(new WeakReference<>(activity));

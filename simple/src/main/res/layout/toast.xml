@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<per.goweii.layer.visualeffectview.RoundedShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<per.goweii.roundedshadowlayout.RoundedShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
@@ -9,7 +9,7 @@
     app:shadowColor="@color/colorShadow"
     app:shadowOffsetY="10dp"
     app:shadowRadius="30dp"
-    app:shadowSolidColor="@color/layer_design_res_color_toast_background"
+    android:background="@color/layer_design_res_color_toast_background"
     app:shadowSymmetry="true">
 
     <LinearLayout
@@ -40,4 +40,4 @@
 
     </LinearLayout>
 
-</per.goweii.layer.visualeffectview.RoundedShadowLayout>
+</per.goweii.roundedshadowlayout.RoundedShadowLayout>

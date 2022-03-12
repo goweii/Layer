@@ -22,7 +22,10 @@ fun <T : GuideLayer> T.mapping(init: GuideLayer.Mapping.() -> Unit) = this.apply
     this.addMapping(GuideLayer.Mapping().apply { init() })
 }
 
-fun GuideLayer.Mapping.onClick(@IdRes viewId: Int, onClickListener: GuideLayer.(view: View) -> Unit) = this.apply {
+fun GuideLayer.Mapping.onClick(
+    @IdRes viewId: Int,
+    onClickListener: GuideLayer.(view: View) -> Unit
+) = this.apply {
     this.addOnClickListener({ layer, v ->
         layer as GuideLayer
         layer.onClickListener(v)

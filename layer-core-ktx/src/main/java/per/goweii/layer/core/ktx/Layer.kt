@@ -8,23 +8,37 @@ import per.goweii.layer.core.listener.DefaultOnDismissListener
 import per.goweii.layer.core.listener.DefaultOnShowListener
 import per.goweii.layer.core.listener.DefaultOnVisibleChangedListener
 
-fun <T : Layer> T.onClick(@IdRes viewId: Int, onClickListener: T.(view: View) -> Unit) = this.apply {
-    this.addOnClickListener(Layer.OnClickListener { _, v -> this.onClickListener(v) }, viewId)
-}
+fun <T : Layer> T.onClick(@IdRes viewId: Int, onClickListener: T.(view: View) -> Unit) =
+    this.apply {
+        this.addOnClickListener(Layer.OnClickListener { _, v -> this.onClickListener(v) }, viewId)
+    }
 
-fun <T : Layer> T.onClickToDismiss(@IdRes viewId: Int, onClickListener: (T.(view: View) -> Unit)? = null) = this.apply {
+fun <T : Layer> T.onClickToDismiss(
+    @IdRes viewId: Int,
+    onClickListener: (T.(view: View) -> Unit)? = null
+) = this.apply {
     onClickListener?.let {
         this.addOnClickToDismissListener(Layer.OnClickListener { _, v -> this.it(v) }, viewId)
     } ?: addOnClickToDismissListener(null, viewId)
 }
 
-fun <T : Layer> T.onLongClick(@IdRes viewId: Int, onLongClickListener: T.(view: View) -> Boolean) = this.apply {
-    this.addOnLongClickListener(Layer.OnLongClickListener { _, v -> this.onLongClickListener(v) }, viewId)
-}
+fun <T : Layer> T.onLongClick(@IdRes viewId: Int, onLongClickListener: T.(view: View) -> Boolean) =
+    this.apply {
+        this.addOnLongClickListener(
+            Layer.OnLongClickListener { _, v -> this.onLongClickListener(v) },
+            viewId
+        )
+    }
 
-fun <T : Layer> T.onLongClickToDismiss(@IdRes viewId: Int, onLongClickListener: (T.(view: View) -> Boolean)? = null) = this.apply {
+fun <T : Layer> T.onLongClickToDismiss(
+    @IdRes viewId: Int,
+    onLongClickListener: (T.(view: View) -> Boolean)? = null
+) = this.apply {
     onLongClickListener?.let {
-        this.addOnLongClickToDismissListener(Layer.OnLongClickListener { _, v -> this.it(v) }, viewId)
+        this.addOnLongClickToDismissListener(
+            Layer.OnLongClickListener { _, v -> this.it(v) },
+            viewId
+        )
     } ?: addOnLongClickToDismissListener(null, viewId)
 }
 
@@ -85,8 +99,8 @@ fun <T : Layer> T.onPostDismiss(onPostDismiss: T.() -> Unit) = this.apply {
 }
 
 fun <T : Layer, R : Animator?> T.animator(
-        onIn: T.(target: View) -> R,
-        onOut: T.(target: View) -> R
+    onIn: T.(target: View) -> R,
+    onOut: T.(target: View) -> R
 ) = this.apply {
     this.setAnimator(object : Layer.AnimatorCreator {
         override fun createInAnimator(target: View): Animator? {

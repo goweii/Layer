@@ -37,17 +37,19 @@ fun <T : OverlayLayer> T.normalScale(scale: Float) = this.apply {
     this.setNormalScale(scale)
 }
 
-fun <T : OverlayLayer> T.lowProfileAlpha(@FloatRange(from = 0.0, to = 1.0)alpha: Float) = this.apply {
-    this.setLowProfileAlpha(alpha)
-}
+fun <T : OverlayLayer> T.lowProfileAlpha(@FloatRange(from = 0.0, to = 1.0) alpha: Float) =
+    this.apply {
+        this.setLowProfileAlpha(alpha)
+    }
 
 fun <T : OverlayLayer> T.lowProfileScale(scale: Float) = this.apply {
     this.setLowProfileScale(scale)
 }
 
-fun <T : OverlayLayer> T.lowProfileIndent(@FloatRange(from = 0.0, to = 1.0) indent: Float) = this.apply {
-    this.setLowProfileIndent(indent)
-}
+fun <T : OverlayLayer> T.lowProfileIndent(@FloatRange(from = 0.0, to = 1.0) indent: Float) =
+    this.apply {
+        this.setLowProfileIndent(indent)
+    }
 
 fun <T : OverlayLayer> T.lowProfileDelay(delay: Long) = this.apply {
     this.setLowProfileDelay(delay)

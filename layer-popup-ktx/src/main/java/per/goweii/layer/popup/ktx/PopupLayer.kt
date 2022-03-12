@@ -4,9 +4,10 @@ import android.view.View
 import per.goweii.layer.popup.PopupLayer
 import per.goweii.layer.popup.PopupLayer.Align
 
-fun <T : PopupLayer> T.updateLocationInterceptor(interceptor: PopupLayer.UpdateLocationInterceptor) = this.apply {
-    this.setUpdateLocationInterceptor(interceptor)
-}
+fun <T : PopupLayer> T.updateLocationInterceptor(interceptor: PopupLayer.UpdateLocationInterceptor) =
+    this.apply {
+        this.setUpdateLocationInterceptor(interceptor)
+    }
 
 fun <T : PopupLayer> T.onViewTreeScrollChanged(onScrollChanged: T.() -> Unit) = this.apply {
     this.setOnViewTreeScrollChangedListener { this.onScrollChanged() }
@@ -37,10 +38,10 @@ fun <T : PopupLayer> T.backgroundResize(enable: Boolean) = this.apply {
 }
 
 fun <T : PopupLayer> T.align(
-        direction: Align.Direction,
-        horizontal: Align.Horizontal,
-        vertical: Align.Vertical,
-        inside: Boolean
+    direction: Align.Direction,
+    horizontal: Align.Horizontal,
+    vertical: Align.Vertical,
+    inside: Boolean
 ) = this.apply {
     this.setAlign(direction, horizontal, vertical, inside)
 }
