@@ -49,9 +49,8 @@ Android稳定高效的浮层创建管理框架。
 
 截图效果较差，建议[下载Demo](https://raw.githubusercontent.com/goweii/Layer/master/simple/release/per.goweii.layer.simple-1.0.0-1-release.apk)体验最新功能
 
-| ![20210610_190449.gif](https://i.loli.net/2021/06/10/6jgVucdrE73S2pG.gif) | ![20210610_190537.gif](https://i.loli.net/2021/06/10/N617Xf2Kl5Woqd8.gif) |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![20210610_190654.gif](https://i.loli.net/2021/06/10/aVoWBmGqtE1HkUP.gif) | ![20210610_190715.gif](https://i.loli.net/2021/06/10/npHzPjwdqfKBDQt.gif) |
+| ![qQF8OK.gif](https://s1.ax1x.com/2022/03/22/qQF8OK.gif) | ![qQF1Qx.gif](https://s1.ax1x.com/2022/03/22/qQF1Qx.gif) | ![qQF3y6.gif](https://s1.ax1x.com/2022/03/22/qQF3y6.gif) |
+| --- | --- | --- |
 
 # 使用说明
 
