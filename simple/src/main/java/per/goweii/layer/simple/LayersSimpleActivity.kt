@@ -1,7 +1,10 @@
 package per.goweii.layer.simple
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -9,6 +12,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import per.goweii.layer.core.anim.AnimStyle
 import per.goweii.layer.core.anim.NullAnimatorCreator
+import per.goweii.layer.core.ktx.onClick
 import per.goweii.layer.core.ktx.onClickToDismiss
 import per.goweii.layer.core.ktx.onPreDismiss
 import per.goweii.layer.core.ktx.onPreShow
@@ -23,6 +27,7 @@ import per.goweii.layer.overlay.OverlayLayer
 import per.goweii.layer.overlay.ktx.*
 import per.goweii.layer.popup.PopupLayer
 import per.goweii.layer.toast.ToastLayer
+
 
 class LayersSimpleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +53,12 @@ class LayersSimpleActivity : AppCompatActivity() {
             .contentView(R.layout.dialog_normal)
             .backgroundDimDefault()
             .onClickToDismiss(R.id.fl_dialog_no)
-            .onClickToDismiss(R.id.fl_dialog_yes)
+            .onClick(R.id.fl_dialog_yes) {
+                startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.fromParts("package", packageName, null)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                })
+            }
             .show()
     }
 

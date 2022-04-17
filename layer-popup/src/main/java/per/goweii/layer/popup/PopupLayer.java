@@ -86,7 +86,9 @@ public class PopupLayer extends DialogLayer {
         Utils.getViewSize(getViewHolder().getContainer(), new Runnable() {
             @Override
             public void run() {
-                updateLocation();
+                if (isShown()) {
+                    updateLocation();
+                }
             }
         });
         ViewTreeObserver viewTreeObserver = getViewHolder().getParent().getViewTreeObserver();
@@ -100,7 +102,9 @@ public class PopupLayer extends DialogLayer {
                     if (getConfig().mOnViewTreeScrollChangedListener != null) {
                         getConfig().mOnViewTreeScrollChangedListener.onScrollChanged();
                     }
-                    updateLocation();
+                    if (isShown()) {
+                        updateLocation();
+                    }
                 }
             };
             viewTreeObserver.addOnScrollChangedListener(mOnScrollChangedListener);
@@ -173,7 +177,9 @@ public class PopupLayer extends DialogLayer {
         Utils.onViewLayout(getViewHolder().getDecor(), new Runnable() {
             @Override
             public void run() {
-                updateLocation();
+                if (isShown()) {
+                    updateLocation();
+                }
             }
         });
     }
@@ -390,7 +396,9 @@ public class PopupLayer extends DialogLayer {
             Utils.onViewLayout(getViewHolder().getContentWrapper(), new Runnable() {
                 @Override
                 public void run() {
-                    updateLocation();
+                    if (isShown()) {
+                        updateLocation();
+                    }
                 }
             });
         }
@@ -478,7 +486,9 @@ public class PopupLayer extends DialogLayer {
             Utils.onViewLayout(getViewHolder().getBackground(), new Runnable() {
                 @Override
                 public void run() {
-                    updateLocation();
+                    if (isShown()) {
+                        updateLocation();
+                    }
                 }
             });
         }

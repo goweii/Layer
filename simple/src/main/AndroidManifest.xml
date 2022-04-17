@@ -20,6 +20,7 @@
         </activity>
         <activity
             android:name=".LayersSimpleActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysVisible"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|keyboardHidden|keyboard" />
         <activity
             android:name=".CupertinoSimpleActivity"

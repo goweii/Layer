@@ -107,7 +107,9 @@ public class GuideLayer extends DecorLayer {
         Utils.onViewLayout(getViewHolder().getChild(), new Runnable() {
             @Override
             public void run() {
-                updateLocation();
+                if (isShown()) {
+                    updateLocation();
+                }
             }
         });
     }

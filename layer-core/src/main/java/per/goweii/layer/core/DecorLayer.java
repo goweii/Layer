@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 
 import per.goweii.layer.core.utils.Utils;
 
@@ -25,7 +24,6 @@ public class DecorLayer extends FrameLayer {
     private final Rect mTempRect = new Rect();
 
     private Runnable mShowRunnable = null;
-    private WindowInsetsChangedListener mWindowInsetsChangedListener = null;
 
     public DecorLayer(@NonNull Context context) {
         this(Utils.requireActivity(context));
@@ -87,28 +85,16 @@ public class DecorLayer extends FrameLayer {
     @Override
     protected void onAttach() {
         super.onAttach();
-        Rect decorInsets = getDecorInsets();
-        fitDecorInsets(decorInsets);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowInsetsControllerCompat windowInsetsController = ViewCompat.getWindowInsetsController(getActivity().getWindow().getDecorView());
-            if (windowInsetsController != null) {
-                if (mWindowInsetsChangedListener == null) {
-                    mWindowInsetsChangedListener = new WindowInsetsChangedListener();
-                }
-                windowInsetsController.addOnControllableInsetsChangedListener(mWindowInsetsChangedListener);
-            }
-        }
+        getDecorInsets(mInsets);
+        fitDecorInsets(mInsets);
     }
 
     @CallSuper
     @Override
     protected void onDetach() {
         super.onDetach();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            WindowInsetsControllerCompat windowInsetsController = ViewCompat.getWindowInsetsController(getActivity().getWindow().getDecorView());
-            if (windowInsetsController != null && mWindowInsetsChangedListener != null) {
-                windowInsetsController.removeOnControllableInsetsChangedListener(mWindowInsetsChangedListener);
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ViewCompat.setOnApplyWindowInsetsListener(getViewHolder().getChild(), null);
         }
     }
 
@@ -118,39 +104,50 @@ public class DecorLayer extends FrameLayer {
         Utils.onViewLayout(getViewHolder().getChild(), new Runnable() {
             @Override
             public void run() {
-                Rect decorInsets = getDecorInsets();
-                fitDecorInsets(decorInsets);
+                if (!mActivity.isDestroyed() && isShown()) {
+                    getDecorInsets(mInsets);
+                    fitDecorInsets(mInsets);
+                }
             }
         });
+    }
+
+    @Override
+    protected void onGlobalLayout() {
+        super.onGlobalLayout();
+        if (!mActivity.isDestroyed() && isShown()) {
+            getDecorInsets(mInsets);
+            fitDecorInsets(mInsets);
+        }
+    }
+
+    protected final void getDecorInsets(@NonNull Rect insets) {
+        insets.setEmpty();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            WindowInsetsCompat windowInsets = ViewCompat.getRootWindowInsets(getViewHolder().getDecor());
+            if (windowInsets != null) {
+                Insets realInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime() | WindowInsetsCompat.Type.displayCutout());
+                insets.set(realInsets.left, realInsets.top, realInsets.right, realInsets.bottom);
+            }
+        } else {
+            Utils.getViewMargin(getViewHolder().getDecorChild(), mTempRect);
+            insets.set(mTempRect);
+            Utils.getViewPadding(getViewHolder().getDecorChild(), mTempRect);
+            insets.left += mTempRect.left;
+            insets.top += mTempRect.top;
+            insets.right += mTempRect.right;
+            insets.bottom += mTempRect.bottom;
+            int statusBarHeightIfVisible = Utils.getStatusBarHeightIfVisible(getActivity());
+            if (insets.top < statusBarHeightIfVisible) {
+                insets.top = statusBarHeightIfVisible;
+            }
+        }
     }
 
     protected void fitDecorInsets(@NonNull Rect insets) {
         getViewHolder().getParent().setClipToPadding(false);
         getViewHolder().getParent().setClipChildren(false);
         Utils.setViewPadding(getViewHolder().getParent(), insets);
-    }
-
-    @NonNull
-    protected final Rect getDecorInsets() {
-        mInsets.setEmpty();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            WindowInsetsCompat windowInsets = ViewCompat.getRootWindowInsets(getActivity().getWindow().getDecorView());
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            mInsets.set(insets.left, insets.top, insets.right, insets.bottom);
-        } else {
-            Utils.getViewMargin(getViewHolder().getDecorChild(), mTempRect);
-            mInsets.set(mTempRect);
-            Utils.getViewPadding(getViewHolder().getDecorChild(), mTempRect);
-            mInsets.left += mTempRect.left;
-            mInsets.top += mTempRect.top;
-            mInsets.right += mTempRect.right;
-            mInsets.bottom += mTempRect.bottom;
-            int statusBarHeightIfVisible = Utils.getStatusBarHeightIfVisible(getActivity());
-            if (mInsets.top < statusBarHeightIfVisible) {
-                mInsets.top = statusBarHeightIfVisible;
-            }
-        }
-        return mInsets;
     }
 
     public void showImmediately(boolean withAnim) {
@@ -182,16 +179,6 @@ public class DecorLayer extends FrameLayer {
             mShowRunnable = null;
         } else {
             super.dismiss(withAnim);
-        }
-    }
-
-    private class WindowInsetsChangedListener implements WindowInsetsControllerCompat.OnControllableInsetsChangedListener {
-        @Override
-        public void onControllableInsetsChanged(@NonNull WindowInsetsControllerCompat controller, int typeMask) {
-            if (isShown()) {
-                Rect decorInsets = getDecorInsets();
-                fitDecorInsets(decorInsets);
-            }
         }
     }
 
