@@ -9,13 +9,11 @@ import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import per.goweii.layer.core.anim.AnimStyle
 import per.goweii.layer.core.anim.NullAnimatorCreator
-import per.goweii.layer.core.ktx.onClick
-import per.goweii.layer.core.ktx.onClickToDismiss
-import per.goweii.layer.core.ktx.onPreDismiss
-import per.goweii.layer.core.ktx.onPreShow
+import per.goweii.layer.core.ktx.*
 import per.goweii.layer.core.widget.SwipeLayout
 import per.goweii.layer.design.cupertino.CupertinoNotificationLayer
 import per.goweii.layer.dialog.DialogLayer
@@ -30,6 +28,9 @@ import per.goweii.layer.toast.ToastLayer
 
 
 class LayersSimpleActivity : AppCompatActivity() {
+
+     private var clickNum = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_layers_simple)
@@ -52,7 +53,10 @@ class LayersSimpleActivity : AppCompatActivity() {
         DialogLayer(this)
             .contentView(R.layout.dialog_normal)
             .backgroundDimDefault()
-            .onClickToDismiss(R.id.fl_dialog_no)
+                //防止重复点击
+            .onClickTrigger(R.id.fl_dialog_no) {
+                Toast.makeText(view.context, "触发点击的次数 ${++clickNum}", Toast.LENGTH_SHORT).show()
+            }
             .onClick(R.id.fl_dialog_yes) {
                 startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
                     data = Uri.fromParts("package", packageName, null)

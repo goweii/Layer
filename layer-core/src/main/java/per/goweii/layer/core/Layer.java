@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import per.goweii.layer.core.listener.DefaultAnimatorListener;
+import per.goweii.layer.core.utils.ClickExt;
 import per.goweii.layer.core.utils.Utils;
 
 public class Layer {
@@ -581,6 +582,23 @@ public class Layer {
     }
 
     /**
+     * 防止重复点击的点击事件
+     * @param delay 多久内不会再次触发点击,默认500毫秒
+     */
+    @NonNull
+    public Layer addOnClickTriggerListener(final long delay, @NonNull final OnClickListener listener, int... viewIds) {
+        addOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(@NonNull Layer layer, @NonNull View v) {
+                ClickExt.setTriggerDelay(v, delay);
+                if (!ClickExt.clickEnable(v)) return;
+                listener.onClick(layer, v);
+            }
+        }, viewIds);
+        return this;
+    }
+
+    /**
      * 对多个View绑定点击事件
      * 绑定该控件点击时直接隐藏浮层
      *
@@ -596,6 +614,25 @@ public class Layer {
                 if (listener != null) {
                     listener.onClick(layer, v);
                 }
+            }
+        }, viewIds);
+        return this;
+    }
+
+    /**
+     * 防止重复点击的点击事件
+     * 绑定该控件点击时直接隐藏浮层
+     * @param delay 多久内不会再次触发点击,默认500毫秒
+     */
+    @NonNull
+    public Layer addOnClickToDismissTriggerListener(final long delay, @NonNull final OnClickListener listener, int... viewIds) {
+        addOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(@NonNull Layer layer, @NonNull View v) {
+                ClickExt.setTriggerDelay(v, delay);
+                if (!ClickExt.clickEnable(v)) return;
+                layer.dismiss();
+                listener.onClick(layer, v);
             }
         }, viewIds);
         return this;

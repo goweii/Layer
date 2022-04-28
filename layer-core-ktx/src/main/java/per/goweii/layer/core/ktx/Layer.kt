@@ -13,6 +13,14 @@ fun <T : Layer> T.onClick(@IdRes viewId: Int, onClickListener: T.(view: View) ->
         this.addOnClickListener(Layer.OnClickListener { _, v -> this.onClickListener(v) }, viewId)
     }
 
+fun <T : Layer> T.onClickTrigger(
+    @IdRes viewId: Int,
+    delay: Long = 500,
+    onClickListener: T.(view: View) -> Unit) =
+    this.apply {
+        this.addOnClickTriggerListener(delay, Layer.OnClickListener { _, v -> this.onClickListener(v) }, viewId)
+    }
+
 fun <T : Layer> T.onClickToDismiss(
     @IdRes viewId: Int,
     onClickListener: (T.(view: View) -> Unit)? = null
@@ -20,6 +28,16 @@ fun <T : Layer> T.onClickToDismiss(
     onClickListener?.let {
         this.addOnClickToDismissListener(Layer.OnClickListener { _, v -> this.it(v) }, viewId)
     } ?: addOnClickToDismissListener(null, viewId)
+}
+
+fun <T: Layer> T.onClickToDismissTrigger(
+    @IdRes viewId: Int,
+    delay: Long = 500,
+    onClickListener: (T.(view: View) -> Unit)? = null
+) = this.apply {
+    onClickListener?.let {
+        this.addOnClickToDismissTriggerListener(delay, Layer.OnClickListener { _, v -> this.it(v) }, viewId)
+    } ?: this.addOnClickToDismissListener(null, viewId)
 }
 
 fun <T : Layer> T.onLongClick(@IdRes viewId: Int, onLongClickListener: T.(view: View) -> Boolean) =

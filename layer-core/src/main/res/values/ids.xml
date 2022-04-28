@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="layer_tag" type="id" />
+
+    <!--防止重复点击-->
+    <item name="triggerDelayKey" type="id"/>
+    <item name="triggerLastTimeKey" type="id"/>
 </resources>
