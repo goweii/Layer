@@ -54,8 +54,6 @@ Android稳定高效的浮层创建管理框架。
 
 # 如何集成
 
-![](https://img.shields.io/badge/Downloads%20Week-1.4k-green) ![](https://img.shields.io/badge/Downloads%20Month-7.3K-blue)
-
 - 添加仓库
 
 ```groovy
@@ -69,7 +67,7 @@ allprojects {
 
 - 添加依赖
 
-  [点击查看最新版本号](https://github.com/goweii/Layer/releases)
+![](https://img.shields.io/github/v/release/goweii/Layer)
 
 ```groovy
 // build.gradle(Module:)
@@ -98,9 +96,9 @@ dependencies {
 
 具体使用可参考simple
 
-[LayersSimpleActivity](https://raw.githubusercontent.com/goweii/Layer/master/simple/src/main/java/per/goweii/layer/simple/LayersSimpleActivity.kt)
-[MaterialSimpleActivity](https://raw.githubusercontent.com/goweii/Layer/master/simple/src/main/java/per/goweii/layer/simple/MaterialSimpleActivity.kt)
-[CupertinoSimpleActivity](https://raw.githubusercontent.com/goweii/Layer/master/simple/src/main/java/per/goweii/layer/simple/CupertinoSimpleActivity.kt)
+- [LayersSimpleActivity](https://raw.githubusercontent.com/goweii/Layer/master/simple/src/main/java/per/goweii/layer/simple/LayersSimpleActivity.kt)
+- [MaterialSimpleActivity](https://raw.githubusercontent.com/goweii/Layer/master/simple/src/main/java/per/goweii/layer/simple/MaterialSimpleActivity.kt)
+- [CupertinoSimpleActivity](https://raw.githubusercontent.com/goweii/Layer/master/simple/src/main/java/per/goweii/layer/simple/CupertinoSimpleActivity.kt)
 
 # 更新说明
 
