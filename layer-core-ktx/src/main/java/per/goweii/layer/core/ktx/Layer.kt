@@ -10,7 +10,7 @@ import per.goweii.layer.core.listener.DefaultOnVisibleChangedListener
 
 fun <T : Layer> T.onClick(@IdRes viewId: Int, onClickListener: T.(view: View) -> Unit) =
     this.apply {
-        this.addOnClickListener(Layer.OnClickListener { _, v -> this.onClickListener(v) }, viewId)
+        this.addOnClickListener({ _, v -> this.onClickListener(v) }, viewId)
     }
 
 fun <T : Layer> T.onClickToDismiss(
@@ -18,16 +18,13 @@ fun <T : Layer> T.onClickToDismiss(
     onClickListener: (T.(view: View) -> Unit)? = null
 ) = this.apply {
     onClickListener?.let {
-        this.addOnClickToDismissListener(Layer.OnClickListener { _, v -> this.it(v) }, viewId)
+        this.addOnClickToDismissListener({ _, v -> this.it(v) }, viewId)
     } ?: addOnClickToDismissListener(null, viewId)
 }
 
 fun <T : Layer> T.onLongClick(@IdRes viewId: Int, onLongClickListener: T.(view: View) -> Boolean) =
     this.apply {
-        this.addOnLongClickListener(
-            Layer.OnLongClickListener { _, v -> this.onLongClickListener(v) },
-            viewId
-        )
+        this.addOnLongClickListener({ _, v -> this.onLongClickListener(v) }, viewId)
     }
 
 fun <T : Layer> T.onLongClickToDismiss(
@@ -35,10 +32,7 @@ fun <T : Layer> T.onLongClickToDismiss(
     onLongClickListener: (T.(view: View) -> Boolean)? = null
 ) = this.apply {
     onLongClickListener?.let {
-        this.addOnLongClickToDismissListener(
-            Layer.OnLongClickListener { _, v -> this.it(v) },
-            viewId
-        )
+        this.addOnLongClickToDismissListener({ _, v -> this.it(v) }, viewId)
     } ?: addOnLongClickToDismissListener(null, viewId)
 }
 
@@ -118,9 +112,9 @@ fun <T : Layer> T.animator(creator: Layer.AnimatorCreator) = this.apply {
 }
 
 fun <T : Layer> T.interceptKeyEvent(enable: Boolean) = this.apply {
-    this.setInterceptKeyEvent(enable)
+    this.isInterceptKeyEvent = enable
 }
 
 fun <T : Layer> T.cancelableOnClickKeyBack(enable: Boolean) = this.apply {
-    this.setCancelableOnKeyBack(enable)
+    this.isCancelableOnKeyBack = enable
 }

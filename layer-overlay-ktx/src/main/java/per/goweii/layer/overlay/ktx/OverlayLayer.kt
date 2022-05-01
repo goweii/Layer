@@ -103,10 +103,10 @@ fun <T : OverlayLayer> T.paddingBottom(padding: Int) = this.apply {
     this.setPaddingBottom(padding)
 }
 
-fun <T : OverlayLayer> T.doOnFloatClick(onFloatClick: T.(view: View) -> Unit) = this.apply {
-    this.addOnOverlayClickListener { _, view -> this.onFloatClick(view) }
+fun <T : OverlayLayer> T.onOverlayClick(onClick: T.(view: View) -> Unit) = this.apply {
+    this.addOnOverlayClickListener { _, view -> this.onClick(view) }
 }
 
-fun <T : OverlayLayer> T.onFloatLongClick(onFloatClick: T.(view: View) -> Boolean) = this.apply {
-    this.setOnOverlayLongClickListener { _, view -> this.onFloatClick(view) }
+fun <T : OverlayLayer> T.onOverlayLongClick(onLongClick: T.(view: View) -> Boolean) = this.apply {
+    this.setOnOverlayLongClickListener { _, view -> this.onLongClick(view) }
 }

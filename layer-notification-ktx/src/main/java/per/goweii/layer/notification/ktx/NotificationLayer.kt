@@ -27,14 +27,14 @@ fun <T : NotificationLayer> T.duration(duration: Long) = this.apply {
     this.setDuration(duration)
 }
 
-fun <T : NotificationLayer> T.onNotificationClick(onNotificationClick: T.(view: View) -> Unit) =
+fun <T : NotificationLayer> T.onNotificationClick(onClick: T.(view: View) -> Unit) =
     this.apply {
-        this.setOnNotificationClickListener { _, view -> this.onNotificationClick(view) }
+        this.setOnNotificationClickListener { _, view -> this.onClick(view) }
     }
 
-fun <T : NotificationLayer> T.onNotificationLongClick(onNotificationClick: T.(view: View) -> Boolean) =
+fun <T : NotificationLayer> T.onNotificationLongClick(onLongClick: T.(view: View) -> Boolean) =
     this.apply {
-        this.setOnNotificationLongClickListener { _, view -> this.onNotificationClick(view) }
+        this.setOnNotificationLongClickListener { _, view -> this.onLongClick(view) }
     }
 
 fun <T : NotificationLayer> T.autoDismiss(autoDismiss: Boolean) = this.apply {
