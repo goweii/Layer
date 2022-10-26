@@ -23,6 +23,36 @@ import per.goweii.layer.core.anim.AnimatorHelper;
 import per.goweii.layer.core.utils.Utils;
 
 public class OverlayLayer extends DecorLayer {
+    private final Runnable mOverlayNormalRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (!isShown()) return;
+            getViewHolder().getOverlay()
+                    .animate()
+                    .alpha(getConfig().mNormalAlpha)
+                    .scaleX(getConfig().mNormalScale)
+                    .scaleY(getConfig().mNormalScale)
+                    .translationX(0F)
+                    .translationY(0F)
+                    .start();
+        }
+    };
+
+    private final Runnable mOverlayLowProfileRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (!isShown()) return;
+            float[] xy = calcIntentTranslation();
+            getViewHolder().getOverlay()
+                    .animate()
+                    .alpha(getConfig().mLowProfileAlpha)
+                    .scaleX(getConfig().mLowProfileScale)
+                    .scaleY(getConfig().mLowProfileScale)
+                    .translationX(xy[0])
+                    .translationY(xy[1])
+                    .start();
+        }
+    };
 
     public OverlayLayer(@NonNull Context context) {
         this(Utils.requireActivity(context));
@@ -95,6 +125,13 @@ public class OverlayLayer extends DecorLayer {
     protected void onPostShow() {
         super.onPostShow();
         getViewHolder().getChild().goEdge(getViewHolder().getOverlay());
+    }
+
+    @Override
+    protected void onPostDismiss() {
+        super.onPostDismiss();
+        getViewHolder().getOverlay().removeCallbacks(mOverlayNormalRunnable);
+        getViewHolder().getOverlay().removeCallbacks(mOverlayLowProfileRunnable);
     }
 
     @NonNull
@@ -375,33 +412,6 @@ public class OverlayLayer extends DecorLayer {
             getViewHolder().getOverlay().postDelayed(mOverlayLowProfileRunnable, getConfig().mLowProfileDelay);
         }
     }
-
-    private final Runnable mOverlayNormalRunnable = new Runnable() {
-        @Override
-        public void run() {
-            getViewHolder().getOverlay().animate()
-                    .alpha(getConfig().mNormalAlpha)
-                    .scaleX(getConfig().mNormalScale)
-                    .scaleY(getConfig().mNormalScale)
-                    .translationX(0F)
-                    .translationY(0F)
-                    .start();
-        }
-    };
-
-    private final Runnable mOverlayLowProfileRunnable = new Runnable() {
-        @Override
-        public void run() {
-            float[] xy = calcIntentTranslation();
-            getViewHolder().getOverlay().animate()
-                    .alpha(getConfig().mLowProfileAlpha)
-                    .scaleX(getConfig().mLowProfileScale)
-                    .scaleY(getConfig().mLowProfileScale)
-                    .translationX(xy[0])
-                    .translationY(xy[1])
-                    .start();
-        }
-    };
 
     private float[] calcIntentTranslation() {
         float percent = getConfig().mLowProfileIndent;
