@@ -6,6 +6,7 @@ import androidx.annotation.LayoutRes
 import per.goweii.layer.core.widget.SwipeLayout
 import per.goweii.layer.notification.DefaultNotificationOnSwipeListener
 import per.goweii.layer.notification.NotificationLayer
+import per.goweii.layer.notification.NotificationLayer.SwipeTransformer
 
 fun <T : NotificationLayer> T.contentView(contentView: View) = this.apply {
     this.setContentView(contentView)
@@ -21,6 +22,18 @@ fun <T : NotificationLayer> T.maxWidth(maxWidth: Int) = this.apply {
 
 fun <T : NotificationLayer> T.maxHeight(maxHeight: Int) = this.apply {
     this.setMaxHeight(maxHeight)
+}
+
+fun <T : NotificationLayer> T.removeOthers(removeOthers: Boolean) = this.apply {
+    this.setRemoveOthers(removeOthers)
+}
+
+fun <T : NotificationLayer> T.swipeDirection(@SwipeLayout.Direction direction: Int) = this.apply {
+    this.setSwipeDirection(direction)
+}
+
+fun <T : NotificationLayer> T.swipeTransformer(swipeTransformer: SwipeTransformer) = this.apply {
+    this.setSwipeTransformer(swipeTransformer)
 }
 
 fun <T : NotificationLayer> T.duration(duration: Long) = this.apply {

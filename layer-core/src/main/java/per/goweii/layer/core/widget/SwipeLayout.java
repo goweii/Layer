@@ -32,7 +32,7 @@ import per.goweii.layer.core.utils.Utils;
 @SuppressWarnings("NullableProblems")
 public class SwipeLayout extends FrameLayout implements NestedScrollingParent3 {
 
-    @IntDef({Direction.NONE, Direction.LEFT, Direction.TOP, Direction.RIGHT, Direction.BOTTOM})
+    @IntDef(value = {Direction.NONE, Direction.LEFT, Direction.TOP, Direction.RIGHT, Direction.BOTTOM}, flag = true)
     @Retention(RetentionPolicy.SOURCE)
     public @interface Direction {
         int NONE = 0;

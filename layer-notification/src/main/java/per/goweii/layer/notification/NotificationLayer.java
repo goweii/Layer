@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.SystemClock;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,13 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import per.goweii.layer.core.DecorLayer;
+import per.goweii.layer.core.Layer;
 import per.goweii.layer.core.anim.AnimatorHelper;
 import per.goweii.layer.core.utils.Utils;
 import per.goweii.layer.core.widget.MaxSizeFrameLayout;
 import per.goweii.layer.core.widget.SwipeLayout;
 
 public class NotificationLayer extends DecorLayer {
+    private static long sShowAfterTime = 0L;
 
+    private long mShowTime = 0L;
     private Runnable mDismissRunnable = null;
     private boolean mSwiping = false;
 
@@ -82,11 +86,34 @@ public class NotificationLayer extends DecorLayer {
         return (ListenerHolder) super.getListenerHolder();
     }
 
+    @Override
+    public void show(final boolean withAnim) {
+        mShowTime = SystemClock.elapsedRealtimeNanos();
+        if (getConfig().mRemoveOthers) {
+            sShowAfterTime = mShowTime;
+            removeAndWaitOthersDismissed(new Runnable() {
+                @Override
+                public void run() {
+                    NotificationLayer.super.show(withAnim);
+                }
+            });
+        } else {
+            NotificationLayer.super.show(withAnim);
+        }
+    }
+
+    @Override
+    protected void handleShow() {
+        if (sShowAfterTime <= mShowTime) {
+            super.handleShow();
+        }
+    }
+
     @CallSuper
     @Override
     protected void onAttach() {
         super.onAttach();
-        getViewHolder().getChild().setSwipeDirection(SwipeLayout.Direction.TOP | SwipeLayout.Direction.LEFT | SwipeLayout.Direction.RIGHT);
+        getViewHolder().getChild().setSwipeDirection(getConfig().mSwipeDirection);
         getViewHolder().getChild().setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
             @Override
             public void onStart(@SwipeLayout.Direction int direction, @FloatRange(from = 0F, to = 1F) float fraction) {
@@ -162,6 +189,11 @@ public class NotificationLayer extends DecorLayer {
             getChild().removeCallbacks(mDismissRunnable);
         }
         super.onPreDismiss();
+    }
+
+    @Override
+    protected void onDetach() {
+        super.onDetach();
     }
 
     @NonNull
@@ -306,8 +338,20 @@ public class NotificationLayer extends DecorLayer {
     }
 
     @NonNull
+    public NotificationLayer setRemoveOthers(boolean removeOthers) {
+        getConfig().mRemoveOthers = removeOthers;
+        return this;
+    }
+
+    @NonNull
     public NotificationLayer setDuration(long duration) {
         getConfig().mDuration = duration;
+        return this;
+    }
+
+    @NonNull
+    public NotificationLayer setSwipeDirection(@SwipeLayout.Direction int swipeDirection) {
+        getConfig().mSwipeDirection = swipeDirection;
         return this;
     }
 
@@ -326,6 +370,48 @@ public class NotificationLayer extends DecorLayer {
     public NotificationLayer addOnSwipeListener(@NonNull OnSwipeListener swipeListener) {
         getListenerHolder().addOnSwipeListener(swipeListener);
         return this;
+    }
+
+    private void removeAndWaitOthersDismissed(@NonNull final Runnable onDismissed) {
+        final LayerRootLayout layerRootLayout = findLayerRootLayoutFromRoot();
+        if (layerRootLayout == null) {
+            onDismissed.run();
+            return;
+        }
+        final LayerLevelLayout layerLevelLayout = findLayerLevelLayoutFromLayerLayout(layerRootLayout);
+        if (layerLevelLayout == null) {
+            onDismissed.run();
+            return;
+        }
+        final List<Layer> shownLayers = new ArrayList<>();
+        final List<Layer> layers = layerLevelLayout.getLayers();
+        for (Layer layer : layers) {
+            if (layer.isShown()) {
+                shownLayers.add(layer);
+            } else {
+                layer.dismiss(false);
+            }
+        }
+        if (shownLayers.isEmpty()) {
+            onDismissed.run();
+            return;
+        }
+        for (final Layer layer : shownLayers) {
+            layer.addOnDismissListener(new OnDismissListener() {
+                @Override
+                public void onPreDismiss(@NonNull Layer layer) {
+                }
+
+                @Override
+                public void onPostDismiss(@NonNull Layer layer) {
+                    shownLayers.remove(layer);
+                    if (shownLayers.isEmpty()) {
+                        onDismissed.run();
+                    }
+                }
+            });
+            layer.dismiss();
+        }
     }
 
     public static class ViewHolder extends DecorLayer.ViewHolder {
@@ -368,10 +454,13 @@ public class NotificationLayer extends DecorLayer {
         protected View mContentView = null;
         protected int mContentViewId = -1;
 
+        protected boolean mRemoveOthers = true;
         protected long mDuration = 5000L;
         protected int mMaxWidth = -1;
         protected int mMaxHeight = -1;
 
+        @SwipeLayout.Direction
+        protected int mSwipeDirection = SwipeLayout.Direction.TOP | SwipeLayout.Direction.LEFT | SwipeLayout.Direction.RIGHT;
         @Nullable
         protected SwipeTransformer mSwipeTransformer = null;
     }

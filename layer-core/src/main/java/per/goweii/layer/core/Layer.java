@@ -268,7 +268,7 @@ public class Layer {
         return true;
     }
 
-    private void handleShow() {
+    protected void handleShow() {
         if (isShown()) {
             if (isOutAnimRunning()) {
                 startAnimatorIn();
@@ -327,7 +327,7 @@ public class Layer {
         onPostShow();
     }
 
-    private void handleDismiss() {
+    protected void handleDismiss() {
         if (!isShown()) return;
         if (isOutAnimRunning()) return;
         if (mShowOnPreDrawListener != null) {
