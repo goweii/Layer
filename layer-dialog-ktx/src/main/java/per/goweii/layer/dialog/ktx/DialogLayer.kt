@@ -36,6 +36,10 @@ fun <T : DialogLayer> T.avoidStatusBar(enable: Boolean) = this.apply {
     this.setAvoidStatusBar(enable)
 }
 
+fun <T : DialogLayer> T.fitInsets(fitInsets: Boolean) = this.apply {
+    this.setFitInsets(fitInsets)
+}
+
 fun <T : DialogLayer> T.gravity(gravity: Int) = this.apply {
     this.setGravity(gravity)
 }

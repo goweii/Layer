@@ -160,7 +160,7 @@ public class DialogLayer extends DecorLayer {
         return container;
     }
 
-    @NonNull
+    @Nullable
     protected View onCreateBackground(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         if (getConfig().mBackgroundView != null) {
             ViewGroup backgroundParent = (ViewGroup) getConfig().mBackgroundView.getParent();
@@ -346,7 +346,9 @@ public class DialogLayer extends DecorLayer {
 
     @Override
     protected void fitDecorInsets(@NonNull Rect insets) {
-        Utils.setViewPadding(getViewHolder().getContentWrapper(), insets);
+        if (getConfig().mFitInsets) {
+            Utils.setViewPadding(getViewHolder().getContentWrapper(), insets);
+        }
         if (getConfig().mAvoidStatusBar) {
             int paddingTop = getViewHolder().getContentWrapper().getPaddingTop();
             int statusBarHeight = Utils.getStatusBarHeightIfVisible(getActivity());
@@ -619,6 +621,17 @@ public class DialogLayer extends DecorLayer {
     }
 
     /**
+     * 设置是否避开页面内边距
+     *
+     * @param fitInsets 设置是否避开页面内边距
+     */
+    @NonNull
+    public DialogLayer setFitInsets(boolean fitInsets) {
+        getConfig().mFitInsets = fitInsets;
+        return this;
+    }
+
+    /**
      * 设置避开状态栏
      *
      * @param avoid 设置避开状态栏
@@ -845,6 +858,7 @@ public class DialogLayer extends DecorLayer {
 
         protected boolean mCancelableOnTouchOutside = true;
 
+        protected boolean mFitInsets = true;
         protected boolean mAvoidStatusBar = false;
 
         protected int mGravity = Gravity.NO_GRAVITY;
