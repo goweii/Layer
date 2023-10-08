@@ -122,7 +122,7 @@ public class DelayedZoomAnimatorCreator implements Layer.AnimatorCreator {
                             View targetChild = targetGroup.getChildAt(i);
                             ObjectAnimator alphaChild = ObjectAnimator.ofFloat(targetChild, "alpha", targetChild.getAlpha(), 0);
                             alphaChild.setInterpolator(new AccelerateInterpolator(1.5F));
-                            alphaChild.setStartDelay(18 * (targetGroup.getChildCount() - 1 - i));
+                            alphaChild.setStartDelay(18L * (targetGroup.getChildCount() - 1 - i));
                             alphaChild.setDuration(50);
                             childAnimators.add(alphaChild);
                         }

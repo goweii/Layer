@@ -24,75 +24,75 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
     }
 
     public static class AlphaAttr implements Attr {
-        private float from = 0F;
-        private float to = 1F;
+        private float mFrom = 0F;
+        private float mTo = 1F;
 
-        public AlphaAttr from(float from) {
-            this.from = from;
+        private TimeInterpolator mInTimeInterpolator = null;
+        private TimeInterpolator mOutTimeInterpolator = null;
+
+        public AlphaAttr setFrom(float from) {
+            this.mFrom = from;
             return this;
         }
 
-        public AlphaAttr to(float to) {
-            this.to = to;
+        public AlphaAttr setTo(float to) {
+            this.mTo = to;
             return this;
         }
 
-        private TimeInterpolator inTimeInterpolator = null;
-        private TimeInterpolator outTimeInterpolator = null;
-
-        public AlphaAttr timeInterpolator(TimeInterpolator timeInterpolator) {
-            this.inTimeInterpolator = timeInterpolator;
-            this.outTimeInterpolator = timeInterpolator;
+        public AlphaAttr setTimeInterpolator(TimeInterpolator timeInterpolator) {
+            this.mInTimeInterpolator = timeInterpolator;
+            this.mOutTimeInterpolator = timeInterpolator;
             return this;
         }
 
-        public AlphaAttr inTimeInterpolator(TimeInterpolator inTimeInterpolator) {
-            this.inTimeInterpolator = inTimeInterpolator;
+        public AlphaAttr setInTimeInterpolator(TimeInterpolator inTimeInterpolator) {
+            this.mInTimeInterpolator = inTimeInterpolator;
             return this;
         }
 
-        public AlphaAttr outTimeInterpolator(TimeInterpolator outTimeInterpolator) {
-            this.outTimeInterpolator = outTimeInterpolator;
+        public AlphaAttr setOutTimeInterpolator(TimeInterpolator outTimeInterpolator) {
+            this.mOutTimeInterpolator = outTimeInterpolator;
             return this;
         }
 
         @NonNull
         @Override
         public Animator createIn(@NonNull View target) {
-            ObjectAnimator alpha = ObjectAnimator.ofFloat(target, "alpha", from, to);
-            alpha.setInterpolator(inTimeInterpolator);
+            ObjectAnimator alpha = ObjectAnimator.ofFloat(target, "alpha", mFrom, mTo);
+            alpha.setInterpolator(mInTimeInterpolator);
             return alpha;
         }
 
         @NonNull
         @Override
         public Animator createOut(@NonNull View target) {
-            ObjectAnimator alpha = ObjectAnimator.ofFloat(target, "alpha", from, to);
-            alpha.setInterpolator(outTimeInterpolator);
+            ObjectAnimator alpha = ObjectAnimator.ofFloat(target, "alpha", target.getAlpha(), mFrom);
+            alpha.setInterpolator(mOutTimeInterpolator);
             return alpha;
         }
     }
 
     public static class ScaleAttr implements Attr {
-        private float fromX = 0F;
-        private float fromY = 0F;
-        private float toX = 1F;
-        private float toY = 1F;
+        private float mFromX = 0F;
+        private float mFromY = 0F;
+        private float mToX = 1F;
+        private float mToY = 1F;
 
-        private float pivotX = 0F;
-        private float pivotY = 0F;
-        private float pivotPercentX = 0.5F;
-        private float pivotPercentY = 0.5F;
+        private float mPivotX = 0F;
+        private float mPivotY = 0F;
+        private float mPivotPercentX = 0.5F;
+        private float mPivotPercentY = 0.5F;
 
-        private boolean usePivotPercent = true;
+        private boolean mUsePivotPercent = true;
 
         public ScaleAttr setFrom(float from) {
             return setFrom(from, from);
         }
 
         public ScaleAttr setFrom(float fromX, float fromY) {
-            this.fromX = fromX;
-            this.fromY = fromY;
+            this.mFromX = fromX;
+            this.mFromY = fromY;
             return this;
         }
 
@@ -101,8 +101,8 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
         }
 
         public ScaleAttr setTo(float toX, float toY) {
-            this.toX = toX;
-            this.toY = toY;
+            this.mToX = toX;
+            this.mToY = toY;
             return this;
         }
 
@@ -111,9 +111,9 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
         }
 
         public ScaleAttr setPivot(float pivotX, float pivotY) {
-            this.usePivotPercent = false;
-            this.pivotX = pivotX;
-            this.pivotY = pivotY;
+            this.mUsePivotPercent = false;
+            this.mPivotX = pivotX;
+            this.mPivotY = pivotY;
             return this;
         }
 
@@ -122,28 +122,28 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
         }
 
         public ScaleAttr setPivotPercent(float pivotPercentX, float pivotPercentY) {
-            this.usePivotPercent = true;
-            this.pivotPercentX = pivotPercentX;
-            this.pivotPercentY = pivotPercentY;
+            this.mUsePivotPercent = true;
+            this.mPivotPercentX = pivotPercentX;
+            this.mPivotPercentY = pivotPercentY;
             return this;
         }
 
         public float getPivotX(@NonNull View target) {
             float pivot;
-            if (usePivotPercent) {
-                pivot = target.getWidth() * pivotPercentX;
+            if (mUsePivotPercent) {
+                pivot = target.getWidth() * mPivotPercentX;
             } else {
-                pivot = pivotX;
+                pivot = mPivotX;
             }
             return pivot;
         }
 
         public float getPivotY(@NonNull View target) {
             float pivot;
-            if (usePivotPercent) {
-                pivot = target.getHeight() * pivotPercentY;
+            if (mUsePivotPercent) {
+                pivot = target.getHeight() * mPivotPercentY;
             } else {
-                pivot = pivotY;
+                pivot = mPivotY;
             }
             return pivot;
         }
@@ -209,8 +209,8 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
         @Override
         public Animator createIn(@NonNull View target) {
             AnimatorSet set = new AnimatorSet();
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(target, "scaleX", fromX, toX);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(target, "scaleY", fromY, toY);
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(target, "scaleX", mFromX, mToX);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(target, "scaleY", mFromY, mToY);
             target.setPivotX(getPivotX(target));
             target.setPivotY(getPivotY(target));
             scaleX.setInterpolator(xInTimeInterpolator);
@@ -223,8 +223,8 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
         @Override
         public Animator createOut(@NonNull View target) {
             AnimatorSet set = new AnimatorSet();
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(target, "scaleX", target.getScaleX(), fromX);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(target, "scaleY", target.getScaleY(), fromY);
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(target, "scaleX", target.getScaleX(), mFromX);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(target, "scaleY", target.getScaleY(), mFromY);
             target.setPivotX(getPivotX(target));
             target.setPivotY(getPivotY(target));
             scaleX.setInterpolator(xOutTimeInterpolator);
@@ -235,26 +235,26 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
     }
 
     public static class TranslationAttr implements Attr {
-        private float fromX = 0F;
-        private float fromY = 0F;
-        private float toX = 0F;
-        private float toY = Float.MAX_VALUE;
-        private float fromPercentX = 0F;
-        private float fromPercentY = 0F;
-        private float toPercentX = 0F;
-        private float toPercentY = 1F;
+        private float mFromX = 0F;
+        private float mFromY = 0F;
+        private float mToX = 0F;
+        private float mToY = Float.MAX_VALUE;
+        private float mFromPercentX = 0F;
+        private float mFromPercentY = 0F;
+        private float mToPercentX = 0F;
+        private float mToPercentY = 1F;
 
-        private boolean useFromPercent = true;
-        private boolean useToPercent = true;
+        private boolean mUseFromPercent = true;
+        private boolean mUseToPercent = true;
 
         public TranslationAttr setFrom(float from) {
             return setFrom(from, from);
         }
 
         public TranslationAttr setFrom(float fromX, float fromY) {
-            this.useFromPercent = false;
-            this.fromX = fromX;
-            this.fromY = fromY;
+            this.mUseFromPercent = false;
+            this.mFromX = fromX;
+            this.mFromY = fromY;
             return this;
         }
 
@@ -263,9 +263,9 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
         }
 
         public TranslationAttr setFromPercent(float fromPercentX, float fromPercentY) {
-            this.useFromPercent = true;
-            this.fromPercentX = fromPercentX;
-            this.fromPercentY = fromPercentY;
+            this.mUseFromPercent = true;
+            this.mFromPercentX = fromPercentX;
+            this.mFromPercentY = fromPercentY;
             return this;
         }
 
@@ -274,9 +274,9 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
         }
 
         public TranslationAttr setTo(float toX, float toY) {
-            this.useToPercent = false;
-            this.toX = toX;
-            this.toY = toY;
+            this.mUseToPercent = false;
+            this.mToX = toX;
+            this.mToY = toY;
             return this;
         }
 
@@ -285,106 +285,106 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
         }
 
         public TranslationAttr setToPercent(float toPercentX, float toPercentY) {
-            this.useToPercent = true;
-            this.toPercentX = toPercentX;
-            this.toPercentY = toPercentY;
+            this.mUseToPercent = true;
+            this.mToPercentX = toPercentX;
+            this.mToPercentY = toPercentY;
             return this;
         }
 
         public float getFromX(@NonNull View target) {
             float from;
-            if (useFromPercent) {
-                from = target.getWidth() * fromPercentX;
+            if (mUseFromPercent) {
+                from = target.getWidth() * mFromPercentX;
             } else {
-                from = fromX;
+                from = mFromX;
             }
             return from;
         }
 
         public float getFromY(@NonNull View target) {
             float from;
-            if (useFromPercent) {
-                from = target.getHeight() * fromPercentY;
+            if (mUseFromPercent) {
+                from = target.getHeight() * mFromPercentY;
             } else {
-                from = fromY;
+                from = mFromY;
             }
             return from;
         }
 
         public float getToX(@NonNull View target) {
             float to;
-            if (useToPercent) {
-                to = target.getWidth() * toPercentX;
+            if (mUseToPercent) {
+                to = target.getWidth() * mToPercentX;
             } else {
-                to = toX;
+                to = mToX;
             }
             return to;
         }
 
         public float getToY(@NonNull View target) {
             float to;
-            if (useToPercent) {
-                to = target.getHeight() * toPercentY;
+            if (mUseToPercent) {
+                to = target.getHeight() * mToPercentY;
             } else {
-                to = toY;
+                to = mToY;
             }
             return to;
         }
 
-        private TimeInterpolator xInTimeInterpolator = null;
-        private TimeInterpolator yInTimeInterpolator = null;
-        private TimeInterpolator xOutTimeInterpolator = null;
-        private TimeInterpolator yOutTimeInterpolator = null;
+        private TimeInterpolator mXInTimeInterpolator = null;
+        private TimeInterpolator mYInTimeInterpolator = null;
+        private TimeInterpolator mXOutTimeInterpolator = null;
+        private TimeInterpolator mYOutTimeInterpolator = null;
 
         public TranslationAttr setTimeInterpolator(TimeInterpolator timeInterpolator) {
-            this.xInTimeInterpolator = timeInterpolator;
-            this.yInTimeInterpolator = timeInterpolator;
-            this.xOutTimeInterpolator = timeInterpolator;
-            this.yOutTimeInterpolator = timeInterpolator;
+            this.mXInTimeInterpolator = timeInterpolator;
+            this.mYInTimeInterpolator = timeInterpolator;
+            this.mXOutTimeInterpolator = timeInterpolator;
+            this.mYOutTimeInterpolator = timeInterpolator;
             return this;
         }
 
         public TranslationAttr setInTimeInterpolator(TimeInterpolator timeInterpolator) {
-            this.xInTimeInterpolator = timeInterpolator;
-            this.yInTimeInterpolator = timeInterpolator;
+            this.mXInTimeInterpolator = timeInterpolator;
+            this.mYInTimeInterpolator = timeInterpolator;
             return this;
         }
 
         public TranslationAttr setOutTimeInterpolator(TimeInterpolator timeInterpolator) {
-            this.xOutTimeInterpolator = timeInterpolator;
-            this.yOutTimeInterpolator = timeInterpolator;
+            this.mXOutTimeInterpolator = timeInterpolator;
+            this.mYOutTimeInterpolator = timeInterpolator;
             return this;
         }
 
         public TranslationAttr setXTimeInterpolator(TimeInterpolator timeInterpolator) {
-            this.xInTimeInterpolator = timeInterpolator;
-            this.xOutTimeInterpolator = timeInterpolator;
+            this.mXInTimeInterpolator = timeInterpolator;
+            this.mXOutTimeInterpolator = timeInterpolator;
             return this;
         }
 
         public TranslationAttr setYTimeInterpolator(TimeInterpolator timeInterpolator) {
-            this.yInTimeInterpolator = timeInterpolator;
-            this.yOutTimeInterpolator = timeInterpolator;
+            this.mYInTimeInterpolator = timeInterpolator;
+            this.mYOutTimeInterpolator = timeInterpolator;
             return this;
         }
 
         public TranslationAttr setXInTimeInterpolator(TimeInterpolator timeInterpolator) {
-            this.xInTimeInterpolator = timeInterpolator;
+            this.mXInTimeInterpolator = timeInterpolator;
             return this;
         }
 
         public TranslationAttr setXOutTimeInterpolator(TimeInterpolator timeInterpolator) {
-            this.xOutTimeInterpolator = timeInterpolator;
+            this.mXOutTimeInterpolator = timeInterpolator;
             return this;
         }
 
         public TranslationAttr setYInTimeInterpolator(TimeInterpolator timeInterpolator) {
-            this.yInTimeInterpolator = timeInterpolator;
+            this.mYInTimeInterpolator = timeInterpolator;
             return this;
         }
 
         public TranslationAttr setYOutTimeInterpolator(TimeInterpolator timeInterpolator) {
-            this.yOutTimeInterpolator = timeInterpolator;
+            this.mYOutTimeInterpolator = timeInterpolator;
             return this;
         }
 
@@ -394,8 +394,8 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
             AnimatorSet set = new AnimatorSet();
             ObjectAnimator translationX = ObjectAnimator.ofFloat(target, "translationX", getFromX(target), getToX(target));
             ObjectAnimator translationY = ObjectAnimator.ofFloat(target, "translationY", getFromY(target), getToY(target));
-            translationX.setInterpolator(xInTimeInterpolator);
-            translationY.setInterpolator(yInTimeInterpolator);
+            translationX.setInterpolator(mXInTimeInterpolator);
+            translationY.setInterpolator(mYInTimeInterpolator);
             set.playTogether(translationX, translationY);
             return set;
         }
@@ -406,61 +406,61 @@ public class CommonAnimatorCreator implements Layer.AnimatorCreator {
             AnimatorSet set = new AnimatorSet();
             ObjectAnimator translationX = ObjectAnimator.ofFloat(target, "translationX", target.getTranslationX(), getFromX(target));
             ObjectAnimator translationY = ObjectAnimator.ofFloat(target, "translationY", target.getTranslationY(), getFromY(target));
-            translationX.setInterpolator(xOutTimeInterpolator);
-            translationY.setInterpolator(yOutTimeInterpolator);
+            translationX.setInterpolator(mXOutTimeInterpolator);
+            translationY.setInterpolator(mYOutTimeInterpolator);
             set.playTogether(translationX, translationY);
             return set;
         }
     }
 
-    private final List<Attr> attrs = new ArrayList<>();
-    private TimeInterpolator inTimeInterpolator = null;
-    private TimeInterpolator outTimeInterpolator = null;
+    private final List<Attr> mAttrs = new ArrayList<>();
+    private TimeInterpolator mInTimeInterpolator = null;
+    private TimeInterpolator mOutTimeInterpolator = null;
 
     public CommonAnimatorCreator addAttr(Attr attr) {
-        this.attrs.add(attr);
+        this.mAttrs.add(attr);
         return this;
     }
 
     public CommonAnimatorCreator setTimeInterpolator(TimeInterpolator timeInterpolator) {
-        this.inTimeInterpolator = timeInterpolator;
-        this.outTimeInterpolator = timeInterpolator;
+        this.mInTimeInterpolator = timeInterpolator;
+        this.mOutTimeInterpolator = timeInterpolator;
         return this;
     }
 
     public CommonAnimatorCreator setInTimeInterpolator(TimeInterpolator timeInterpolator) {
-        this.inTimeInterpolator = timeInterpolator;
+        this.mInTimeInterpolator = timeInterpolator;
         return this;
     }
 
     public CommonAnimatorCreator setOutTimeInterpolator(TimeInterpolator timeInterpolator) {
-        this.outTimeInterpolator = timeInterpolator;
+        this.mOutTimeInterpolator = timeInterpolator;
         return this;
     }
 
     @NonNull
     @Override
     public Animator createInAnimator(@NonNull View target) {
-        List<Animator> animators = new ArrayList<>(attrs.size());
-        for (Attr attr : attrs) {
+        List<Animator> animators = new ArrayList<>(mAttrs.size());
+        for (Attr attr : mAttrs) {
             animators.add(attr.createIn(target));
         }
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animators);
-        set.setInterpolator(inTimeInterpolator);
+        set.setInterpolator(mInTimeInterpolator);
         return set;
     }
 
     @NonNull
     @Override
     public Animator createOutAnimator(@NonNull View target) {
-        List<Animator> animators = new ArrayList<>(attrs.size());
-        for (Attr attr : attrs) {
+        List<Animator> animators = new ArrayList<>(mAttrs.size());
+        for (Attr attr : mAttrs) {
             animators.add(attr.createOut(target));
         }
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animators);
-        set.setInterpolator(outTimeInterpolator);
+        set.setInterpolator(mOutTimeInterpolator);
         return set;
     }
 }
