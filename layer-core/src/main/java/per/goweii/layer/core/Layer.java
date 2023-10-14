@@ -178,6 +178,7 @@ public class Layer {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
             } else {
+                //noinspection deprecation
                 getViewTreeObserver().removeGlobalOnLayoutListener(mOnGlobalLayoutListener);
             }
             getViewTreeObserver().removeOnPreDrawListener(mOnGlobalPreDrawListener);
@@ -359,8 +360,6 @@ public class Layer {
                     @Override
                     public void onAnimationEndNotCanceled(Animator animation) {
                         super.onAnimationEndNotCanceled(animation);
-                        // 动画执行结束后不能直接removeView，要在下一个dispatchDraw周期移除
-                        // 否则会崩溃，因为viewGroup的childCount没有来得及-1，获取到的view为空
                         getViewHolder().getChild().setVisibility(View.INVISIBLE);
                         getViewHolder().getParent().post(mOutAnimEndCallback);
                     }
@@ -388,8 +387,11 @@ public class Layer {
     }
 
     private void cancelAnimator() {
-        getViewHolder().getParent().removeCallbacks(mInAnimEndCallback);
-        getViewHolder().getParent().removeCallbacks(mOutAnimEndCallback);
+        final ViewGroup parent = getViewHolder().getParentOrNull();
+        if (parent != null) {
+            parent.removeCallbacks(mInAnimEndCallback);
+            parent.removeCallbacks(mOutAnimEndCallback);
+        }
         if (mAnimatorIn != null) {
             mAnimatorIn.removeAllListeners();
             mAnimatorIn.cancel();
@@ -695,7 +697,7 @@ public class Layer {
             return mParent;
         }
 
-        public void setChild(@NonNull View child) {
+        public void setChild(@Nullable View child) {
             mChild = child;
         }
 
