@@ -3,6 +3,7 @@ package per.goweii.layer.core;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -119,31 +120,6 @@ public class FrameLayer extends Layer {
         ensureLayerLayoutIsFront();
     }
 
-    @Override
-    protected boolean onKeyBack() {
-        LayerRootLayout layerRootLayout = getViewHolder().getLayerRootLayout();
-        if (layerRootLayout != null) {
-            for (int i = layerRootLayout.getChildCount() - 1; i >= 0; i--) {
-                View layerRootChild = layerRootLayout.getChildAt(i);
-                if (layerRootChild instanceof LayerLevelLayout) {
-                    LayerLevelLayout layerLevelLayout = (LayerLevelLayout) layerRootChild;
-                    for (int j = layerLevelLayout.getChildCount() - 1; j >= 0; j--) {
-                        View layerLevelChild = layerLevelLayout.getChildAt(j);
-                        Object tag = layerLevelChild.getTag(R.id.layer_tag);
-                        if (tag instanceof Layer) {
-                            Layer layer = (Layer) tag;
-                            if (layer.isCancelableOnKeyBack()) {
-                                layer.dismiss();
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return super.onKeyBack();
-    }
-
     @NonNull
     protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
         return new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -163,7 +139,7 @@ public class FrameLayer extends Layer {
     }
 
     @NonNull
-    private ViewGroup installParent() {
+    protected ViewGroup installParent() {
         LayerRootLayout layerRootLayout = findLayerRootLayoutFromRoot();
         if (layerRootLayout == null) layerRootLayout = tryGetLayerRootLayoutFormHolder();
         if (layerRootLayout == null) layerRootLayout = createLayerRootLayout();
@@ -186,7 +162,7 @@ public class FrameLayer extends Layer {
         return layerLevelLayout;
     }
 
-    private void uninstallParent() {
+    protected void uninstallParent() {
         final LayerRootLayout layerRootLayout = findLayerRootLayoutFromRoot();
         if (layerRootLayout == null) return;
         layerRootLayout.unregisterOnConfigurationChangedListener(mOnConfigurationChangedListener);
@@ -233,7 +209,7 @@ public class FrameLayer extends Layer {
     }
 
     @Nullable
-    private LayerRootLayout tryGetLayerRootLayoutFormHolder() {
+    protected LayerRootLayout tryGetLayerRootLayoutFormHolder() {
         if (getViewHolder().getLayerRootLayout() == null) return null;
         LayerRootLayout layerRootLayout = getViewHolder().getLayerRootLayout();
         Utils.removeViewParent(layerRootLayout);
@@ -241,7 +217,7 @@ public class FrameLayer extends Layer {
     }
 
     @NonNull
-    private LayerRootLayout createLayerRootLayout() {
+    protected LayerRootLayout createLayerRootLayout() {
         final ViewGroup root = getViewHolder().getRoot();
         LayerRootLayout layerRootLayout = new LayerRootLayout(root.getContext());
         layerRootLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -261,7 +237,7 @@ public class FrameLayer extends Layer {
     }
 
     @Nullable
-    private LayerLevelLayout tryGetLayerLevelLayoutFormHolder() {
+    protected LayerLevelLayout tryGetLayerLevelLayoutFormHolder() {
         if (getViewHolder().getLayerLevelLayout() == null) {
             return null;
         }
@@ -278,7 +254,7 @@ public class FrameLayer extends Layer {
     }
 
     @NonNull
-    private LayerLevelLayout createLayerLevelLayout() {
+    protected LayerLevelLayout createLayerLevelLayout() {
         final ViewGroup root = getViewHolder().getRoot();
         LayerLevelLayout layerLevelLayout = new LayerLevelLayout(root.getContext(), getRealLevel());
         layerLevelLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -364,13 +340,26 @@ public class FrameLayer extends Layer {
             super(context);
         }
 
+        public boolean dispatchKeyEventFromWindow(@NonNull KeyEvent event) {
+            for (Layer layer : getLayers()) {
+                if (layer.onKeyEvent(event)) {
+                    return true;
+                }
+                final View child = layer.getViewHolder().getChildOrNull();
+                if (child != null && child.dispatchKeyEvent(event)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         @Nullable
         public LayerLevelLayout findLevelLayout(int level) {
             final int count = getChildCount();
             for (int i = 0; i < count; i++) {
-                View child = getChildAt(i);
+                final View child = getChildAt(i);
                 if (child instanceof LayerLevelLayout) {
-                    LayerLevelLayout layerLevelLayout = (LayerLevelLayout) child;
+                    final LayerLevelLayout layerLevelLayout = (LayerLevelLayout) child;
                     if (level == layerLevelLayout.getLevel()) {
                         return layerLevelLayout;
                     }
@@ -421,13 +410,26 @@ public class FrameLayer extends Layer {
             mOnConfigurationChangedListeners.remove(listener);
         }
 
+        @Nullable
+        public Layer getTopLayer() {
+            final int childCount = getChildCount();
+            if (childCount > 0) {
+                final View view = getChildAt(childCount - 1);
+                if (view instanceof LayerLevelLayout) {
+                    final LayerLevelLayout layerLevelLayout = (LayerLevelLayout) view;
+                    return layerLevelLayout.getTopLayer();
+                }
+            }
+            return null;
+        }
+
         @NonNull
         public List<Layer> getLayers() {
-            List<Layer> layers = new LinkedList<>();
+            final List<Layer> layers = new LinkedList<>();
             for (int i = getChildCount() - 1; i >= 0; i--) {
-                View view = getChildAt(i);
+                final View view = getChildAt(i);
                 if (view instanceof LayerLevelLayout) {
-                    LayerLevelLayout layerLevelLayout = (LayerLevelLayout) view;
+                    final LayerLevelLayout layerLevelLayout = (LayerLevelLayout) view;
                     layers.addAll(layerLevelLayout.getLayers());
                 }
             }
@@ -466,14 +468,27 @@ public class FrameLayer extends Layer {
             return mLevel - mOtherLevel;
         }
 
+        @Nullable
+        public Layer getTopLayer() {
+            final int childCount = getChildCount();
+            if (childCount > 0) {
+                final View view = getChildAt(childCount - 1);
+                final Object tag = view.getTag(R.id.layer_tag);
+                if (tag instanceof Layer) {
+                    return (Layer) tag;
+                }
+            }
+            return null;
+        }
+
         @NonNull
         public List<Layer> getLayers() {
-            List<Layer> layers = new LinkedList<>();
+            final List<Layer> layers = new LinkedList<>();
             for (int i = getChildCount() - 1; i >= 0; i--) {
-                View view = getChildAt(i);
-                Object tag = view.getTag(R.id.layer_tag);
+                final View view = getChildAt(i);
+                final Object tag = view.getTag(R.id.layer_tag);
                 if (tag instanceof Layer) {
-                    Layer layer = (Layer) tag;
+                    final Layer layer = (Layer) tag;
                     layers.add(layer);
                 }
             }

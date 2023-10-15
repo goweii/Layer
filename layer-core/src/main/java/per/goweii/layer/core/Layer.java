@@ -246,9 +246,9 @@ public class Layer {
         return null;
     }
 
-    protected boolean onKeyEvent(int keyCode, @NonNull KeyEvent event) {
+    protected boolean onKeyEvent(@NonNull KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
                 return onKeyBack();
             }
         }
@@ -504,7 +504,9 @@ public class Layer {
 
     @NonNull
     public Layer setCancelableOnKeyBack(boolean cancelable) {
-        setInterceptKeyEvent(true);
+        if (cancelable) {
+            setInterceptKeyEvent(true);
+        }
         mConfig.mCancelableOnKeyBack = cancelable;
         return this;
     }
@@ -932,7 +934,7 @@ public class Layer {
     private class OnViewKeyListener implements ViewManager.OnKeyListener {
         @Override
         public boolean onKey(int keyCode, KeyEvent keyEvent) {
-            return Layer.this.onKeyEvent(keyCode, keyEvent);
+            return Layer.this.onKeyEvent(keyEvent);
         }
     }
 

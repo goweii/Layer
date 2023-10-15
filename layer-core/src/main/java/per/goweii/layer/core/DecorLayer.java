@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Build;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.FrameLayout;
 
 import androidx.annotation.CallSuper;
@@ -15,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import per.goweii.layer.core.listener.WindowCallbackDelegate;
 import per.goweii.layer.core.utils.Utils;
 
 public class DecorLayer extends FrameLayer {
@@ -79,6 +82,14 @@ public class DecorLayer extends FrameLayer {
     @Override
     public LayoutInflater getLayoutInflater() {
         return LayoutInflater.from(mActivity);
+    }
+
+    @NonNull
+    @Override
+    protected LayerRootLayout createLayerRootLayout() {
+        final LayerRootLayout layerRootLayout = super.createLayerRootLayout();
+        layerRootLayout.addOnAttachStateChangeListener(new LayerRootLayoutOnAttachStateChangeListenerImpl(getActivity(), layerRootLayout));
+        return layerRootLayout;
     }
 
     @CallSuper
@@ -182,6 +193,60 @@ public class DecorLayer extends FrameLayer {
         }
     }
 
+    @NonNull
+    @Override
+    public Layer setInterceptKeyEvent(boolean intercept) {
+        getConfig().mInterceptKeyEventDispatch = intercept;
+        return super.setInterceptKeyEvent(false);
+    }
+
+    private static class LayerRootLayoutOnAttachStateChangeListenerImpl implements View.OnAttachStateChangeListener {
+        private final Activity mActivity;
+        private final LayerRootLayout mLayerRootLayout;
+
+        private WindowCallbackDelegate mWindowCallbackDelegate = null;
+        private Window.Callback mOldWindowCallback = null;
+
+        private LayerRootLayoutOnAttachStateChangeListenerImpl(@NonNull Activity activity, @NonNull LayerRootLayout layerRootLayout) {
+            mActivity = activity;
+            mLayerRootLayout = layerRootLayout;
+        }
+
+        @Override
+        public void onViewAttachedToWindow(View v) {
+            final Window window = mActivity.getWindow();
+            mOldWindowCallback = window.getCallback();
+            mWindowCallbackDelegate = new WindowCallbackDelegateImpl(mOldWindowCallback, mLayerRootLayout);
+            window.setCallback(mWindowCallbackDelegate);
+        }
+
+        @Override
+        public void onViewDetachedFromWindow(View v) {
+            final Window window = mActivity.getWindow();
+            window.setCallback(mOldWindowCallback);
+            mOldWindowCallback = null;
+            mWindowCallbackDelegate = null;
+        }
+    }
+
+    private static class WindowCallbackDelegateImpl extends WindowCallbackDelegate {
+        private final LayerRootLayout mLayerRootLayout;
+
+        public WindowCallbackDelegateImpl(@NonNull Window.Callback callback,
+                                          @NonNull LayerRootLayout layerRootLayout) {
+            super(callback);
+            mLayerRootLayout = layerRootLayout;
+        }
+
+        @Override
+        public boolean dispatchKeyEvent(KeyEvent event) {
+            if (mLayerRootLayout.dispatchKeyEventFromWindow(event)) {
+                return true;
+            }
+            return super.dispatchKeyEvent(event);
+        }
+    }
+
     public static class ViewHolder extends FrameLayer.ViewHolder {
         private FrameLayout mActivityContent;
         private View mDecorChild;
@@ -210,6 +275,7 @@ public class DecorLayer extends FrameLayer {
     }
 
     protected static class Config extends FrameLayer.Config {
+        private boolean mInterceptKeyEventDispatch = false;
     }
 
     protected static class ListenerHolder extends FrameLayer.ListenerHolder {
