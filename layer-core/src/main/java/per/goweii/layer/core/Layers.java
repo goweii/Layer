@@ -7,13 +7,17 @@ import androidx.annotation.NonNull;
 
 import per.goweii.layer.core.utils.Utils;
 
+/**
+ * 保存 Application 实例。
+ * 维护 activity 队列，用于弹出全局的浮层。
+ */
 public final class Layers {
     private static Layers sLayers = null;
 
     private final Application mApplication;
     private final ActivityHolder mActivityHolder;
 
-    private Layers(Application application) {
+    private Layers(@NonNull Application application) {
         mApplication = application;
         mActivityHolder = new ActivityHolder(application);
     }

@@ -18,8 +18,17 @@ import java.util.List;
 
 import per.goweii.layer.core.utils.Utils;
 
+/**
+ * 父容器是 FrameLayout 的浮层。
+ * 内部会根据 {@link Level} 来控制浮层显示的前后关系。
+ */
 public class FrameLayer extends Layer {
-
+    /**
+     * 根据子 view 获取所有已显示的 FrameLayer
+     *
+     * @param view 子视图
+     * @return 所有已显示的 FrameLayer
+     */
     @Nullable
     public static List<Layer> findLayers(@NonNull View view) {
         LayerRootLayout layerRootLayout = findLayerRootLayout(view);
@@ -27,6 +36,12 @@ public class FrameLayer extends Layer {
         return layerRootLayout.getLayers();
     }
 
+    /**
+     * 根据子视图获取 LayerRootLayout
+     *
+     * @param view 子视图
+     * @return LayerRootLayout
+     */
     @Nullable
     public static LayerRootLayout findLayerRootLayout(@NonNull View view) {
         while (true) {
@@ -41,7 +56,6 @@ public class FrameLayer extends Layer {
             return null;
         }
     }
-
 
     private final LayerRootLayout.OnConfigurationChangedListener
             mOnConfigurationChangedListener = new OnConfigurationChangedListenerImpl();
@@ -111,12 +125,18 @@ public class FrameLayer extends Layer {
         uninstallParent();
     }
 
+    /**
+     * 配置变更回调，比如：暗亮色/语言/屏幕方向。
+     *
+     * @param newConfig 新配置
+     */
     protected void onConfigurationChanged(@NonNull Configuration newConfig) {
     }
 
     @Override
     protected void onGlobalLayout() {
         super.onGlobalLayout();
+        // 确保浮层处于最前面
         ensureLayerLayoutIsFront();
     }
 
@@ -138,6 +158,11 @@ public class FrameLayer extends Layer {
         return this;
     }
 
+    /**
+     * 构建带有层级关系的直接父容器 {@link LayerLevelLayout}
+     *
+     * @return 直接父容器 LayerLevelLayout
+     */
     @NonNull
     protected ViewGroup installParent() {
         LayerRootLayout layerRootLayout = findLayerRootLayoutFromRoot();
@@ -162,6 +187,9 @@ public class FrameLayer extends Layer {
         return layerLevelLayout;
     }
 
+    /**
+     * 回收直接父容器
+     */
     protected void uninstallParent() {
         final LayerRootLayout layerRootLayout = findLayerRootLayoutFromRoot();
         if (layerRootLayout == null) return;
@@ -330,7 +358,7 @@ public class FrameLayer extends Layer {
     }
 
     /**
-     * 各个层级浮层的容器，直接添加进DecorView
+     * 各个层级浮层的容器，直接添加进在 {@link DecorLayer} 中会被直接添加进 DecorView 。
      */
     @SuppressLint("ViewConstructor")
     public static class LayerRootLayout extends FrameLayout {

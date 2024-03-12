@@ -20,6 +20,9 @@ import androidx.core.view.WindowInsetsCompat;
 import per.goweii.layer.core.listener.WindowCallbackDelegate;
 import per.goweii.layer.core.utils.Utils;
 
+/**
+ * 父容器是 Activity 的根 view，即 DecorView 。
+ */
 public class DecorLayer extends FrameLayer {
     private final Activity mActivity;
 
