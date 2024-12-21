@@ -174,15 +174,42 @@ public class SwipeLayout extends FrameLayout implements NestedScrollingParent3 {
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
         if (getChildCount() != 1) {
             throw new IllegalStateException("只能设置一个子View");
         }
+        super.onLayout(changed, left, top, right, bottom);
         mSwipeView = getChildAt(0);
         mLeft = mSwipeView.getLeft();
         mTop = mSwipeView.getTop();
         mRight = mSwipeView.getRight();
         mBottom = mSwipeView.getBottom();
+
+        if (mSwipeFraction != 0) {
+            int offx = 0;
+            int offy = 0;
+            switch (mCurrSwipeDirection) {
+                case Direction.LEFT:
+                    offx = -(int) (mSwipeFraction * calcViewLeftRange(mSwipeView));
+                    break;
+                case Direction.RIGHT:
+                    offx = (int) (mSwipeFraction * calcViewRightRange(mSwipeView));
+                    break;
+                case Direction.TOP:
+                    offy = -(int) (mSwipeFraction * calcViewTopRange(mSwipeView));
+                    break;
+                case Direction.BOTTOM:
+                    offy = (int) (mSwipeFraction * calcViewBottomRange(mSwipeView));
+                    break;
+                default:
+                    break;
+            }
+            if (offx != 0) {
+                mSwipeView.offsetLeftAndRight(offx);
+            }
+            if (offy != 0) {
+                mSwipeView.offsetTopAndBottom(offy);
+            }
+        }
     }
 
     public int getSwipeX() {
