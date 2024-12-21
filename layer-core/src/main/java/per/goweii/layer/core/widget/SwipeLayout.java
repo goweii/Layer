@@ -185,11 +185,11 @@ public class SwipeLayout extends FrameLayout implements NestedScrollingParent3 {
         mBottom = mSwipeView.getBottom();
     }
 
-    private int getSwipeX() {
+    public int getSwipeX() {
         return mSwipeView.getLeft() - mLeft;
     }
 
-    private int getSwipeY() {
+    public int getSwipeY() {
         return mSwipeView.getTop() - mTop;
     }
 
@@ -203,11 +203,33 @@ public class SwipeLayout extends FrameLayout implements NestedScrollingParent3 {
         swipeTo(-x, -y);
     }
 
-    private void swipeBy(int x, int y) {
+    public void startFakeSwipe(@Direction int swipeDirection) {
+        switch (swipeDirection) {
+            case Direction.LEFT:
+            case Direction.RIGHT:
+            case Direction.TOP:
+            case Direction.BOTTOM:
+                if (canSwipeDirection(mSwipeDirection)) {
+                    mCurrSwipeDirection = swipeDirection;
+                }
+            default:
+                break;
+        }
+        if (mCurrSwipeDirection != 0) {
+            onSwipeStart();
+        }
+    }
+
+    public void endFakeSwipe() {
+        mCurrSwipeDirection = 0;
+        onSwipeEnd();
+    }
+
+    public void swipeBy(int x, int y) {
         swipeTo(getSwipeX() + x, getSwipeY() + y);
     }
 
-    private void swipeTo(int x, int y) {
+    public void swipeTo(int x, int y) {
         int realx = x;
         int realy = y;
         switch (mCurrSwipeDirection) {
@@ -224,7 +246,7 @@ public class SwipeLayout extends FrameLayout implements NestedScrollingParent3 {
                 realy = Utils.intRange(y, 0, calcViewBottomRange(mSwipeView));
                 break;
             default:
-                break;
+                return;
         }
         updateSwipeViewLayout(realx, realy);
         invalidate();
@@ -272,7 +294,6 @@ public class SwipeLayout extends FrameLayout implements NestedScrollingParent3 {
         refreshFraction();
         onSwiping();
         if (mSwipeFraction == 0) {
-            mCurrSwipeDirection = 0;
             if (!mSwiping) {
                 onSwipeEnd();
             }
@@ -315,8 +336,6 @@ public class SwipeLayout extends FrameLayout implements NestedScrollingParent3 {
     private int calcViewCurrRange(@NonNull View view) {
         int range = 0;
         switch (mCurrSwipeDirection) {
-            default:
-                break;
             case Direction.LEFT:
                 range = calcViewLeftRange(mSwipeView);
                 break;
@@ -328,6 +347,8 @@ public class SwipeLayout extends FrameLayout implements NestedScrollingParent3 {
                 break;
             case Direction.BOTTOM:
                 range = calcViewBottomRange(mSwipeView);
+                break;
+            default:
                 break;
         }
         return range;
@@ -618,16 +639,24 @@ public class SwipeLayout extends FrameLayout implements NestedScrollingParent3 {
     @Override
     public boolean onNestedPreFling(@NonNull View target, float velocityX, float velocityY) {
         switch (mCurrSwipeDirection) {
-            default:
-                mVelocity = 0F;
-                break;
             case Direction.LEFT:
             case Direction.RIGHT:
                 mVelocity = velocityX;
+                int fromx = getSwipeX();
+                if (fromx != 0) {
+                    return true;
+                }
                 break;
             case Direction.TOP:
             case Direction.BOTTOM:
                 mVelocity = velocityY;
+                int fromy = getSwipeY();
+                if (fromy != 0) {
+                    return true;
+                }
+                break;
+            default:
+                mVelocity = 0F;
                 break;
         }
         return super.onNestedPreFling(target, velocityX, velocityY);
@@ -649,8 +678,6 @@ public class SwipeLayout extends FrameLayout implements NestedScrollingParent3 {
             int endy = 0;
             if (judgeDismiss(-mVelocity)) {
                 switch (mCurrSwipeDirection) {
-                    default:
-                        break;
                     case Direction.LEFT:
                         endx = -calcViewLeftRange(mSwipeView);
                         break;
@@ -662,6 +689,8 @@ public class SwipeLayout extends FrameLayout implements NestedScrollingParent3 {
                         break;
                     case Direction.BOTTOM:
                         endy = calcViewBottomRange(mSwipeView);
+                        break;
+                    default:
                         break;
                 }
             }

@@ -2,7 +2,6 @@ package per.goweii.layer.design.cupertino;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +15,7 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.ViewStub;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -23,8 +23,9 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import per.goweii.layer.core.anim.AnimatorHelper;
+import per.goweii.layer.core.listener.DefaultAnimatorListener;
 import per.goweii.layer.core.utils.Utils;
+import per.goweii.layer.core.widget.SwipeLayout;
 import per.goweii.layer.dialog.DialogLayer;
 
 public class CupertinoModalityLayer extends DialogLayer {
@@ -50,7 +51,7 @@ public class CupertinoModalityLayer extends DialogLayer {
         mDecorChildCornerRadius = getActivity().getResources().getDimension(R.dimen.layer_design_cupertino_corner_radius_big);
         setAvoidStatusBar(true);
         addOnSwipeListener(new OnSwipeListenerImpl());
-        setSwipeDismiss(0);
+        setSwipeDismiss(SwipeLayout.Direction.BOTTOM);
     }
 
     @Override
@@ -77,53 +78,53 @@ public class CupertinoModalityLayer extends DialogLayer {
     @Override
     protected void onPreShow() {
         super.onPreShow();
-        FrameLayout decor = getViewHolder().getDecor();
+        final FrameLayout decor = getViewHolder().getDecor();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            for (int i = 0; i < decor.getChildCount() - 1; i++) {
-                final View child = decor.getChildAt(i);
-                if (child instanceof ViewStub) continue;
-                if (!child.isShown()) continue;
-                child.setTag(R.id.layer_design_cupertino_view_clip_to_outline_backup, child.getClipToOutline());
-                child.setTag(R.id.layer_design_cupertino_view_outline_provider_backup, child.getOutlineProvider());
-                child.setClipToOutline(true);
-                child.setOutlineProvider(new ViewOutlineProvider() {
-                    @Override
-                    public void getOutline(View view, Outline outline) {
-                        float cornerRadius = mDecorChildCornerRadius * mAnimationAnimatedFraction;
-                        outline.setRoundRect(
-                                0, 0,
-                                getViewHolder().getDecor().getWidth(),
-                                getViewHolder().getDecor().getHeight(),
-                                cornerRadius
-                        );
-                    }
-                });
-            }
+            foreachDecorChildren(decor, new ForeachCallback() {
+                @Override
+                public void onEach(@NonNull final View child) {
+                    child.setTag(R.id.layer_design_cupertino_view_clip_to_outline_backup, child.getClipToOutline());
+                    child.setTag(R.id.layer_design_cupertino_view_outline_provider_backup, child.getOutlineProvider());
+                    child.setClipToOutline(true);
+                    child.setOutlineProvider(new ViewOutlineProvider() {
+                        @Override
+                        public void getOutline(View view, Outline outline) {
+                            float cornerRadius = mDecorChildCornerRadius * mAnimationAnimatedFraction;
+                            outline.setRoundRect(
+                                    0, 0,
+                                    getViewHolder().getDecor().getWidth(),
+                                    getViewHolder().getDecor().getHeight(),
+                                    cornerRadius
+                            );
+                        }
+                    });
+                }
+            });
         }
     }
 
     @Override
     protected void onPostDismiss() {
         super.onPostDismiss();
-        FrameLayout decor = getViewHolder().getDecor();
+        final FrameLayout decor = getViewHolder().getDecor();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            for (int i = 0; i < decor.getChildCount() - 1; i++) {
-                final View child = decor.getChildAt(i);
-                if (child instanceof ViewStub) continue;
-                if (!child.isShown()) continue;
-                Object tagClipToOutlineBackup = child.getTag(R.id.layer_design_cupertino_view_clip_to_outline_backup);
-                Object tagOutlineProviderBackup = child.getTag(R.id.layer_design_cupertino_view_outline_provider_backup);
-                if (tagClipToOutlineBackup instanceof Boolean) {
-                    child.setClipToOutline((boolean) tagClipToOutlineBackup);
-                } else {
-                    child.setClipToOutline(false);
+            foreachDecorChildren(decor, new ForeachCallback() {
+                @Override
+                public void onEach(@NonNull final View child) {
+                    Object tagClipToOutlineBackup = child.getTag(R.id.layer_design_cupertino_view_clip_to_outline_backup);
+                    Object tagOutlineProviderBackup = child.getTag(R.id.layer_design_cupertino_view_outline_provider_backup);
+                    if (tagClipToOutlineBackup instanceof Boolean) {
+                        child.setClipToOutline((boolean) tagClipToOutlineBackup);
+                    } else {
+                        child.setClipToOutline(false);
+                    }
+                    if (tagOutlineProviderBackup instanceof ViewOutlineProvider) {
+                        child.setOutlineProvider((ViewOutlineProvider) tagOutlineProviderBackup);
+                    } else {
+                        child.setOutlineProvider(null);
+                    }
                 }
-                if (tagOutlineProviderBackup instanceof ViewOutlineProvider) {
-                    child.setOutlineProvider((ViewOutlineProvider) tagOutlineProviderBackup);
-                } else {
-                    child.setOutlineProvider(null);
-                }
-            }
+            });
         }
     }
 
@@ -142,69 +143,70 @@ public class CupertinoModalityLayer extends DialogLayer {
     @NonNull
     @Override
     protected Animator onCreateDefContentInAnimator(@NonNull View view) {
-        AnimatorSet animatorSet = new AnimatorSet();
-        Animator contentInAnimator = AnimatorHelper.createBottomInAnim(view);
-        FrameLayout decor = getViewHolder().getDecor();
-        float statusBarHeight = Utils.getStatusBarHeight(getActivity());
-        float toScale = (decor.getHeight() - statusBarHeight * 2F) / decor.getHeight();
-        List<Animator> scaleAnimList = new ArrayList<>();
-        for (int i = 0; i < decor.getChildCount() - 1; i++) {
-            final View child = decor.getChildAt(i);
-            child.setPivotX(decor.getWidth() / 2F);
-            child.setPivotY(decor.getHeight() / 2F);
-            float fromScaleX = child.getScaleX();
-            float fromScaleY = child.getScaleY();
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(child, "scaleX", fromScaleX, toScale);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(child, "scaleY", fromScaleY, toScale);
-            scaleAnimList.add(scaleX);
-            scaleAnimList.add(scaleY);
-            scaleX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    mAnimationAnimatedFraction = animation.getAnimatedFraction();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        child.invalidateOutline();
-                    }
-                }
-            });
-        }
+        final List<Animator> scaleAnimList = new ArrayList<>();
+        final AnimatorSet animatorSet = new AnimatorSet();
+
+        final SwipeLayout swipeLayout = getViewHolder().getContentWrapper();
+        final ValueAnimator contentInAnimator = ValueAnimator.ofInt(swipeLayout.getHeight(), 0);
+        contentInAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int animatedValue = (int) animation.getAnimatedValue();
+                swipeLayout.swipeTo(0, animatedValue);
+            }
+        });
+        contentInAnimator.addListener(new DefaultAnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                swipeLayout.startFakeSwipe(SwipeLayout.Direction.BOTTOM);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                swipeLayout.endFakeSwipe();
+            }
+        });
         scaleAnimList.add(contentInAnimator);
+
         animatorSet.playTogether(scaleAnimList);
+        animatorSet.setInterpolator(new DecelerateInterpolator());
         return animatorSet;
     }
 
     @NonNull
     @Override
     protected Animator onCreateDefContentOutAnimator(@NonNull View view) {
-        AnimatorSet animatorSet = new AnimatorSet();
-        Animator contentOutAnimator = AnimatorHelper.createBottomOutAnim(view);
-        FrameLayout decor = getViewHolder().getDecor();
-        float toScale = 1F;
-        List<Animator> scaleAnimList = new ArrayList<>();
-        for (int i = 0; i < decor.getChildCount() - 1; i++) {
-            final View child = decor.getChildAt(i);
-            if (child instanceof ViewStub) continue;
-            if (!child.isShown()) continue;
-            child.setPivotX(decor.getWidth() / 2F);
-            child.setPivotY(decor.getHeight() / 2F);
-            float fromScaleX = child.getScaleX();
-            float fromScaleY = child.getScaleY();
-            ObjectAnimator scaleX = ObjectAnimator.ofFloat(child, "scaleX", fromScaleX, toScale);
-            ObjectAnimator scaleY = ObjectAnimator.ofFloat(child, "scaleY", fromScaleY, toScale);
-            scaleAnimList.add(scaleX);
-            scaleAnimList.add(scaleY);
-            scaleX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    mAnimationAnimatedFraction = 1F - animation.getAnimatedFraction();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        child.invalidateOutline();
-                    }
-                }
-            });
-        }
+        final AnimatorSet animatorSet = new AnimatorSet();
+        final List<Animator> scaleAnimList = new ArrayList<>();
+
+        final SwipeLayout swipeLayout = getViewHolder().getContentWrapper();
+        final ValueAnimator contentOutAnimator = ValueAnimator.ofInt(swipeLayout.getSwipeY(), swipeLayout.getHeight());
+        contentOutAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int animatedValue = (int) animation.getAnimatedValue();
+                swipeLayout.swipeTo(0, animatedValue);
+            }
+        });
+        contentOutAnimator.addListener(new DefaultAnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                swipeLayout.startFakeSwipe(SwipeLayout.Direction.BOTTOM);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                swipeLayout.endFakeSwipe();
+            }
+        });
         scaleAnimList.add(contentOutAnimator);
+
         animatorSet.playTogether(scaleAnimList);
+        animatorSet.setInterpolator(new DecelerateInterpolator());
         return animatorSet;
     }
 
@@ -221,11 +223,16 @@ public class CupertinoModalityLayer extends DialogLayer {
 
         @Override
         public void onStart(@NonNull DialogLayer layer) {
-            View decorChild = getViewHolder().getDecorChild();
-            decorChild.setPivotX(decorChild.getWidth() / 2F);
-            decorChild.setPivotY(decorChild.getHeight() / 2F);
+            final FrameLayout decor = getViewHolder().getDecor();
+            foreachDecorChildren(decor, new ForeachCallback() {
+                @Override
+                public void onEach(@NonNull View view) {
+                    view.setPivotX(decor.getWidth() / 2F);
+                    view.setPivotY(decor.getHeight() / 2F);
+                }
+            });
             mFromScale = 1F;
-            float dcHeight = decorChild.getHeight();
+            float dcHeight = decor.getHeight();
             float statusBarHeight = Utils.getStatusBarHeight(getActivity());
             mToScale = (dcHeight - statusBarHeight * 2F) / dcHeight;
         }
@@ -233,24 +240,47 @@ public class CupertinoModalityLayer extends DialogLayer {
         @Override
         public void onSwiping(@NonNull DialogLayer layer, int direction, float fraction) {
             mAnimationAnimatedFraction = 1F - fraction;
-            View decorChild = getViewHolder().getDecorChild();
-            float scale = mFromScale + (mToScale - mFromScale) * mAnimationAnimatedFraction;
-            decorChild.setScaleX(scale);
-            decorChild.setScaleY(scale);
+            final FrameLayout decor = getViewHolder().getDecor();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                decorChild.invalidateOutline();
+                foreachDecorChildren(decor, new ForeachCallback() {
+                    @Override
+                    public void onEach(@NonNull View view) {
+                        float scale = mFromScale + (mToScale - mFromScale) * mAnimationAnimatedFraction;
+                        view.setScaleX(scale);
+                        view.setScaleY(scale);
+                        view.invalidateOutline();
+                    }
+                });
             }
         }
 
         @Override
         public void onEnd(@NonNull DialogLayer layer, int direction) {
             mAnimationAnimatedFraction = 0F;
-            View decorChild = getViewHolder().getDecorChild();
-            decorChild.setScaleX(mFromScale);
-            decorChild.setScaleY(mFromScale);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                decorChild.invalidateOutline();
-            }
+            final FrameLayout decor = getViewHolder().getDecor();
+            foreachDecorChildren(decor, new ForeachCallback() {
+                @Override
+                public void onEach(@NonNull View view) {
+                    view.setScaleX(mFromScale);
+                    view.setScaleY(mFromScale);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        view.invalidateOutline();
+                    }
+                }
+            });
         }
+    }
+
+    private static void foreachDecorChildren(@NonNull FrameLayout decor, @NonNull ForeachCallback callback) {
+        for (int i = 0; i < decor.getChildCount() - 1; i++) {
+            final View child = decor.getChildAt(i);
+            if (child instanceof ViewStub) continue;
+            if (!child.isShown()) continue;
+            callback.onEach(child);
+        }
+    }
+
+    private interface ForeachCallback {
+        void onEach(@NonNull final View view);
     }
 }
