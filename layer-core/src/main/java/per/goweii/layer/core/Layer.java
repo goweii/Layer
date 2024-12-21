@@ -405,8 +405,9 @@ public class Layer {
     protected boolean onKeyBack() {
         if (getConfig().mCancelableOnKeyBack) {
             dismiss();
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
